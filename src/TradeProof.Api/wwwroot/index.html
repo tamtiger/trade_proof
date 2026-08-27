@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>TradeProof Quick Plan</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="workspace-bar" aria-label="Workspace">
+      <div>
+        <p class="eyebrow">TradeProof</p>
+        <h1>Quick Plan</h1>
+      </div>
+      <div class="status-pill" id="workspaceStatus">Đang kết nối</div>
+    </section>
+
+    <section class="layout">
+      <form class="plan-panel" id="planForm">
+        <div class="field-row">
+          <label>
+            <span>Symbol</span>
+            <input name="symbol" value="BTCUSDT" autocomplete="off" required>
+          </label>
+          <label>
+            <span>Setup</span>
+            <select name="setupPresetRevisionId" id="setupSelect" required></select>
+          </label>
+        </div>
+
+        <div class="field-row three">
+          <label>
+            <span>Entry thấp</span>
+            <input name="entryZoneLow" inputmode="decimal" value="101.0000" required>
+          </label>
+          <label>
+            <span>Entry cao</span>
+            <input name="entryZoneHigh" inputmode="decimal" value="105.0000" required>
+          </label>
+          <label>
+            <span>Stop</span>
+            <input name="initialStop" inputmode="decimal" value="99.0000" required>
+          </label>
+        </div>
+
+        <div class="field-row">
+          <label>
+            <span>Risk USDT</span>
+            <input name="plannedRiskUsdt" inputmode="decimal" value="25.00000000" required>
+          </label>
+          <label>
+            <span>Confidence</span>
+            <input name="confidence" type="range" min="1" max="5" value="3">
+          </label>
+        </div>
+
+        <label>
+          <span>Thesis</span>
+          <textarea name="thesis" maxlength="1000" rows="4">Pullback về vùng hỗ trợ, chỉ quan sát sau khi có xác nhận.</textarea>
+        </label>
+
+        <div class="actions">
+          <button type="submit">Arm plan</button>
+          <button type="button" id="practiceButton">Practice run</button>
+        </div>
+        <p class="error" id="errorText" role="status"></p>
+      </form>
+
+      <section class="state-panel" aria-label="Plan state">
+        <h2>Trạng thái</h2>
+        <dl>
+          <div><dt>Workspace</dt><dd id="workspaceId">-</dd></div>
+          <div><dt>Trading account</dt><dd id="accountId">-</dd></div>
+          <div><dt>Plan</dt><dd id="planState">Chưa arm</dd></div>
+          <div><dt>Submitted</dt><dd id="submittedAt">-</dd></div>
+          <div><dt>Expiry</dt><dd id="expiresAt">-</dd></div>
+        </dl>
+      </section>
+    </section>
+  </main>
+  <script src="/quick-plan.js"></script>
+</body>
+</html>

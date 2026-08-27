@@ -1,9 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\TradeProof.Application\TradeProof.Application.csproj" />
     <ProjectReference Include="..\TradeProof.Domain\TradeProof.Domain.csproj" />
-    <ProjectReference Include="..\TradeProof.Infrastructure\TradeProof.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

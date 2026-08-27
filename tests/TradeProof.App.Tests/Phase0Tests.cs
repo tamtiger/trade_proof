@@ -2,11 +2,10 @@ namespace TradeProof.App.Tests;
 
 public static class Phase0Tests
 {
-    public static int Main()
+    public static void Run()
     {
         Phase0ArtifactsCoverRequiredAdrSet();
         FixtureInventoryDoesNotPretendRealSamplesExist();
-        return 0;
     }
 
     private static void Phase0ArtifactsCoverRequiredAdrSet()

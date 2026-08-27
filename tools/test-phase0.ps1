@@ -1,9 +1,16 @@
 $ErrorActionPreference = "Stop"
 
-dotnet restore "TradeProof.sln" --disable-build-servers --verbosity minimal -maxcpucount:1
-dotnet test "TradeProof.sln" --no-restore --configuration Release --disable-build-servers --verbosity minimal -maxcpucount:1
+function Invoke-Checked {
+    param([scriptblock] $Command)
+    & $Command
+    if ($LASTEXITCODE -ne 0) {
+        throw "Command failed with exit code $LASTEXITCODE."
+    }
+}
 
-pwsh -NoProfile -File "tools/verify-phase0.ps1"
+Invoke-Checked { dotnet restore "TradeProof.sln" --disable-build-servers --verbosity minimal -maxcpucount:1 }
+Invoke-Checked { dotnet test "TradeProof.sln" --no-restore --configuration Release --disable-build-servers --verbosity minimal -maxcpucount:1 }
+Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase0.ps1" }
 
 $secretPattern = "(api[_-]?secret|secret[_-]?key|private[_-]?key|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password=)"
 $matches = git grep --untracked -n -E $secretPattern -- . ':!docs/**' ':!README.md' ':!tools/test-phase0.ps1' ':!**/bin/**' ':!**/obj/**'

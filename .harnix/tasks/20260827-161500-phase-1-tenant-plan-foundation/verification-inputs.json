@@ -1,0 +1,487 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 1,
+  "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+  "snapshots": [
+    {
+      "evidenceId": "phase1-artifact-review-pass-2-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-artifact-review",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "358cbab8ccdaf3d1484c2cd996844419c5d120dc4b215e4fcf319622492c802e"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "246fb0a0dd9935a6bc3c51f9682985bd915be066c7401ff4abfc0123af007027"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "3f5ae82d7e6436a35a564987f13893d01129b5e5462ffd9f0f3d1ee41c552b7f"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "5e55947a2c822d8fbf209f21aac8385842db343da0ab73db9c714bb55acb2e5c"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/index.html",
+          "sha256": "bd0e557627cd5d08a0a893d297188547c9fd3ceac340dea4cb755d31fe70cdc9"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/quick-plan.js",
+          "sha256": "1a4d94604aec3c01063b802648ae5ae6e76da1d8d45c1cbc6a6c39d34b970571"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/styles.css",
+          "sha256": "9d1a8a135a6e867311032f9f62d5633054b48b3704fc5f7e1e71e0b2772f002a"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "df9b43588f988ab0c14620a586cfe078f13aca004539f2b2a4c5ea3adc1b7b78"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+          "sha256": "949a7f7266362bcf3552eb10ffe183032dd5b941a526753a35eb9b9dc6fec8c3"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "b5441ea6b8c3ee0ba6983d727132c51c0b15e322b7227f86302ee7121e27259e"
+        }
+      ],
+      "inputDigest": "4e890f934e55915b4147680820f40889c20f7824ee09cc24bc462b764dac76df"
+    },
+    {
+      "evidenceId": "phase1-artifact-review-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-artifact-review",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "358cbab8ccdaf3d1484c2cd996844419c5d120dc4b215e4fcf319622492c802e"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "a68b50f25678396665230bcfc101ce76da304f3d07d6d6baba93eceece5e2e83"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "3f5ae82d7e6436a35a564987f13893d01129b5e5462ffd9f0f3d1ee41c552b7f"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "5e55947a2c822d8fbf209f21aac8385842db343da0ab73db9c714bb55acb2e5c"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/index.html",
+          "sha256": "bd0e557627cd5d08a0a893d297188547c9fd3ceac340dea4cb755d31fe70cdc9"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/quick-plan.js",
+          "sha256": "1a4d94604aec3c01063b802648ae5ae6e76da1d8d45c1cbc6a6c39d34b970571"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/styles.css",
+          "sha256": "9d1a8a135a6e867311032f9f62d5633054b48b3704fc5f7e1e71e0b2772f002a"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "df9b43588f988ab0c14620a586cfe078f13aca004539f2b2a4c5ea3adc1b7b78"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+          "sha256": "949a7f7266362bcf3552eb10ffe183032dd5b941a526753a35eb9b9dc6fec8c3"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "b5441ea6b8c3ee0ba6983d727132c51c0b15e322b7227f86302ee7121e27259e"
+        }
+      ],
+      "inputDigest": "2f4d63810d44729b2922e2f151e8a47455154bfb55e02bfde0727f45e6f758ee"
+    },
+    {
+      "evidenceId": "phase1-contract-tests-pass-2-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-contract-tests",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "246fb0a0dd9935a6bc3c51f9682985bd915be066c7401ff4abfc0123af007027"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c"
+        }
+      ],
+      "inputDigest": "fc0636dc3483a71f14ca9e9f2fe74ea5c90557ee665e56950421c63168d3bfa3"
+    },
+    {
+      "evidenceId": "phase1-contract-tests-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-contract-tests",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "a68b50f25678396665230bcfc101ce76da304f3d07d6d6baba93eceece5e2e83"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c"
+        }
+      ],
+      "inputDigest": "a368e8b2032bf92ba4461c948075946dfc04192ec5bac44ee0c32eaca6553e48"
+    },
+    {
+      "evidenceId": "phase1-local-ci-pass-2-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-local-ci",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "358cbab8ccdaf3d1484c2cd996844419c5d120dc4b215e4fcf319622492c802e"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "246fb0a0dd9935a6bc3c51f9682985bd915be066c7401ff4abfc0123af007027"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "3f5ae82d7e6436a35a564987f13893d01129b5e5462ffd9f0f3d1ee41c552b7f"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "5e55947a2c822d8fbf209f21aac8385842db343da0ab73db9c714bb55acb2e5c"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "54700fd70a09481dbe60f6e3b2b1bc8866835fe7574b98f542f9e124a44bd878"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/index.html",
+          "sha256": "bd0e557627cd5d08a0a893d297188547c9fd3ceac340dea4cb755d31fe70cdc9"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/quick-plan.js",
+          "sha256": "1a4d94604aec3c01063b802648ae5ae6e76da1d8d45c1cbc6a6c39d34b970571"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/styles.css",
+          "sha256": "9d1a8a135a6e867311032f9f62d5633054b48b3704fc5f7e1e71e0b2772f002a"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "df9b43588f988ab0c14620a586cfe078f13aca004539f2b2a4c5ea3adc1b7b78"
+        },
+        {
+          "path": "src/TradeProof.Application/TradeProof.Application.csproj",
+          "sha256": "cbce11b7ef6c20f6727723d2c8e914df4188954998e36e86cafb84a7cfd62e54"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83"
+        },
+        {
+          "path": "src/TradeProof.Domain/TradeProof.Domain.csproj",
+          "sha256": "4cde5171342fce73db3652a2b74c391758b4be1dc6feea1b23655fc8a9917f2d"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+          "sha256": "949a7f7266362bcf3552eb10ffe183032dd5b941a526753a35eb9b9dc6fec8c3"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/TradeProof.Infrastructure.csproj",
+          "sha256": "85ebd493d20918c236cc06c28d2b4b79976b882118d4533c2d116dc138275d2a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "7548a9d8dfb42baf8abc7e2348a3d55ed388edc0d10c10bea3ef16399a0797f0"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "92eeeaab4b594774c34e3b29763345536d8e19db568370602e3d927a541c4e3a"
+        },
+        {
+          "path": "tools/test-phase1.ps1",
+          "sha256": "78354dc8ecea101fa8b3039ead4f65d942909978da65861738338e7d6dd311e5"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "4e7cb3262e7927997409016c2b26ba3b00c6693435ed2b9be37548a86bb79228"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "b5441ea6b8c3ee0ba6983d727132c51c0b15e322b7227f86302ee7121e27259e"
+        }
+      ],
+      "inputDigest": "42a91c7da6e5e4c610948ebc32ebb82a36a612a9a567381e54e6d9992d78a1ca"
+    },
+    {
+      "evidenceId": "phase1-local-ci-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-local-ci",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "358cbab8ccdaf3d1484c2cd996844419c5d120dc4b215e4fcf319622492c802e"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "a68b50f25678396665230bcfc101ce76da304f3d07d6d6baba93eceece5e2e83"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "3f5ae82d7e6436a35a564987f13893d01129b5e5462ffd9f0f3d1ee41c552b7f"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "5e55947a2c822d8fbf209f21aac8385842db343da0ab73db9c714bb55acb2e5c"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "54700fd70a09481dbe60f6e3b2b1bc8866835fe7574b98f542f9e124a44bd878"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/index.html",
+          "sha256": "bd0e557627cd5d08a0a893d297188547c9fd3ceac340dea4cb755d31fe70cdc9"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/quick-plan.js",
+          "sha256": "1a4d94604aec3c01063b802648ae5ae6e76da1d8d45c1cbc6a6c39d34b970571"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/styles.css",
+          "sha256": "9d1a8a135a6e867311032f9f62d5633054b48b3704fc5f7e1e71e0b2772f002a"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "df9b43588f988ab0c14620a586cfe078f13aca004539f2b2a4c5ea3adc1b7b78"
+        },
+        {
+          "path": "src/TradeProof.Application/TradeProof.Application.csproj",
+          "sha256": "cbce11b7ef6c20f6727723d2c8e914df4188954998e36e86cafb84a7cfd62e54"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83"
+        },
+        {
+          "path": "src/TradeProof.Domain/TradeProof.Domain.csproj",
+          "sha256": "4cde5171342fce73db3652a2b74c391758b4be1dc6feea1b23655fc8a9917f2d"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+          "sha256": "949a7f7266362bcf3552eb10ffe183032dd5b941a526753a35eb9b9dc6fec8c3"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/TradeProof.Infrastructure.csproj",
+          "sha256": "85ebd493d20918c236cc06c28d2b4b79976b882118d4533c2d116dc138275d2a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "7548a9d8dfb42baf8abc7e2348a3d55ed388edc0d10c10bea3ef16399a0797f0"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "92eeeaab4b594774c34e3b29763345536d8e19db568370602e3d927a541c4e3a"
+        },
+        {
+          "path": "tools/test-phase1.ps1",
+          "sha256": "78354dc8ecea101fa8b3039ead4f65d942909978da65861738338e7d6dd311e5"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "4e7cb3262e7927997409016c2b26ba3b00c6693435ed2b9be37548a86bb79228"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "b5441ea6b8c3ee0ba6983d727132c51c0b15e322b7227f86302ee7121e27259e"
+        }
+      ],
+      "inputDigest": "d888855125c08d8ccc3b1a6e77383745b875f2c4575241cd44f5741d946251c9"
+    },
+    {
+      "evidenceId": "phase1-scope-review-pass-2-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-scope-review",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "246fb0a0dd9935a6bc3c51f9682985bd915be066c7401ff4abfc0123af007027"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "3f5ae82d7e6436a35a564987f13893d01129b5e5462ffd9f0f3d1ee41c552b7f"
+        },
+        {
+          "path": "Product_Brief.md",
+          "sha256": "8f8cddb5c8dda7316a76bdf3a5be52462d677a66b11f5e0ef2be3d9730637a9b"
+        },
+        {
+          "path": "docs/ACCEPTANCE_TESTS.md",
+          "sha256": "afba565f0637ea53433fb7aa64251b6d08bb244a3c41f3e08fa5ad90c19b3785"
+        },
+        {
+          "path": "docs/IMPLEMENTATION_PLAN.md",
+          "sha256": "2e3e94dd4d879745b110d5c2db0f34e22a8a72a88a3d1ee393838c137fd0c943"
+        },
+        {
+          "path": "docs/PRODUCT_REQUIREMENTS.md",
+          "sha256": "782b7ee223c1a7baf46da42aa8631bcdf1305d032b30beea2f58c9043318c918"
+        },
+        {
+          "path": "docs/SECURITY_PRIVACY_AI.md",
+          "sha256": "5f67aec632d1d9d852f9eb92e60882d721247fbdfe9ff98d409ac13f581ace0e"
+        }
+      ],
+      "inputDigest": "725a28bd692ff4fff4fda266d6f52a8bea5e45e997cf4d08b344fe8e33cc6db2"
+    },
+    {
+      "evidenceId": "phase1-scope-review-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-161500-phase-1-tenant-plan-foundation",
+      "checkId": "phase1-scope-review",
+      "taskContractHash": "25a20bbd0694f3585b31fa2e4516b612160064405aae650e4fe3917638adc5c0",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/plan.md",
+          "sha256": "a68b50f25678396665230bcfc101ce76da304f3d07d6d6baba93eceece5e2e83"
+        },
+        {
+          "path": ".harnix/tasks/20260827-161500-phase-1-tenant-plan-foundation/prd.md",
+          "sha256": "1c4170718b691ab0e03cd52bd60f0c69b84ecae39192393683e36a6d293990be"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "3f5ae82d7e6436a35a564987f13893d01129b5e5462ffd9f0f3d1ee41c552b7f"
+        },
+        {
+          "path": "Product_Brief.md",
+          "sha256": "8f8cddb5c8dda7316a76bdf3a5be52462d677a66b11f5e0ef2be3d9730637a9b"
+        },
+        {
+          "path": "docs/ACCEPTANCE_TESTS.md",
+          "sha256": "afba565f0637ea53433fb7aa64251b6d08bb244a3c41f3e08fa5ad90c19b3785"
+        },
+        {
+          "path": "docs/IMPLEMENTATION_PLAN.md",
+          "sha256": "2e3e94dd4d879745b110d5c2db0f34e22a8a72a88a3d1ee393838c137fd0c943"
+        },
+        {
+          "path": "docs/PRODUCT_REQUIREMENTS.md",
+          "sha256": "782b7ee223c1a7baf46da42aa8631bcdf1305d032b30beea2f58c9043318c918"
+        },
+        {
+          "path": "docs/SECURITY_PRIVACY_AI.md",
+          "sha256": "5f67aec632d1d9d852f9eb92e60882d721247fbdfe9ff98d409ac13f581ace0e"
+        }
+      ],
+      "inputDigest": "d36ba0ed371b9af8db0d95fbc57f404c1821dbe411f3856c41dd32820dc8b9e2"
+    }
+  ]
+}

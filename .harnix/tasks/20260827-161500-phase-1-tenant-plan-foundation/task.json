@@ -1,0 +1,353 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260827-161500-phase-1-tenant-plan-foundation",
+  "title": "Phase 1: tenant foundation and Quick Plan",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 1 theo `TP-PLAN`: tenant/auth bootstrap, base schema, idempotency/audit, shared tenant-work foundation, product measurement run v1, setup presets và Quick Plan happy path responsive.",
+  "nonGoals": [
+    "Không triển khai import/upload, accounting, market context, Weekly Lab, export, deletion hoặc AI runtime của Week 2+.",
+    "Không kết nối production OIDC, PostgreSQL hoặc external queue trong local harness; Phase 1 giữ provider boundary bằng abstraction, SQL contract và in-memory adapter kiểm thử được.",
+    "Không thêm password authentication, exchange API key screen hoặc server-side Quick Plan draft."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "API có managed-identity boundary cho development header mode, giữ issuer/subject byte-exact, bootstrap đúng một User/Workspace/TradingAccount/system OTHER preset cho mỗi identity và ghi PRE_AUTH/POST_AUTH audit event an toàn.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-contract-tests-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Base schema contract Phase 1 có tenant-owned tables, non-null workspace_id, composite same-workspace key/FK intent, direct one-owner Workspace, idempotency receipt và exact PRE_AUTH/POST_AUTH audit fields.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Shared tenant-work foundation triển khai TenantControlJob, TenantWorkItemFence, contiguous per-Workspace work_sequence, fence events, optional external-operation lease, terminal marker, payload schema/digest validation, semantic idempotency và deterministic provider lookup cho registered work type đầu tiên.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "product_measurement_run_v1 hỗ trợ START, terminal success/abandon/timeout, exact deadline, QUICK_PLAN practice 1..3 before MEASURED, PRODUCT_MEASUREMENT_TIMEOUT payload và no-lease terminal marker trên shared foundation.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "Setup preset và Quick Plan command hỗ trợ system OTHER, user preset create/revise/archive/reactivate, no persisted DRAFT, ArmPlan idempotent append-only revision, decimal canonicalization, one armed plan per account/symbol, revise/cancel/expire server timestamp và retry không tạo revision trùng.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-006",
+      "text": "Responsive Quick Plan UI là màn hình đầu tiên của app, dùng API thật trong local mode, không có exchange API key screen, hiển thị trạng thái armed/submittedAt/expiry và validation errors bằng tiếng Việt.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-007",
+      "text": "CHANGELOG.md có entry Phase 1 mới nhất ở đầu file và local CI Phase 1 chạy không cần production secret, không commit bin/obj.",
+      "status": "met",
+      "evidenceIds": [
+        "phase1-scope-review-pass-2-20260827",
+        "phase1-artifact-review-pass-2-20260827",
+        "phase1-local-ci-pass-2-20260827"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "TradeProof.sln",
+    ".github/workflows/ci.yml",
+    "src/TradeProof.Api",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools/test-phase1.ps1",
+    "tools/verify-phase1.ps1",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/ACCEPTANCE_TESTS.md"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPORT_AND_ACCOUNTING.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase1-scope-review",
+      "description": "Đọc lại spec Week 1 để khóa phạm vi tenant/auth, work foundation, product measurement, setup và Quick Plan trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPLEMENTATION_PLAN.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        "@task-contract",
+        "CHANGELOG.md",
+        "Product_Brief.md",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/PRODUCT_REQUIREMENTS.md",
+        "docs/SECURITY_PRIVACY_AI.md"
+      ]
+    },
+    {
+      "id": "phase1-contract-tests",
+      "description": "Chạy C# harness Phase 1 để kiểm managed identity, tenant work, product measurement, setup preset và Quick Plan lifecycle.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001"
+      ],
+      "inputs": [
+        "@task-contract",
+        "tests/TradeProof.App.Tests/Phase1Tests.cs"
+      ]
+    },
+    {
+      "id": "phase1-artifact-review",
+      "description": "Kiểm artifact Phase 1: schema SQL, API/UI surface, CHANGELOG, verifier và không có exchange API key screen.",
+      "command": "pwsh -NoProfile -File tools/verify-phase1.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        "src/TradeProof.Api/wwwroot/styles.css",
+        "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+        "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+        "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+        "tests/TradeProof.App.Tests/Phase1Tests.cs",
+        "tools/verify-phase1.ps1"
+      ]
+    },
+    {
+      "id": "phase1-local-ci",
+      "description": "Chạy local CI Phase 1 gồm restore/build, Phase 0 + Phase 1 harness, artifact verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase1.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/TradeProof.Api.csproj",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        "src/TradeProof.Api/wwwroot/styles.css",
+        "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+        "src/TradeProof.Application/TradeProof.Application.csproj",
+        "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+        "src/TradeProof.Domain/TradeProof.Domain.csproj",
+        "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+        "src/TradeProof.Infrastructure/TradeProof.Infrastructure.csproj",
+        "tests/TradeProof.App.Tests/Phase0Tests.cs",
+        "tests/TradeProof.App.Tests/Phase1Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs",
+        "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+        "tools/test-phase0.ps1",
+        "tools/test-phase1.ps1",
+        "tools/verify-phase0.ps1",
+        "tools/verify-phase1.ps1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase1-scope-review-pass-20260827",
+      "checkId": "phase1-scope-review",
+      "recordedAt": "2026-08-27T16:40:56.6655900+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Get-Content docs/IMPLEMENTATION_PLAN.md pass; Week 1 scope confirmed for tenant/auth, tenant work, measurement, setup, Quick Plan, UI và CI/changelog.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md"
+      ],
+      "inputDigest": "d36ba0ed371b9af8db0d95fbc57f404c1821dbe411f3856c41dd32820dc8b9e2"
+    },
+    {
+      "id": "phase1-contract-tests-pass-20260827",
+      "checkId": "phase1-contract-tests",
+      "recordedAt": "2026-08-27T16:40:56.6684424+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "TradeProof.App.Tests phase1 harness pass: managed identity bootstrap, setup idempotency, Quick Plan lifecycle, tenant work sequence/marker/provider và product measurement deadline/practice gate.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase1Tests.cs",
+        "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+        "src/TradeProof.Domain/Foundation/TradeProofContracts.cs"
+      ],
+      "inputDigest": "a368e8b2032bf92ba4461c948075946dfc04192ec5bac44ee0c32eaca6553e48"
+    },
+    {
+      "id": "phase1-artifact-review-pass-20260827",
+      "checkId": "phase1-artifact-review",
+      "recordedAt": "2026-08-27T16:40:56.6685923+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/verify-phase1.ps1 pass: SQL contract, API/UI surface, CHANGELOG newest Phase 1, no exchange API key screen và no tracked bin/obj đều đạt.",
+      "artifactPaths": [
+        "tools/verify-phase1.ps1",
+        "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+        "src/TradeProof.Api/wwwroot",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "2f4d63810d44729b2922e2f151e8a47455154bfb55e02bfde0727f45e6f758ee"
+    },
+    {
+      "id": "phase1-local-ci-pass-20260827",
+      "checkId": "phase1-local-ci",
+      "recordedAt": "2026-08-27T16:40:56.6686475+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/test-phase1.ps1 pass: restore/build, Phase 0 runner, Phase 1 runner, Phase 0/1 verifiers và secret scan không cần production secret đều đạt.",
+      "artifactPaths": [
+        "tools/test-phase1.ps1",
+        "tools/test-phase0.ps1",
+        "tests/TradeProof.App.Tests",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "d888855125c08d8ccc3b1a6e77383745b875f2c4575241cd44f5741d946251c9"
+    },
+    {
+      "id": "phase1-scope-review-pass-2-20260827",
+      "checkId": "phase1-scope-review",
+      "recordedAt": "2026-08-27T09:44:31.732Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Doc scope Week 1 pass sau khi task contract on dinh.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md"
+      ],
+      "inputDigest": "725a28bd692ff4fff4fda266d6f52a8bea5e45e997cf4d08b344fe8e33cc6db2"
+    },
+    {
+      "id": "phase1-contract-tests-pass-2-20260827",
+      "checkId": "phase1-contract-tests",
+      "recordedAt": "2026-08-27T09:44:31.732Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "C# Phase 1 harness pass cho managed identity, setup, Quick Plan, tenant work va measurement.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase1Tests.cs",
+        "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+        "src/TradeProof.Domain/Foundation/TradeProofContracts.cs"
+      ],
+      "inputDigest": "fc0636dc3483a71f14ca9e9f2fe74ea5c90557ee665e56950421c63168d3bfa3"
+    },
+    {
+      "id": "phase1-artifact-review-pass-2-20260827",
+      "checkId": "phase1-artifact-review",
+      "recordedAt": "2026-08-27T09:44:31.732Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/verify-phase1.ps1 pass cho SQL, API/UI, CHANGELOG, no exchange key screen va no tracked bin/obj.",
+      "artifactPaths": [
+        "tools/verify-phase1.ps1",
+        "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+        "src/TradeProof.Api/wwwroot",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "4e890f934e55915b4147680820f40889c20f7824ee09cc24bc462b764dac76df"
+    },
+    {
+      "id": "phase1-local-ci-pass-2-20260827",
+      "checkId": "phase1-local-ci",
+      "recordedAt": "2026-08-27T09:44:31.732Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/test-phase1.ps1 pass: restore/build, Phase 0/1 runners, verifiers va secret scan.",
+      "artifactPaths": [
+        "tools/test-phase1.ps1",
+        "tools/test-phase0.ps1",
+        "tests/TradeProof.App.Tests",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "42a91c7da6e5e4c610948ebc32ebb82a36a612a9a567381e54e6d9992d78a1ca"
+    }
+  ],
+  "createdAt": "2026-08-27T16:19:48.7989687+07:00",
+  "updatedAt": "2026-08-27T09:45:14.687Z",
+  "completedAt": "2026-08-27T09:45:14.687Z"
+}

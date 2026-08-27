@@ -1,7 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TradeProof.Application\TradeProof.Application.csproj" />
     <ProjectReference Include="..\..\src\TradeProof.Api\TradeProof.Api.csproj" />
+    <ProjectReference Include="..\..\src\TradeProof.Domain\TradeProof.Domain.csproj" />
+    <ProjectReference Include="..\..\src\TradeProof.Infrastructure\TradeProof.Infrastructure.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

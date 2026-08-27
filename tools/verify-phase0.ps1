@@ -73,8 +73,8 @@ Assert-Contains "fixtures/README.md" '0/5'
 Assert-Contains "fixtures/README.md" "Synthetic fixtures"
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-27 - Phase 0")) {
-    throw "CHANGELOG.md must keep the newest Phase 0 entry at the top."
+if ($changelog -notmatch "## 2026-08-27 - Phase 0: technical ADR and fixture freeze") {
+    throw "CHANGELOG.md must keep the Phase 0 entry."
 }
 
 Write-Host "Phase 0 artifact verification passed."
