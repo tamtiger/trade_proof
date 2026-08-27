@@ -1,0 +1,250 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260827-154053-phase-0-adr-fixture-freeze",
+  "title": "Phase 0: technical ADR and fixture freeze",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Phase 0 theo `TP-PLAN`: chốt technical ADR, Binance Terms review, fixture/consent baseline, scanner policy, CI/test skeleton và cập nhật CHANGELOG trước khi coding Phase 1.",
+  "nonGoals": [
+    "Không triển khai business runtime của Phase 1+ trong task này.",
+    "Không bịa real Binance CSV sample hoặc consent evidence khi chưa có dữ liệu thật.",
+    "Không thay đổi product behavior contract của Product Brief hoặc docs domain contract."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Repo có bộ ADR Week 0 bao phủ đủ 10 technical ADR bắt buộc trong `TP-PLAN` và mỗi ADR ghi context, decision, alternatives, security/privacy impact, rollback và owner.",
+      "status": "met",
+      "evidenceIds": [
+        "phase0-artifact-review-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Binance Product Terms/market-data review được ghi bằng nguồn chính thức hiện hành, nêu rõ allowed use, cache/retention/redistribution boundary và follow-up trigger trước pilot.",
+      "status": "met",
+      "evidenceIds": [
+        "phase0-artifact-review-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Fixture baseline ghi rõ consent/license inventory, ít nhất 5 Binance CSV sample thật đã anonymize hoặc trạng thái blocker không giả mạo khi sample thật chưa có; synthetic fixtures nếu có phải bị phân loại riêng.",
+      "status": "met",
+      "evidenceIds": [
+        "phase0-artifact-review-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "Malware scanner v1 được chốt là self-hosted/stateless/no-egress/no-retained-copy với pinned release evidence placeholder và fail-closed conformance expectation.",
+      "status": "met",
+      "evidenceIds": [
+        "phase0-artifact-review-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "Repo có CI/test/lint/secret-scan skeleton chạy được trong môi trường hiện tại và không cần secret production.",
+      "status": "met",
+      "evidenceIds": [
+        "phase0-tooling-check-pass-20260827",
+        "phase0-local-ci-check-pass-20260827",
+        "phase0-local-ci-check-pass-2-20260827"
+      ]
+    },
+    {
+      "id": "AC-006",
+      "text": "`CHANGELOG.md` tồn tại và mục Phase 0 mới nhất nằm ở đầu file, ghi nhận thay đổi của task.",
+      "status": "met",
+      "evidenceIds": [
+        "phase0-artifact-review-pass-20260827"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "TradeProof.sln",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/adr",
+    "docs/operations",
+    "fixtures",
+    "src",
+    "tests",
+    "tools",
+    "tools/test-phase0.ps1"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/README.md",
+    "docs/SECURITY_PRIVACY_AI.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase0-artifact-review",
+      "description": "Đọc lại ADR, fixture/operations artifacts và CHANGELOG để xác nhận Phase 0 deliverables và blocker sample thật không bị giả mạo.",
+      "command": "pwsh -NoProfile -File tools/verify-phase0.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/adr/0001-runtime-and-frontend.md",
+        "docs/adr/0002-managed-identity.md",
+        "docs/adr/0003-relational-database-and-tenant-enforcement.md",
+        "docs/adr/0004-queue-worker-and-idempotency.md",
+        "docs/adr/0005-object-storage-and-malware-scanner.md",
+        "docs/adr/0006-market-data-cache.md",
+        "docs/adr/0007-ai-processor.md",
+        "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+        "docs/adr/0009-observability-and-redaction.md",
+        "docs/adr/0010-binance-market-data-terms.md",
+        "docs/operations/fixture-intake.md",
+        "fixtures/README.md",
+        "tools/verify-phase0.ps1"
+      ]
+    },
+    {
+      "id": "phase0-tooling-check",
+      "description": "Chạy build/test skeleton để chứng minh CI local baseline hoạt động không cần production secret.",
+      "command": "dotnet test TradeProof.sln",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-005"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/TradeProof.Api.csproj",
+        "tests/TradeProof.App.Tests/Phase0Tests.cs",
+        "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj"
+      ]
+    },
+    {
+      "id": "phase0-local-ci-check",
+      "description": "Chạy local CI script để xác nhận restore/test/verifier/secret-scan baseline hoạt động không cần production secret.",
+      "command": "pwsh -NoProfile -File tools/test-phase0.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-005"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/TradeProof.Api.csproj",
+        "tests/TradeProof.App.Tests/Phase0Tests.cs",
+        "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+        "tools/test-phase0.ps1",
+        "tools/verify-phase0.ps1"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase0-tooling-check-dotnet-test-hung-20260827",
+      "checkId": "phase0-tooling-check",
+      "recordedAt": "2026-08-27T16:03:36.2976507+07:00",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "dotnet test TradeProof.sln im lặng quá 30 giây và phải dừng; restore/build từng project pass, còn solution build pass khi ghim --disable-build-servers và -maxcpucount:1.",
+      "artifactPaths": [
+        "TradeProof.sln",
+        "Directory.Build.props",
+        "src/TradeProof.Api/TradeProof.Api.csproj",
+        "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj"
+      ]
+    },
+    {
+      "id": "phase0-artifact-review-pass-20260827",
+      "checkId": "phase0-artifact-review",
+      "recordedAt": "2026-08-27T16:08:24.9574963+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/verify-phase0.ps1 pass; ADR Week 0, Binance market-data boundary, fixture inventory 0/5 không giả mạo, scanner policy và CHANGELOG đều đạt.",
+      "artifactPaths": [
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md",
+        "docs/adr",
+        "docs/operations/fixture-intake.md",
+        "fixtures/README.md",
+        "tools/verify-phase0.ps1"
+      ],
+      "inputDigest": "283f952971756b086bbfb735e8cb4a420cba9ff4896f56bb5fc277680d2a2125"
+    },
+    {
+      "id": "phase0-tooling-check-pass-20260827",
+      "checkId": "phase0-tooling-check",
+      "recordedAt": "2026-08-27T16:08:46.0705087+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "dotnet test TradeProof.sln pass sau khi solution chỉ điều phối test harness có ProjectReference tới API; snapshot trước/sau khớp.",
+      "artifactPaths": [
+        "TradeProof.sln",
+        "Directory.Build.props",
+        "src/TradeProof.Api",
+        "tests/TradeProof.App.Tests",
+        ".github/workflows/ci.yml"
+      ],
+      "inputDigest": "8c26048496b94169e859593adf91b62f0451fdbc2a77c84e553e7ef43fdd50f6"
+    },
+    {
+      "id": "phase0-local-ci-check-pass-20260827",
+      "checkId": "phase0-local-ci-check",
+      "recordedAt": "2026-08-27T16:09:21.1096370+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/test-phase0.ps1 pass: restore/test với flags ổn định, verifier Phase 0 và secret scan không cần production secret đều đạt; snapshot trước/sau khớp.",
+      "artifactPaths": [
+        "tools/test-phase0.ps1",
+        "tools/verify-phase0.ps1",
+        ".github/workflows/ci.yml",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "tests/TradeProof.App.Tests"
+      ],
+      "inputDigest": "5426fcc14962141c7b3bfb7d30ade38c8845105e00e3ec4f5ea452c3b822f17a"
+    },
+    {
+      "id": "phase0-local-ci-check-pass-2-20260827",
+      "checkId": "phase0-local-ci-check",
+      "recordedAt": "2026-08-27T09:12:15.294Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/test-phase0.ps1 pass sau khi secret scan loại trừ bin/obj và chính file scanner; restore/test/verifier/secret-scan đều đạt, snapshot trước/sau khớp.",
+      "artifactPaths": [
+        "tools/test-phase0.ps1",
+        "tools/verify-phase0.ps1",
+        ".github/workflows/ci.yml",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "tests/TradeProof.App.Tests"
+      ],
+      "inputDigest": "c722745bca113d8afe21ca072b8f2745576ffd19bdcb1782925b14d400c0d5d1"
+    }
+  ],
+  "createdAt": "2026-08-27T15:40:53.0032156+07:00",
+  "updatedAt": "2026-08-27T09:13:58.884Z",
+  "completedAt": "2026-08-27T09:13:58.884Z"
+}

@@ -1,0 +1,247 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 1,
+  "taskId": "20260827-154053-phase-0-adr-fixture-freeze",
+  "snapshots": [
+    {
+      "evidenceId": "phase0-artifact-review-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-154053-phase-0-adr-fixture-freeze",
+      "checkId": "phase0-artifact-review",
+      "taskContractHash": "6bf83a6941d07d4134f0aba280ab4aa11372eb748bc4bf4cf358d0f22feae3d1",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "be56a39311c502c6d6e7419fd9f89ecadd631f46646239bd6a82f06ac5cfdc48"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/plan.md",
+          "sha256": "772a7c6689288e736fb338c23786f157ed5b80b9b88b9ae044a8094854333eb9"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/prd.md",
+          "sha256": "d39937cd3c6932d09bc5223a6e6936652a1bf937150ce279696920cec2fceb27"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "d3301677bdb6c82948a22f7c52aebe35d36ab7a3836d00dac5ed7b80fe6400ad"
+        },
+        {
+          "path": "docs/IMPLEMENTATION_PLAN.md",
+          "sha256": "2e3e94dd4d879745b110d5c2db0f34e22a8a72a88a3d1ee393838c137fd0c943"
+        },
+        {
+          "path": "docs/adr/0001-runtime-and-frontend.md",
+          "sha256": "5261af9bf1a8d7cefd60e19c283c04834cbd38ec54a441d596d73e85ef9e034d"
+        },
+        {
+          "path": "docs/adr/0002-managed-identity.md",
+          "sha256": "9aaca3faed8c2cb1e55ec9c9ac044801adb3e04e1d0c7aad9a1bf50b4f954e77"
+        },
+        {
+          "path": "docs/adr/0003-relational-database-and-tenant-enforcement.md",
+          "sha256": "c0f7a059d5353bce4bd6c9a2cf308547ae1b7e7d9c4d07833448ffd70c7bf3b3"
+        },
+        {
+          "path": "docs/adr/0004-queue-worker-and-idempotency.md",
+          "sha256": "d9c0113d031ccfc5b039f43d0d6143012b1b59c760e25cea814d2b48211b541c"
+        },
+        {
+          "path": "docs/adr/0005-object-storage-and-malware-scanner.md",
+          "sha256": "bc991003f8fc409c75d2de0ceb30695af0cb944d50ec2529877510366b0d455d"
+        },
+        {
+          "path": "docs/adr/0006-market-data-cache.md",
+          "sha256": "78c81062b3939db0b5bf7ee00b38c1196122fcbfa2b8fb7fb13b83c42ecc6cfb"
+        },
+        {
+          "path": "docs/adr/0007-ai-processor.md",
+          "sha256": "726bcb67123435124907c563991b69fd78ee93b1df7548db5434890b449cc147"
+        },
+        {
+          "path": "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+          "sha256": "06b7fc36ceda1fbca42b1af1a504cf425c4abc07a2f29d0a771f5cb0f8852fb3"
+        },
+        {
+          "path": "docs/adr/0009-observability-and-redaction.md",
+          "sha256": "17458c336cb7753ce7e32ba28905a1b3409f4570121a1237fbf8263dfc04071f"
+        },
+        {
+          "path": "docs/adr/0010-binance-market-data-terms.md",
+          "sha256": "983fd6d98c98578714779a124a2be4236df9e9668af9545325c5f5722a613863"
+        },
+        {
+          "path": "docs/operations/fixture-intake.md",
+          "sha256": "5d287020a75f7ddde438219138f5574a1fed20bb29972d7ef6e9c1ea41fdce10"
+        },
+        {
+          "path": "fixtures/README.md",
+          "sha256": "ffec6cc057cf28b02d0f32ba0d7165d5378506b7b8ce167ffafb011a57d844a8"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "2c3956c703ba6159ffc456fedc4f7c86d2b51abd8d6733cacfed0cf495f52d3b"
+        }
+      ],
+      "inputDigest": "283f952971756b086bbfb735e8cb4a420cba9ff4896f56bb5fc277680d2a2125"
+    },
+    {
+      "evidenceId": "phase0-local-ci-check-pass-2-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-154053-phase-0-adr-fixture-freeze",
+      "checkId": "phase0-local-ci-check",
+      "taskContractHash": "6bf83a6941d07d4134f0aba280ab4aa11372eb748bc4bf4cf358d0f22feae3d1",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "be56a39311c502c6d6e7419fd9f89ecadd631f46646239bd6a82f06ac5cfdc48"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/plan.md",
+          "sha256": "772a7c6689288e736fb338c23786f157ed5b80b9b88b9ae044a8094854333eb9"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/prd.md",
+          "sha256": "d39937cd3c6932d09bc5223a6e6936652a1bf937150ce279696920cec2fceb27"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "8222004f42ea43dd6abcf757b98ed89109d7f371b92f16454495117701253d16"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "a69a8c7929855b9f420957611111375b25b17c821926bedc695d953087e6259a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "52b3e7e25defccb83b65a1b3e9b0cbcad386b05a90aa56578a6734d48c90eb5a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "38b73276f10ab69ed7775fa8580b17f48b3dc1e903d96576ef7e86b493dcb523"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "686f309cfd13c1f583a4da4ca026f621d9512e739b92eee24cb3b0c94fc19b43"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "2c3956c703ba6159ffc456fedc4f7c86d2b51abd8d6733cacfed0cf495f52d3b"
+        }
+      ],
+      "inputDigest": "c722745bca113d8afe21ca072b8f2745576ffd19bdcb1782925b14d400c0d5d1"
+    },
+    {
+      "evidenceId": "phase0-local-ci-check-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-154053-phase-0-adr-fixture-freeze",
+      "checkId": "phase0-local-ci-check",
+      "taskContractHash": "6bf83a6941d07d4134f0aba280ab4aa11372eb748bc4bf4cf358d0f22feae3d1",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "be56a39311c502c6d6e7419fd9f89ecadd631f46646239bd6a82f06ac5cfdc48"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/plan.md",
+          "sha256": "772a7c6689288e736fb338c23786f157ed5b80b9b88b9ae044a8094854333eb9"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/prd.md",
+          "sha256": "d39937cd3c6932d09bc5223a6e6936652a1bf937150ce279696920cec2fceb27"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "8222004f42ea43dd6abcf757b98ed89109d7f371b92f16454495117701253d16"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "a69a8c7929855b9f420957611111375b25b17c821926bedc695d953087e6259a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "52b3e7e25defccb83b65a1b3e9b0cbcad386b05a90aa56578a6734d48c90eb5a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "38b73276f10ab69ed7775fa8580b17f48b3dc1e903d96576ef7e86b493dcb523"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "49a70617658c68e6172fb8cea03bd8a948c3620d135dda3561a9d84d497bfef1"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "2c3956c703ba6159ffc456fedc4f7c86d2b51abd8d6733cacfed0cf495f52d3b"
+        }
+      ],
+      "inputDigest": "5426fcc14962141c7b3bfb7d30ade38c8845105e00e3ec4f5ea452c3b822f17a"
+    },
+    {
+      "evidenceId": "phase0-tooling-check-pass-20260827",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-154053-phase-0-adr-fixture-freeze",
+      "checkId": "phase0-tooling-check",
+      "taskContractHash": "6bf83a6941d07d4134f0aba280ab4aa11372eb748bc4bf4cf358d0f22feae3d1",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "be56a39311c502c6d6e7419fd9f89ecadd631f46646239bd6a82f06ac5cfdc48"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/plan.md",
+          "sha256": "772a7c6689288e736fb338c23786f157ed5b80b9b88b9ae044a8094854333eb9"
+        },
+        {
+          "path": ".harnix/tasks/20260827-154053-phase-0-adr-fixture-freeze/prd.md",
+          "sha256": "d39937cd3c6932d09bc5223a6e6936652a1bf937150ce279696920cec2fceb27"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "8222004f42ea43dd6abcf757b98ed89109d7f371b92f16454495117701253d16"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "a69a8c7929855b9f420957611111375b25b17c821926bedc695d953087e6259a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "52b3e7e25defccb83b65a1b3e9b0cbcad386b05a90aa56578a6734d48c90eb5a"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "38b73276f10ab69ed7775fa8580b17f48b3dc1e903d96576ef7e86b493dcb523"
+        }
+      ],
+      "inputDigest": "8c26048496b94169e859593adf91b62f0451fdbc2a77c84e553e7ef43fdd50f6"
+    }
+  ]
+}
