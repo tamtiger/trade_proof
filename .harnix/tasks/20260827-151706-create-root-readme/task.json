@@ -1,0 +1,100 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260827-151706-create-root-readme",
+  "title": "Tạo README gốc",
+  "mode": "lite",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Tạo `README.md` ở root để giới thiệu TradeProof và dẫn người đọc tới bộ tài liệu triển khai hiện có.",
+  "nonGoals": [
+    "Không thêm mã nguồn, manifest, lệnh cài đặt hoặc lệnh chạy khi repo chưa có runtime được khai báo.",
+    "Không thay đổi contract sản phẩm trong `Product_Brief.md` hoặc `docs/`."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Root `README.md` tồn tại và mô tả ngắn gọn TradeProof, phạm vi MVP, ranh giới no-signal/observational và các tài liệu chính cần đọc.",
+      "status": "met",
+      "evidenceIds": [
+        "readme-content-review-pass",
+        "final-readme-content-review-pass"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "README không bịa hướng dẫn cài đặt/chạy/test khi repo hiện chỉ có tài liệu baseline và chưa có manifest/runtime.",
+      "status": "met",
+      "evidenceIds": [
+        "readme-content-review-pass",
+        "final-readme-content-review-pass"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    "README.md",
+    "Product_Brief.md",
+    "docs/README.md"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/README.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "readme-content-review",
+      "description": "Đọc lại README root và đối chiếu với Product Brief cùng Documentation Index để xác nhận nội dung và link phù hợp.",
+      "command": "Get-Content -Raw README.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Product_Brief.md",
+        "README.md",
+        "docs/README.md"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "docs-only-tdd-exception",
+      "recordedAt": "2026-08-27T15:19:13.0322305+07:00",
+      "result": "skipped",
+      "summary": "Docs-only wording change: không có RED behavioral test hữu ích; dùng focused content review làm bằng chứng thay thế.",
+      "artifactPaths": [
+        "README.md"
+      ]
+    },
+    {
+      "id": "readme-content-review-pass",
+      "checkId": "readme-content-review",
+      "recordedAt": "2026-08-27T15:20:44.4288507+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`Get-Content -Raw README.md` đọc thành công; README tóm tắt TradeProof, MVP, ngoài phạm vi, tài liệu đọc tiếp và không thêm lệnh cài/chạy/test giả định. Snapshot trước/sau khớp.",
+      "artifactPaths": [
+        "README.md"
+      ],
+      "inputDigest": "20512212c84d343204de6990b11fc481c616457e69d3eb16a9e0917cff4d7d29"
+    },
+    {
+      "id": "final-readme-content-review-pass",
+      "checkId": "readme-content-review",
+      "recordedAt": "2026-08-27T15:22:02.7659230+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Final verification đọc lại README thành công; nội dung phù hợp Product Brief và Documentation Index, giữ phạm vi docs-only và không thêm hướng dẫn runtime giả định. Snapshot trước/sau khớp.",
+      "artifactPaths": [
+        "README.md"
+      ],
+      "inputDigest": "20512212c84d343204de6990b11fc481c616457e69d3eb16a9e0917cff4d7d29"
+    }
+  ],
+  "createdAt": "2026-08-27T15:17:06.6934151+07:00",
+  "updatedAt": "2026-08-27T08:22:40.041Z",
+  "completedAt": "2026-08-27T08:22:40.041Z"
+}

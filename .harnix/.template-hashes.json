@@ -1,0 +1,27 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "path": ".harnix/spec/guides/common/engineering.md",
+      "sourceId": "guide-common-engineering",
+      "scope": "project",
+      "generatedHash": "cb07c1bb7396b23466aac655be6c0cd827022ed8f4d5da48706e0565ec4fa361",
+      "generatorVersion": "1.0.17"
+    },
+    {
+      "path": ".harnix/workflow.md",
+      "sourceId": "workflow",
+      "scope": "project",
+      "generatedHash": "ae0fbe847b760d2bf2cacc1781970e4e620d8dd2dc762647359be337eef044f1",
+      "generatorVersion": "1.0.17"
+    },
+    {
+      "path": "AGENTS.md",
+      "sourceId": "agents-bootstrap",
+      "scope": "project",
+      "generatedHash": "8a452fb61e42e9fcad7a61744765b71629466501fa2a2427643aeb2f3213ecb8",
+      "generatorVersion": "1.0.17"
+    }
+  ]
+}

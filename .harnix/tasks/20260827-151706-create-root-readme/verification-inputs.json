@@ -1,0 +1,53 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 1,
+  "taskId": "20260827-151706-create-root-readme",
+  "snapshots": [
+    {
+      "evidenceId": "final-readme-content-review-pass",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-151706-create-root-readme",
+      "checkId": "readme-content-review",
+      "taskContractHash": "002735be14f55803061bd4b3e692481ed80f677d50c9e7ec9f085d1e8c48578c",
+      "entries": [
+        {
+          "path": "Product_Brief.md",
+          "sha256": "8f8cddb5c8dda7316a76bdf3a5be52462d677a66b11f5e0ef2be3d9730637a9b"
+        },
+        {
+          "path": "README.md",
+          "sha256": "293b690c2b5445544e9723a67d7479b9a8638f003c944e6864c54506842a0ac5"
+        },
+        {
+          "path": "docs/README.md",
+          "sha256": "7eeb28e2fc5743c4270f6ec35f18b94863f6cd2174e172dce6ade28c2d827c18"
+        }
+      ],
+      "inputDigest": "20512212c84d343204de6990b11fc481c616457e69d3eb16a9e0917cff4d7d29"
+    },
+    {
+      "evidenceId": "readme-content-review-pass",
+      "generator": "harnix",
+      "schemaVersion": 1,
+      "taskId": "20260827-151706-create-root-readme",
+      "checkId": "readme-content-review",
+      "taskContractHash": "002735be14f55803061bd4b3e692481ed80f677d50c9e7ec9f085d1e8c48578c",
+      "entries": [
+        {
+          "path": "Product_Brief.md",
+          "sha256": "8f8cddb5c8dda7316a76bdf3a5be52462d677a66b11f5e0ef2be3d9730637a9b"
+        },
+        {
+          "path": "README.md",
+          "sha256": "293b690c2b5445544e9723a67d7479b9a8638f003c944e6864c54506842a0ac5"
+        },
+        {
+          "path": "docs/README.md",
+          "sha256": "7eeb28e2fc5743c4270f6ec35f18b94863f6cd2174e172dce6ade28c2d827c18"
+        }
+      ],
+      "inputDigest": "20512212c84d343204de6990b11fc481c616457e69d3eb16a9e0917cff4d7d29"
+    }
+  ]
+}
