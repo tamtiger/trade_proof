@@ -420,6 +420,7 @@ public sealed partial class TradeProofApp
         _episodeAllocations.AddRange(build.Allocations);
         _accountingLedgerEntries.AddRange(build.LedgerEntries);
         EnqueueContextForProjection(actor, build.Projection);
+        EnqueueMetricsForProjection(actor, build.Projection);
     }
 
     private ProjectionBuildResult BuildProjection(

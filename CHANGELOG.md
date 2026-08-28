@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-28 - Phase 5: review, metrics and dashboard
+
+- Added immutable episode review revisions, pinned review taxonomy versions and sanitized screenshot attachment lifecycle with deletion tombstones.
+- Added deterministic metric snapshots for review coverage, plan adherence, behavior flags and context coverage using decimal-only calculations and sample-size evidence labels.
+- Added Phase 5 API/UI dashboard controls, migration contract, tests, artifact verifier and CI script while keeping Phase 0/1/2/3/4 checks green.
+
 ## 2026-08-28 - Phase 4: fee conversion and context source
 
 - Added deterministic public market-bar source contracts, conversion catalog provenance, context algorithm release, context triggers/manual retry and immutable ContextSnapshot records.

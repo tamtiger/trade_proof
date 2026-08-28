@@ -65,6 +65,12 @@ public sealed record DashboardResponse(
     BootstrapResponse Bootstrap,
     IReadOnlyList<TradePlanHeaderRecord> Plans,
     IReadOnlyList<ProductMeasurementRunRecord> MeasurementRuns,
+    IReadOnlyList<EpisodeDashboardRecord> Episodes,
+    IReadOnlyList<ReviewRecord> Reviews,
+    IReadOnlyList<ReviewRevisionRecord> ReviewRevisions,
+    IReadOnlyList<AttachmentRecord> Attachments,
+    IReadOnlyList<MetricSnapshotRecord> MetricSnapshots,
+    DashboardDataQualityRecord DataQuality,
     IReadOnlyList<AuditEventRecord> AuditEvents);
 
 public sealed partial class TradeProofApp(ITradeProofClock clock)
@@ -156,6 +162,12 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
                 BuildBootstrap(actor.ActorUserId),
                 _plans.Values.Where(p => p.WorkspaceId == actor.WorkspaceId).OrderByDescending(p => p.CreatedAt).ToList(),
                 _measurementRuns.Values.Where(r => r.WorkspaceId == actor.WorkspaceId).OrderByDescending(r => r.StartedAt).ToList(),
+                BuildDashboardEpisodes(actor.WorkspaceId),
+                Reviews.Where(r => r.WorkspaceId == actor.WorkspaceId).ToList(),
+                ReviewRevisions.Where(r => r.WorkspaceId == actor.WorkspaceId).ToList(),
+                Attachments.Where(a => a.WorkspaceId == actor.WorkspaceId).ToList(),
+                MetricSnapshots.Where(m => m.WorkspaceId == actor.WorkspaceId).ToList(),
+                BuildDashboardDataQuality(actor.WorkspaceId),
                 _auditEvents.Where(a => a.WorkspaceId == actor.WorkspaceId).OrderBy(a => a.RecordedAt).ToList()));
         }
     }
@@ -560,6 +572,8 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
             ContractVersions.UploadPurge => new ProviderDispatchPlan(true, "local:upload-purge"),
             ContractVersions.Import => new ProviderDispatchPlan(false, "internal:import"),
             ContractVersions.Context => new ProviderDispatchPlan(false, "internal:context"),
+            ContractVersions.AttachmentDelete => new ProviderDispatchPlan(true, "local:attachment-delete"),
+            ContractVersions.Metrics => new ProviderDispatchPlan(false, "internal:metrics"),
             _ => throw new TradeProofException("UNREGISTERED_WORK_TYPE")
         };
 

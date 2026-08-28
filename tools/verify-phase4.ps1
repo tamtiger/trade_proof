@@ -43,8 +43,11 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-28 - Phase 4")) {
-    throw "CHANGELOG.md must keep the newest Phase 4 entry at the top."
+if (-not $changelog.StartsWith("# Changelog`n`n")) {
+    throw "CHANGELOG.md must keep the changelog title at the top."
+}
+if ($changelog -notmatch "## 2026-08-28 - Phase 4: fee conversion and context source") {
+    throw "CHANGELOG.md must keep the Phase 4 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/MarketContextContracts.cs" 'mce-binance-spot-v1\.0\.0'
@@ -100,7 +103,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context_source.sql" "CHECK \(selector_algorithm_version = 'market_bar_as_of_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context_source.sql" "CHECK \(source_base_url = 'https://data-api\.binance\.vision'\)"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-4'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[45]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/market/conversion-catalog'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/market/bars'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/context/compute'

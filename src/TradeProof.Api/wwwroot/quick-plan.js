@@ -24,6 +24,12 @@ const errorMessages = {
   SELL_WITHOUT_OPEN_POSITION: "SELL không có vị thế LONG đang mở.",
   SELL_EXCEEDS_POSITION: "SELL vượt quá quantity đang mở.",
   FEE_CONVERSION_MISSING: "Fee third-asset chưa có conversion Phase 4.",
+  ATTACHMENT_KIND_UNSUPPORTED: "Attachment chỉ nhận screenshot đã sanitize.",
+  SCREENSHOT_UNSUPPORTED: "Screenshot không đúng định dạng hỗ trợ.",
+  REVIEW_ALREADY_COMPLETED: "Episode này đã có review; hãy revise.",
+  REVIEW_REQUIRED_CHECKLIST_MISSING: "Review thiếu kết quả checklist bắt buộc.",
+  STALE_REVIEW_REVISION: "Review đã có revision mới hơn.",
+  METRIC_INTERVAL_INVALID: "Khoảng metric không hợp lệ.",
   WRITE_CAPABILITY_ALREADY_CONSUMED: "Write capability đã được dùng.",
   IDEMPOTENCY_CONFLICT: "Idempotency key đã dùng cho payload khác."
 };
@@ -31,6 +37,8 @@ const errorMessages = {
 let bootstrap;
 let practiceIndex = 0;
 let importFlow = {};
+let attachmentFlow = {};
+let dashboard = { episodes: [], reviews: [], reviewRevisions: [], attachments: [], metricSnapshots: [], dataQuality: { exclusionBanners: [] } };
 
 const form = document.querySelector("#planForm");
 const setupSelect = document.querySelector("#setupSelect");
@@ -42,6 +50,13 @@ const confirmImportButton = document.querySelector("#confirmImportButton");
 const processImportButton = document.querySelector("#processImportButton");
 const computeContextButton = document.querySelector("#computeContextButton");
 const purgeUploadButton = document.querySelector("#purgeUploadButton");
+const reviewEpisodeSelect = document.querySelector("#reviewEpisodeSelect");
+const reserveAttachmentButton = document.querySelector("#reserveAttachmentButton");
+const completeReviewButton = document.querySelector("#completeReviewButton");
+const reviseReviewButton = document.querySelector("#reviseReviewButton");
+const deleteAttachmentButton = document.querySelector("#deleteAttachmentButton");
+const publishMetricsButton = document.querySelector("#publishMetricsButton");
+const refreshDashboardButton = document.querySelector("#refreshDashboardButton");
 
 async function api(path, options = {}) {
   const response = await fetch(path, {
@@ -105,13 +120,121 @@ function renderImportFlow() {
   purgeUploadButton.disabled = !(importFlow.upload || importFlow.transfer?.upload);
 }
 
+function selectedDashboardEpisode() {
+  return dashboard.episodes.find((episode) => episode.episodeId === reviewEpisodeSelect.value) || dashboard.episodes[0];
+}
+
+function selectedReview() {
+  const episode = selectedDashboardEpisode();
+  return episode ? dashboard.reviews.find((review) => review.episodeId === episode.episodeId) : null;
+}
+
+function selectedRevision() {
+  const review = selectedReview();
+  if (!review) {
+    return null;
+  }
+  return dashboard.reviewRevisions
+    .filter((revision) => revision.reviewId === review.reviewId)
+    .sort((a, b) => b.revisionNo - a.revisionNo)[0] || null;
+}
+
+function currentSetup() {
+  return bootstrap?.setupPresets?.find((setup) => setup.revisionId === setupSelect.value);
+}
+
+function requiredChecklistResults() {
+  const results = {};
+  const done = document.querySelector("#checklistDoneInput").checked;
+  for (const item of currentSetup()?.checklist || []) {
+    if (item.required) {
+      results[item.checklistItemId] = done;
+    }
+  }
+  return results;
+}
+
+function reviewPayloadBase() {
+  const ruleBreach = document.querySelector("#ruleBreachInput").checked;
+  const riskExceeded = document.querySelector("#riskExceededInput").checked;
+  const emotion = document.querySelector("#emotionSelect").value || null;
+  return {
+    exitReason: document.querySelector("#exitReasonSelect").value,
+    exitReasonOtherText: null,
+    ruleBreach,
+    breachTypeIds: ruleBreach || riskExceeded ? ["RISK_EXCEEDED"] : [],
+    breachOtherText: null,
+    stopMovedAway: document.querySelector("#stopMovedInput").checked,
+    riskExceeded,
+    requiredChecklistResults: requiredChecklistResults(),
+    emotion,
+    lesson: document.querySelector("#reviewLesson").value,
+    attachmentId: attachmentFlow.attachment?.attachmentId || null
+  };
+}
+
+function renderDashboard() {
+  const selectedBefore = reviewEpisodeSelect.value;
+  reviewEpisodeSelect.innerHTML = "";
+  for (const episode of dashboard.episodes) {
+    const option = document.createElement("option");
+    option.value = episode.episodeId;
+    option.textContent = `${episode.venueSymbol} ${episode.state} ${episode.planProofStatus}/${episode.accountingQuality}`;
+    reviewEpisodeSelect.append(option);
+  }
+  if (dashboard.episodes.some((episode) => episode.episodeId === selectedBefore)) {
+    reviewEpisodeSelect.value = selectedBefore;
+  }
+
+  const episode = selectedDashboardEpisode();
+  const review = selectedReview();
+  const revision = selectedRevision();
+  const attachment = attachmentFlow.attachment;
+  document.querySelector("#dashboardEpisodes").textContent = dashboard.episodes.length
+    ? dashboard.episodes.map((item) => `${item.venueSymbol}: ${item.accountingQuality}`).join(", ")
+    : "-";
+  document.querySelector("#dashboardReviews").textContent = dashboard.reviews.length
+    ? dashboard.reviews.map((item) => `${item.state} ${item.reviewId}`).join(", ")
+    : "-";
+  document.querySelector("#dashboardMetrics").textContent = dashboard.metricSnapshots.length
+    ? dashboard.metricSnapshots.map((snapshot) => `${snapshot.metricId}=${snapshot.valueDecimal || snapshot.displayState}`).join(", ")
+    : "-";
+  document.querySelector("#qualityBanners").textContent = dashboard.dataQuality?.exclusionBanners?.length
+    ? dashboard.dataQuality.exclusionBanners.join(", ")
+    : "OK";
+  document.querySelector("#reviewState").textContent = episode
+    ? (revision ? `Revision ${revision.revisionNo}` : "Sẵn sàng review")
+    : "Chưa có episode";
+  document.querySelector("#reviewText").textContent = revision
+    ? `${review.state} ${revision.exitReason}`
+    : "-";
+  document.querySelector("#attachmentText").textContent = attachment
+    ? `${attachment.state} ${attachment.scanStatus} ${attachment.attachmentId}`
+    : "-";
+  document.querySelector("#metricState").textContent = dashboard.metricSnapshots.length
+    ? `${dashboard.metricSnapshots.length} snapshot`
+    : "Chưa publish";
+
+  completeReviewButton.disabled = !episode || Boolean(review);
+  reviseReviewButton.disabled = !review || !revision;
+  publishMetricsButton.disabled = dashboard.episodes.length === 0;
+  deleteAttachmentButton.disabled = !attachment || attachment.state === "DELETED";
+}
+
+async function loadDashboard() {
+  dashboard = await api("/api/dashboard");
+  renderDashboard();
+}
+
 function resetImportFlow() {
   importFlow = {};
+  attachmentFlow = {};
   document.querySelector("#importState").textContent = "Chưa reserve";
   for (const step of ["reserve", "write", "validate", "confirm", "process", "context", "purge"]) {
     markStep(step, "pending");
   }
   renderImportFlow();
+  renderDashboard();
 }
 
 async function seedMarketData() {
@@ -157,6 +280,7 @@ async function load() {
   try {
     await seedMarketData();
     renderBootstrap(await api("/api/bootstrap"));
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không thể bootstrap: ${safeMessage(error)}`;
   }
@@ -235,6 +359,7 @@ reserveImportButton.addEventListener("click", async () => {
     document.querySelector("#importState").textContent = "Đã reserve";
     markStep("reserve", "done");
     renderImportFlow();
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không reserve được upload: ${safeMessage(error)}`;
   }
@@ -273,6 +398,7 @@ validateImportButton.addEventListener("click", async () => {
       markStep("validate", "error");
     }
     renderImportFlow();
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không validate được upload: ${safeMessage(error)}`;
   }
@@ -293,6 +419,7 @@ confirmImportButton.addEventListener("click", async () => {
     document.querySelector("#importState").textContent = "Đã confirm";
     markStep("confirm", "done");
     renderImportFlow();
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không confirm được import: ${safeMessage(error)}`;
   }
@@ -310,6 +437,7 @@ processImportButton.addEventListener("click", async () => {
     document.querySelector("#importState").textContent = "Đã reconcile";
     markStep("process", "done");
     renderImportFlow();
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không process được import: ${safeMessage(error)}`;
     markStep("process", "error");
@@ -331,9 +459,137 @@ computeContextButton.addEventListener("click", async () => {
     document.querySelector("#importState").textContent = "Đã snapshot context";
     markStep("context", "done");
     renderImportFlow();
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không tạo được context: ${safeMessage(error)}`;
     markStep("context", "error");
+  }
+});
+
+reserveAttachmentButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    attachmentFlow.reservation = await api("/api/attachments/reserve", {
+      method: "POST",
+      body: JSON.stringify({
+        tradingAccountId: bootstrap.tradingAccountId,
+        uploadKind: "SCREENSHOT",
+        idempotencyKey: idempotencyKey("attachment-reserve")
+      })
+    });
+    await api(`/api/imports/${attachmentFlow.reservation.objectIngestReservationId}/record-bytes`, {
+      method: "POST",
+      body: JSON.stringify({
+        writeCapabilityId: attachmentFlow.reservation.writeCapabilityId,
+        bytesBase64: "iVBORw0KGgoAAAANS",
+        idempotencyKey: idempotencyKey("attachment-bytes")
+      })
+    });
+    attachmentFlow.transfer = await api(`/api/imports/${attachmentFlow.reservation.objectIngestReservationId}/transfer`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("attachment-transfer") })
+    });
+    const validation = await api(`/api/attachments/${attachmentFlow.transfer.upload.uploadId}/validate`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("attachment-validate") })
+    });
+    attachmentFlow.upload = validation.upload;
+    attachmentFlow.attachment = validation.attachment;
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không attach được screenshot: ${safeMessage(error)}`;
+  }
+});
+
+completeReviewButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const episode = selectedDashboardEpisode();
+  if (!episode) {
+    errorText.textContent = "Chưa có episode để review.";
+    return;
+  }
+
+  try {
+    const review = await api("/api/reviews/complete", {
+      method: "POST",
+      body: JSON.stringify({
+        episodeId: episode.episodeId,
+        expectedEpisodeProjectionVersion: episode.projectionVersion,
+        ...reviewPayloadBase(),
+        idempotencyKey: idempotencyKey("review-complete")
+      })
+    });
+    document.querySelector("#reviewText").textContent = `${review.review.state} ${review.revision.exitReason}`;
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không complete được review: ${safeMessage(error)}`;
+  }
+});
+
+reviseReviewButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const review = selectedReview();
+  const revision = selectedRevision();
+  const episode = selectedDashboardEpisode();
+  if (!review || !revision || !episode) {
+    errorText.textContent = "Chưa có review để revise.";
+    return;
+  }
+
+  try {
+    const revised = await api(`/api/reviews/${review.reviewId}/revise`, {
+      method: "POST",
+      body: JSON.stringify({
+        expectedEpisodeProjectionVersion: episode.projectionVersion,
+        expectedRevisionNo: revision.revisionNo,
+        ...reviewPayloadBase(),
+        idempotencyKey: idempotencyKey("review-revise")
+      })
+    });
+    document.querySelector("#reviewText").textContent = `${revised.review.state} ${revised.revision.exitReason}`;
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không revise được review: ${safeMessage(error)}`;
+  }
+});
+
+deleteAttachmentButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    const deleted = await api(`/api/attachments/${attachmentFlow.attachment.attachmentId}/delete`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("attachment-delete") })
+    });
+    attachmentFlow.attachment = deleted.attachment;
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không delete được screenshot: ${safeMessage(error)}`;
+  }
+});
+
+publishMetricsButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    await api("/api/metrics/publish", {
+      method: "POST",
+      body: JSON.stringify({
+        reportingStartAtUtc: "2026-08-27T00:00:00Z",
+        reportingEndAtUtc: "2026-09-03T00:00:00Z",
+        idempotencyKey: idempotencyKey("metrics-publish")
+      })
+    });
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không publish được metrics: ${safeMessage(error)}`;
+  }
+});
+
+refreshDashboardButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không refresh được dashboard: ${safeMessage(error)}`;
   }
 });
 
@@ -349,6 +605,7 @@ purgeUploadButton.addEventListener("click", async () => {
     document.querySelector("#importState").textContent = "Đã purge raw upload";
     markStep("purge", "done");
     renderImportFlow();
+    await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không purge được upload: ${safeMessage(error)}`;
   }

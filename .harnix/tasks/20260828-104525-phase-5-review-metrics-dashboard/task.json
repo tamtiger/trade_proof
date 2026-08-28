@@ -1,0 +1,313 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260828-104525-phase-5-review-metrics-dashboard",
+  "title": "Phase 5: review, metrics and dashboard",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 5 theo `TP-PLAN`: thêm Quick Review append-only, screenshot attachment core saga, MetricSnapshot deterministic/sample guardrail và dashboard drill-down/data-quality trên local harness.",
+  "nonGoals": [
+    "Không triển khai WeeklyCohort/WeeklyReport/BehavioralExperiment, export/deletion hoặc product analytics của Week 6.",
+    "Không triển khai AI, transcription, taxonomy suggestion, weekly summary hoặc voice attachment branch của Week 7.",
+    "Không gọi scanner/object store/network thật; local harness chỉ mô phỏng screenshot sanitized bytes, scan pass/fail, tombstone và absence evidence deterministic."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Review contract có exact taxonomy versions `exit_reason_v1`, `breach_type_v1`, `emotion_v1`, immutable taxonomy item/order/content hashes; `CompleteEpisodeReview` và `ReviseEpisodeReview` chỉ nhận active CLOSED exact projection, expected projection/revision, full replacement payload, idempotency conflict-safe, append-only revision, first `completed_at` preserved, stale projection/revision rejected, và dashboard/current metric chọn latest revision matching active projection.",
+      "status": "met",
+      "evidenceIds": [
+        "phase5-scope-review-pass-20260828",
+        "phase5-app-tests-pass-20260828",
+        "phase5-artifact-review-pass-sample-label-20260828",
+        "phase5-local-ci-pass-final-20260828"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Screenshot attachment core saga dùng reservation/finalizer preallocated attachment ID, supported image validation, sanitized ACTIVE/PASSED Attachment, immutable ReviewRevisionAttachment join/hash, `ATTACHMENT_DELETE` state transition giữ historical join và tombstone/absence evidence; invalid/stale/cross-workspace/not-ready attachment không tạo partial Review hoặc orphan.",
+      "status": "met",
+      "evidenceIds": [
+        "phase5-scope-review-pass-20260828",
+        "phase5-app-tests-pass-20260828",
+        "phase5-artifact-review-pass-sample-label-20260828",
+        "phase5-local-ci-pass-final-20260828"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Metric engine có registered `METRICS` work type và immutable `metric_snapshot_v1` records cho accounting/review/adherence/context coverage tối thiểu; mỗi snapshot lưu candidate/included/excluded episode refs, closed reason counts, source review/context IDs, `metrics_v1`, `metrics_decimal_v1`, `INSUFFICIENT|EXPLORATORY|ESTIMATED` sample label, và không dùng binary floating point hoặc directional/edge claim.",
+      "status": "met",
+      "evidenceIds": [
+        "phase5-scope-review-pass-20260828",
+        "phase5-app-tests-pass-20260828",
+        "phase5-artifact-review-pass-sample-label-20260828",
+        "phase5-local-ci-pass-final-20260828"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "API/UI/dashboard hiển thị episode detail/accounting breakdown, fee conversion provenance, review completion/revision state, screenshot attach/delete controls, metric quality/exclusion banner và drill-down episode list; UI không thêm AI, exchange key/private sync/live sync/generic browser hoặc trading-signal language.",
+      "status": "met",
+      "evidenceIds": [
+        "phase5-scope-review-pass-20260828",
+        "phase5-app-tests-pass-20260828",
+        "phase5-artifact-review-pass-sample-label-20260828",
+        "phase5-local-ci-pass-final-20260828"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "Phase 5 migration/tests/verifier/local CI/CHANGELOG/CI workflow được cập nhật; Phase 0/1/2/3/4 checks vẫn xanh, secret/bin-obj guard không báo lỗi, và core accessibility smoke static checks pass.",
+      "status": "met",
+      "evidenceIds": [
+        "phase5-scope-review-pass-20260828",
+        "phase5-app-tests-pass-20260828",
+        "phase5-artifact-review-pass-sample-label-20260828",
+        "phase5-local-ci-pass-final-20260828"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "Product_Brief.md",
+    "TradeProof.sln",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/MARKET_CONTEXT_ENGINE.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/WEEKLY_LAB.md",
+    "src/TradeProof.Api",
+    "src/TradeProof.Api/wwwroot",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/MARKET_CONTEXT_ENGINE.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/WEEKLY_LAB.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase5-scope-review",
+      "description": "Đọc lại TP-PLAN Week 5, TP-ACC Review/metrics, TP-LAB MetricSnapshot và TP-SEC screenshot attachment gates trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPLEMENTATION_PLAN.md; Get-Content -Raw docs/IMPORT_AND_ACCOUNTING.md; Get-Content -Raw docs/WEEKLY_LAB.md; Get-Content -Raw docs/SECURITY_PRIVACY_AI.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "inputs": [
+        "@task-contract",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/MARKET_CONTEXT_ENGINE.md",
+        "docs/PRODUCT_REQUIREMENTS.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/WEEKLY_LAB.md"
+      ]
+    },
+    {
+      "id": "phase5-app-tests",
+      "description": "Chạy C# harness Phase 5 chứng minh review taxonomy/invariants/idempotency, screenshot attachment lifecycle, metrics sample/exclusion traces và dashboard drill-down.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase5",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "tests/TradeProof.App.Tests"
+      ]
+    },
+    {
+      "id": "phase5-artifact-review",
+      "description": "Kiểm artifact Phase 5: migration/schema literals, API/UI surface, verifier, CHANGELOG, CI wiring, accessibility smoke và prohibited AI/signal/private-sync surface.",
+      "command": "pwsh -NoProfile -File tools/verify-phase5.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase5-local-ci",
+      "description": "Chạy local CI Phase 5 gồm restore/build, Phase 0/1/2/3/4/5 runners, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase5.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase5-red-build-missing-contracts-20260828",
+      "checkId": "phase5-app-tests",
+      "recordedAt": "2026-08-28T03:48:32.097Z",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "RED: Phase 5 build failed because Review, attachment, MetricSnapshot and dashboard contracts/APIs did not exist yet.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase5Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs"
+      ]
+    },
+    {
+      "id": "phase5-scope-review-pass-20260828",
+      "checkId": "phase5-scope-review",
+      "recordedAt": "2026-08-28T04:03:10.2029294Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "PASS: Đã đọc lại TP-PLAN Week 5, TP-ACC Review/metrics, TP-LAB MetricSnapshot và TP-SEC screenshot attachment gates trước khi chốt Phase 5.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/WEEKLY_LAB.md",
+        "docs/SECURITY_PRIVACY_AI.md"
+      ],
+      "inputDigest": "2e9feef30c96473c2501712a8eac113dcf77553540232e1180b6497627e6fe1e"
+    },
+    {
+      "id": "phase5-app-tests-pass-20260828",
+      "checkId": "phase5-app-tests",
+      "recordedAt": "2026-08-28T04:03:10.2029294Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "PASS: Phase 5 app runner chứng minh review taxonomy/revision idempotency, screenshot attachment lifecycle, metric snapshots và dashboard drill-down.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase5Tests.cs",
+        "src/TradeProof.Application/Foundation/ReviewMetricsApp.cs",
+        "src/TradeProof.Domain/Foundation/ReviewMetricContracts.cs"
+      ],
+      "inputDigest": "a956abf538970807cc94d0074b1d8a6b250cbe6817e2e07ac42db18a1f4cde3f"
+    },
+    {
+      "id": "phase5-artifact-review-pass-20260828",
+      "checkId": "phase5-artifact-review",
+      "recordedAt": "2026-08-28T04:03:10.2029294Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "PASS: Artifact verifier xác nhận migration/schema literals, API/UI surface, dashboard accessibility smoke, CI/changelog và prohibited-language guard.",
+      "artifactPaths": [
+        "tools/verify-phase5.ps1",
+        "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metrics_dashboard.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        "src/TradeProof.Api/wwwroot/styles.css",
+        "CHANGELOG.md",
+        ".github/workflows/ci.yml"
+      ],
+      "inputDigest": "2a2f83465d8becf3525d0de1ea70884189ebbc2fd2c7f2fa909ba3e66b53ee49"
+    },
+    {
+      "id": "phase5-local-ci-pass-20260828",
+      "checkId": "phase5-local-ci",
+      "recordedAt": "2026-08-28T04:03:10.2029294Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "PASS: Local CI Phase 5 chạy restore/build, phase0-5 runners, verifiers phase0-5 và secret/bin-obj guard thành công.",
+      "artifactPaths": [
+        "tools/test-phase5.ps1",
+        ".github/workflows/ci.yml"
+      ],
+      "inputDigest": "cc388b2cf2a71f81ef3a7bee7334eba57a8cb91eeeb2da2313b37fb77f8776ca"
+    },
+    {
+      "id": "phase5-artifact-review-pass-sample-label-20260828",
+      "checkId": "phase5-artifact-review",
+      "recordedAt": "2026-08-28T04:05:06.1079789Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "PASS: Artifact verifier xác nhận migration/schema literals, API/UI surface, dashboard accessibility smoke, CI/changelog, sample-label contract và prohibited-language guard.",
+      "artifactPaths": [
+        "tools/verify-phase5.ps1",
+        "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metrics_dashboard.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        "src/TradeProof.Api/wwwroot/styles.css",
+        "CHANGELOG.md",
+        ".github/workflows/ci.yml"
+      ],
+      "inputDigest": "8da6e2a381bc9360d0ff9efd87ce4e0ea541aa681732d37841a74134b53413bf"
+    },
+    {
+      "id": "phase5-local-ci-pass-final-20260828",
+      "checkId": "phase5-local-ci",
+      "recordedAt": "2026-08-28T04:05:06.1079789Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "PASS: Local CI Phase 5 sau chỉnh sample-label chạy restore/build, phase0-5 runners, verifiers phase0-5 và secret/bin-obj guard thành công.",
+      "artifactPaths": [
+        "tools/test-phase5.ps1",
+        ".github/workflows/ci.yml"
+      ],
+      "inputDigest": "c992365f288708ebe583e18a5499f3925a2943eaaf4aeedfca08bcc3a242db3c"
+    }
+  ],
+  "createdAt": "2026-08-28T10:45:25.3995212+07:00",
+  "updatedAt": "2026-08-28T04:05:16.058Z",
+  "completedAt": "2026-08-28T04:05:16.058Z"
+}

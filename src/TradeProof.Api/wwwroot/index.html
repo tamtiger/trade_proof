@@ -113,6 +113,82 @@
         </dl>
       </section>
 
+      <section class="panel review-panel" aria-label="Quick Review">
+        <header class="panel-header">
+          <h2>Quick Review</h2>
+          <span id="reviewState">Chưa có episode</span>
+        </header>
+
+        <div class="field-row">
+          <label>
+            <span>Episode</span>
+            <select id="reviewEpisodeSelect"></select>
+          </label>
+          <label>
+            <span>Exit reason</span>
+            <select id="exitReasonSelect">
+              <option value="TARGET_REACHED">Target reached</option>
+              <option value="STOP_HIT">Stop hit</option>
+              <option value="TIME_EXIT">Time exit</option>
+              <option value="OTHER">Other</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="toggle-row">
+          <label><input id="ruleBreachInput" type="checkbox"> Rule breach</label>
+          <label><input id="stopMovedInput" type="checkbox"> Stop moved away</label>
+          <label><input id="riskExceededInput" type="checkbox"> Risk exceeded</label>
+          <label><input id="checklistDoneInput" type="checkbox" checked> Required checklist done</label>
+        </div>
+
+        <label>
+          <span>Emotion</span>
+          <select id="emotionSelect">
+            <option value="">-</option>
+            <option value="FOCUSED">Focused</option>
+            <option value="CALM">Calm</option>
+            <option value="FRUSTRATED">Frustrated</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Lesson</span>
+          <textarea id="reviewLesson" maxlength="1000" rows="3">Execution matched the plan and checklist.</textarea>
+        </label>
+
+        <div class="actions">
+          <button type="button" id="reserveAttachmentButton">Attach screenshot</button>
+          <button type="button" id="completeReviewButton" disabled>Complete review</button>
+          <button type="button" id="reviseReviewButton" disabled>Revise review</button>
+          <button type="button" id="deleteAttachmentButton" disabled>Delete screenshot</button>
+        </div>
+
+        <dl class="preview-grid">
+          <div><dt>Attachment</dt><dd id="attachmentText">-</dd></div>
+          <div><dt>Review</dt><dd id="reviewText">-</dd></div>
+        </dl>
+      </section>
+
+      <section class="panel metric-panel" aria-label="Metrics dashboard">
+        <header class="panel-header">
+          <h2>Metrics</h2>
+          <span id="metricState">Chưa publish</span>
+        </header>
+
+        <div class="actions">
+          <button type="button" id="publishMetricsButton" disabled>Publish metrics</button>
+          <button type="button" id="refreshDashboardButton">Refresh dashboard</button>
+        </div>
+
+        <dl class="preview-grid">
+          <div><dt>Episodes</dt><dd id="dashboardEpisodes">-</dd></div>
+          <div><dt>Reviews</dt><dd id="dashboardReviews">-</dd></div>
+          <div><dt>Snapshots</dt><dd id="dashboardMetrics">-</dd></div>
+          <div><dt>Quality</dt><dd id="qualityBanners">-</dd></div>
+        </dl>
+      </section>
+
       <section class="panel state-panel" aria-label="Trạng thái">
         <h2>Trạng thái</h2>
         <dl>

@@ -17,13 +17,13 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-4"
+    phase = "phase-5"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-4" },
+    info = new { title = "TradeProof API", version = "phase-5" },
     paths = new[]
     {
         "/api/bootstrap",
@@ -35,13 +35,19 @@ app.MapGet("/openapi.json", () => Results.Ok(new
         "/api/imports/{objectIngestReservationId}/transfer",
         "/api/uploads/{uploadId}/validate",
         "/api/uploads/{uploadId}/purge",
+        "/api/attachments/reserve",
+        "/api/attachments/{uploadId}/validate",
+        "/api/attachments/{attachmentId}/delete",
         "/api/imports/confirm",
         "/api/imports/{importBatchId}/process",
         "/api/imports/{importBatchId}/progress",
         "/api/market/conversion-catalog",
         "/api/market/bars",
         "/api/context/compute",
-        "/api/context/manual-recompute"
+        "/api/context/manual-recompute",
+        "/api/reviews/complete",
+        "/api/reviews/{reviewId}/revise",
+        "/api/metrics/publish"
     }
 }));
 
@@ -252,7 +258,7 @@ api.MapPost("/imports/{objectIngestReservationId}/record-bytes", async (
         ? ToHttp(await tradeProof.RecordReservedBytesAsync(actor.Value!, new RecordReservedBytesRequest(
             objectIngestReservationId,
             request.WriteCapabilityId,
-            Encoding.UTF8.GetBytes(request.CsvText),
+            DecodeUploadBytes(request),
             request.IdempotencyKey), ct))
         : Results.Unauthorized();
 });
@@ -293,6 +299,42 @@ api.MapPost("/uploads/{uploadId}/purge", async (
     CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
     return actor.Succeeded
         ? ToHttp(await tradeProof.PurgeUploadAsync(actor.Value!, new PurgeUploadRequest(uploadId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/attachments/reserve", async (
+    ReserveReviewAttachmentRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.ReserveReviewAttachmentAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/attachments/{uploadId}/validate", async (
+    string uploadId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ValidateAttachmentUploadAsync(actor.Value!, new ValidateAttachmentUploadRequest(uploadId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/attachments/{attachmentId}/delete", async (
+    string attachmentId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.DeleteAttachmentAsync(actor.Value!, new DeleteAttachmentRequest(attachmentId, request.IdempotencyKey), ct))
         : Results.Unauthorized();
 });
 
@@ -363,6 +405,54 @@ api.MapPost("/context/manual-recompute", async (
         : Results.Unauthorized();
 });
 
+api.MapPost("/reviews/complete", async (
+    CompleteEpisodeReviewRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.CompleteEpisodeReviewAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/reviews/{reviewId}/revise", async (
+    string reviewId,
+    ReviseEpisodeReviewApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ReviseEpisodeReviewAsync(actor.Value!, new ReviseEpisodeReviewRequest(
+            reviewId,
+            request.ExpectedEpisodeProjectionVersion,
+            request.ExpectedRevisionNo,
+            request.ExitReason,
+            request.ExitReasonOtherText,
+            request.RuleBreach,
+            request.BreachTypeIds,
+            request.BreachOtherText,
+            request.StopMovedAway,
+            request.RiskExceeded,
+            request.RequiredChecklistResults,
+            request.Emotion,
+            request.Lesson,
+            request.AttachmentId,
+            request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/metrics/publish", async (
+    PublishMetricSnapshotsRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.PublishMetricSnapshotsAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
 app.Run();
 
 static ManagedIdentity? ReadManagedIdentity(HttpContext http)
@@ -387,8 +477,18 @@ static IResult ToHttp<T>(CommandResult<T> result) =>
         ? Results.Ok(result.Value)
         : Results.BadRequest(new { code = result.ErrorCode });
 
+static byte[] DecodeUploadBytes(RecordUploadBytesApiRequest request)
+{
+    if (!string.IsNullOrWhiteSpace(request.BytesBase64))
+    {
+        return Convert.FromBase64String(request.BytesBase64);
+    }
+
+    return Encoding.UTF8.GetBytes(request.CsvText ?? string.Empty);
+}
+
 public sealed record IdempotentApiRequest(string IdempotencyKey);
-public sealed record RecordUploadBytesApiRequest(string WriteCapabilityId, string CsvText, string IdempotencyKey);
+public sealed record RecordUploadBytesApiRequest(string WriteCapabilityId, string? CsvText, string? BytesBase64, string IdempotencyKey);
 public sealed record ReviseSetupPresetApiRequest(string Label, IReadOnlyList<ChecklistItemInput> Checklist, string IdempotencyKey);
 public sealed record RevisePlanApiRequest(
     string SetupPresetRevisionId,
@@ -401,5 +501,20 @@ public sealed record RevisePlanApiRequest(
     int? ExpiryDurationSeconds,
     string IdempotencyKey);
 public sealed record AbandonMeasurementApiRequest(string Reason, string IdempotencyKey);
+public sealed record ReviseEpisodeReviewApiRequest(
+    int ExpectedEpisodeProjectionVersion,
+    int ExpectedRevisionNo,
+    string ExitReason,
+    string? ExitReasonOtherText,
+    bool RuleBreach,
+    IReadOnlyList<string> BreachTypeIds,
+    string? BreachOtherText,
+    bool StopMovedAway,
+    bool RiskExceeded,
+    IReadOnlyDictionary<string, bool> RequiredChecklistResults,
+    string? Emotion,
+    string? Lesson,
+    string? AttachmentId,
+    string IdempotencyKey);
 
 public partial class Program;

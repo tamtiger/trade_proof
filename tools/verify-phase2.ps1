@@ -98,7 +98,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_inge
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql" "CHECK \(adapter_contract_version = 'binance_spot_trade_history_csv_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql" "FOREIGN KEY \(workspace_id, trading_account_id\)"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[234]'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[2345]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/imports/reserve'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/imports/\{objectIngestReservationId\}/record-bytes'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/uploads/\{uploadId\}/validate'

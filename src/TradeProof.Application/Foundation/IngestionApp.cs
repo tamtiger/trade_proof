@@ -227,7 +227,7 @@ public sealed partial class TradeProofApp
                             adapterContractVersion = reservation.AdapterContractVersion,
                             leaseGeneration = reservation.LeaseGeneration,
                             tradingAccountRecordKey = new { trading_account_id = reservation.TradingAccountId },
-                            uploadKind = "CSV"
+                            uploadKind = reservation.ExpectedUploadKind
                         }, ContractVersions.JsonOptions),
                         $"upload:{reservation.ReservedUploadId}:validate");
 
@@ -246,7 +246,7 @@ public sealed partial class TradeProofApp
                         reservation.ReservedUploadId,
                         actor.WorkspaceId,
                         reservation.TradingAccountId,
-                        "CSV",
+                        reservation.ExpectedUploadKind,
                         reservation.AdapterContractVersion,
                         "QUARANTINED",
                         providerObject.ContentSha256,
