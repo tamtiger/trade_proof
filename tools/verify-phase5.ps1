@@ -115,7 +115,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metr
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metrics_dashboard.sql" "CHECK \(metric_decimal_version = 'metrics_decimal_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metrics_dashboard.sql" "INSUFFICIENT'.*'EXPLORATORY'.*'ESTIMATED"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[56]'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[567]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/attachments/reserve'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/attachments/\{uploadId\}/validate'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/attachments/\{attachmentId\}/delete'

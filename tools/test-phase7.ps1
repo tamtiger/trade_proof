@@ -17,6 +17,7 @@ Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradePro
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase4 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase5 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase6 }
+Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase7 }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase0.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase1.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase2.ps1" }
@@ -24,6 +25,7 @@ Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase3.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase4.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase5.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase6.ps1" }
+Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase7.ps1" }
 
 $secretPattern = "(api[_-]?secret|secret[_-]?key|private[_-]?key|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password=)"
 $matches = git grep --untracked -n -E $secretPattern -- . ':!.harnix/**' ':!docs/**' ':!README.md' ':!tools/test-phase0.ps1' ':!tools/test-phase1.ps1' ':!tools/test-phase2.ps1' ':!tools/test-phase3.ps1' ':!tools/test-phase4.ps1' ':!tools/test-phase5.ps1' ':!tools/test-phase6.ps1' ':!tools/test-phase7.ps1' ':!tools/verify-phase2.ps1' ':!tools/verify-phase3.ps1' ':!tools/verify-phase4.ps1' ':!tools/verify-phase5.ps1' ':!tools/verify-phase6.ps1' ':!tools/verify-phase7.ps1' ':!**/bin/**' ':!**/obj/**'
@@ -36,4 +38,10 @@ if ($LASTEXITCODE -ne 1) {
     throw "git grep failed."
 }
 
-Write-Host "Phase 6 local CI verification passed."
+$trackedBuildOutput = git ls-files -- ':(glob)**/bin/**' ':(glob)**/obj/**'
+if ($trackedBuildOutput) {
+    $trackedBuildOutput
+    throw "bin/obj files must not be tracked."
+}
+
+Write-Host "Phase 7 local CI verification passed."

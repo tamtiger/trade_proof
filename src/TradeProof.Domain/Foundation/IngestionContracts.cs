@@ -33,7 +33,9 @@ public static partial class ContractVersions
         AnalyticsPurge,
         Export,
         ExportExpiry,
-        WorkspaceDeletionWork
+        WorkspaceDeletionWork,
+        CoreHardening,
+        ReleaseReadinessWork
     };
 
     public static string Sha256Hex(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();

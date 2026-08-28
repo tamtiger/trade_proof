@@ -1,0 +1,268 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260828-113329-phase-7-core-hardening",
+  "title": "Phase 7: core hardening",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 7 core hardening cho local harness: explicit AI-disabled profile, deterministic release readiness evidence, API/UI readiness surface và regression gates mà không bật extension AI.",
+  "nonGoals": [
+    "Không bật voice transcription, AI taxonomy suggestion hoặc AI weekly summary; ba extension flags vẫn false.",
+    "Không cấu hình AI processor, credential, network/outbound call, tool calling hoặc AI work queue.",
+    "Không thay thế Week 8 pilot readiness review, on-call dashboard thật, backup restore exercise hoặc legal processor disclosure."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Core AI-disabled profile là explicit contract: ba feature flags đều false, không có AI processor/credential/outbound route, không có AI_RUN, AI_CANCEL, AI_OUTPUT_DELETE callable endpoint/control và không có UI control giả hoạt động cho extension.",
+      "status": "met",
+      "evidenceIds": [
+        "phase7-scope-review-pass-20260828",
+        "phase7-app-tests-pass-20260828",
+        "phase7-artifact-review-pass-20260828",
+        "phase7-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Release hardening evidence record có schema version immutable, trạng thái P0/P1 defect bằng zero, security/a11y/performance/reliability smoke pass, giữ AI outage/dependency blocked mà core flow vẫn complete.",
+      "status": "met",
+      "evidenceIds": [
+        "phase7-scope-review-pass-20260828",
+        "phase7-app-tests-pass-20260828",
+        "phase7-artifact-review-pass-20260828",
+        "phase7-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "API/UI Phase 7 expose readiness theo cách deterministic: /healthz và OpenAPI lên phase-7, dashboard có readiness data, UI có panel readiness không dùng từ ngữ signal/AI bật và không thêm route AI callable.",
+      "status": "met",
+      "evidenceIds": [
+        "phase7-scope-review-pass-20260828",
+        "phase7-app-tests-pass-20260828",
+        "phase7-artifact-review-pass-20260828",
+        "phase7-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "Migration, tests, verifier, local CI và CHANGELOG được cập nhật cho Phase 7; Phase 0-6 runners/verifiers vẫn xanh và guard secret/bin-obj vẫn pass.",
+      "status": "met",
+      "evidenceIds": [
+        "phase7-scope-review-pass-20260828",
+        "phase7-app-tests-pass-20260828",
+        "phase7-artifact-review-pass-20260828",
+        "phase7-local-ci-pass-20260828"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "Product_Brief.md",
+    "TradeProof.sln",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/adr/0007-ai-processor.md",
+    "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+    "docs/adr/0009-observability-and-redaction.md",
+    "src/TradeProof.Api",
+    "src/TradeProof.Api/wwwroot",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/adr/0007-ai-processor.md",
+    "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+    "docs/adr/0009-observability-and-redaction.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase7-scope-review",
+      "description": "Đọc lại Week 7, core/extension release profile, AI-disabled ADR và hardening/readiness constraints trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPLEMENTATION_PLAN.md; Get-Content -Raw docs/ACCEPTANCE_TESTS.md; Get-Content -Raw docs/SECURITY_PRIVACY_AI.md; Get-Content -Raw docs/adr/0007-ai-processor.md; Get-Content -Raw docs/adr/0008-deployment-region-backup-and-disclosure.md; Get-Content -Raw docs/adr/0009-observability-and-redaction.md; Get-Content -Raw Product_Brief.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Product_Brief.md",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/adr/0007-ai-processor.md",
+        "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+        "docs/adr/0009-observability-and-redaction.md"
+      ]
+    },
+    {
+      "id": "phase7-app-tests",
+      "description": "Chạy C# harness Phase 7 chứng minh AI-disabled profile, readiness report, API/dashboard contract và hardening evidence invariants.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase7",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "tests/TradeProof.App.Tests"
+      ]
+    },
+    {
+      "id": "phase7-artifact-review",
+      "description": "Kiểm artifact Phase 7: contract literals, API/UI surface, migration, verifier, CHANGELOG, CI wiring và prohibited AI-enabled/trading-signal language.",
+      "command": "pwsh -NoProfile -File tools/verify-phase7.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase7-local-ci",
+      "description": "Chạy local CI Phase 7 gồm restore/build, Phase 0/1/2/3/4/5/6/7 runners, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase7.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase7-red-missing-readiness-contracts-20260828",
+      "checkId": "phase7-app-tests",
+      "recordedAt": "2026-08-28T04:35:57.2958612Z",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "RED: Phase 7 build failed because release readiness contracts, app method and dashboard fields did not exist yet.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase7Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs"
+      ]
+    },
+    {
+      "id": "phase7-scope-review-pass-20260828",
+      "checkId": "phase7-scope-review",
+      "recordedAt": "2026-08-28T04:41:52.0915188Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Đã đọc lại Week 7, core/extension release profile, AI-disabled ADR và hardening/readiness constraints; quyết định core giữ AI disabled và chỉ làm hardening local harness.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/adr/0007-ai-processor.md",
+        "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+        "docs/adr/0009-observability-and-redaction.md",
+        "Product_Brief.md"
+      ],
+      "inputDigest": "7e3e088d9d78b860c0ce8949b051066d5dedcb52b8ff00729c050b0a04ed9d15"
+    },
+    {
+      "id": "phase7-app-tests-pass-20260828",
+      "checkId": "phase7-app-tests",
+      "recordedAt": "2026-08-28T04:42:02.9740573Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "GREEN: Phase 7 runner pass, bao phủ AI-disabled profile, hardening evidence, readiness report, dashboard exposure và absence of AI work types.",
+      "artifactPaths": [
+        "src/TradeProof.Application/Foundation/ReleaseReadinessApp.cs",
+        "src/TradeProof.Domain/Foundation/ReleaseReadinessContracts.cs",
+        "tests/TradeProof.App.Tests/Phase7Tests.cs"
+      ],
+      "inputDigest": "313a327310f59d60e05f12231499579dcbebfad3aa688bb89f1aed697384c6b6"
+    },
+    {
+      "id": "phase7-artifact-review-pass-20260828",
+      "checkId": "phase7-artifact-review",
+      "recordedAt": "2026-08-28T04:42:13.5956614Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/verify-phase7.ps1` pass: contract literals, API/UI surface, migration, CHANGELOG, CI wiring, AI-disabled guard và prohibited-language guard hợp lệ.",
+      "artifactPaths": [
+        "tools/verify-phase7.ps1",
+        "src/TradeProof.Infrastructure/Migrations/007_phase7_core_hardening.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "477eaa6663c9faf027e9c7b8d87058e11b5504e6acf2b290ddf0272c60cd1357"
+    },
+    {
+      "id": "phase7-local-ci-pass-20260828",
+      "checkId": "phase7-local-ci",
+      "recordedAt": "2026-08-28T04:42:34.3538441Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/test-phase7.ps1` pass: restore/build, Phase 0/1/2/3/4/5/6/7 runners, verifiers, secret scan và bin/obj guard đều xanh.",
+      "artifactPaths": [
+        "tools/test-phase7.ps1",
+        "tools/verify-phase7.ps1",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "ead870529871c5ef9bd75b4b6b755e3d4e54e36ad09d7102e167ee47047c36fd"
+    }
+  ],
+  "createdAt": "2026-08-28T04:33:29.0623093Z",
+  "updatedAt": "2026-08-28T04:43:23.047Z",
+  "completedAt": "2026-08-28T04:43:23.047Z"
+}

@@ -80,6 +80,9 @@ public sealed record DashboardResponse(
     IReadOnlyList<TradeProofExportRecord> TradeProofExports,
     IReadOnlyList<WorkspaceDeletionRecord> WorkspaceDeletions,
     IReadOnlyList<WorkspaceDeletionTombstoneRecord> WorkspaceDeletionTombstones,
+    IReadOnlyList<AiDisabledFeatureProfileRecord> AiDisabledProfiles,
+    IReadOnlyList<ReleaseHardeningEvidenceRecord> ReleaseHardeningEvidence,
+    IReadOnlyList<CoreReleaseReadinessReportRecord> ReleaseReadinessReports,
     DashboardDataQualityRecord DataQuality,
     IReadOnlyList<AuditEventRecord> AuditEvents);
 
@@ -187,6 +190,9 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
                 TradeProofExports.Where(e => e.WorkspaceId == actor.WorkspaceId).ToList(),
                 WorkspaceDeletions.Where(d => d.WorkspaceId == actor.WorkspaceId).ToList(),
                 WorkspaceDeletionTombstones.Where(t => t.WorkspaceId == actor.WorkspaceId).ToList(),
+                AiDisabledProfiles.Where(p => p.WorkspaceId == actor.WorkspaceId).ToList(),
+                ReleaseHardeningEvidence.Where(e => e.WorkspaceId == actor.WorkspaceId).ToList(),
+                ReleaseReadinessReports.Where(r => r.WorkspaceId == actor.WorkspaceId).ToList(),
                 BuildDashboardDataQuality(actor.WorkspaceId),
                 _auditEvents.Where(a => a.WorkspaceId == actor.WorkspaceId).OrderBy(a => a.RecordedAt).ToList()));
         }

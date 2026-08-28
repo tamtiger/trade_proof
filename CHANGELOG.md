@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-28 - Phase 7: core hardening
+
+- Added explicit AI-disabled release profile contracts, deterministic hardening evidence and core release readiness reports for the local harness.
+- Added Phase 7 API/UI readiness controls, migration contract, tests, artifact verifier and CI script while keeping Phase 0/1/2/3/4/5/6 checks green.
+
 ## 2026-08-28 - Phase 6: Weekly Lab and data rights
 
 - Added deterministic Weekly Lab cohorts, input revisions, report revisions and behavioral experiment/completion lifecycle for the local harness.

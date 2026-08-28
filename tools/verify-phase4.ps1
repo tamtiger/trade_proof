@@ -103,7 +103,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context_source.sql" "CHECK \(selector_algorithm_version = 'market_bar_as_of_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context_source.sql" "CHECK \(source_base_url = 'https://data-api\.binance\.vision'\)"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[456]'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[4567]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/market/conversion-catalog'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/market/bars'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/context/compute'

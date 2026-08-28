@@ -203,7 +203,8 @@ button:disabled {
 .lab-panel button:first-child,
 .lab-panel button:nth-child(3),
 .rights-panel button:nth-child(2),
-.rights-panel button:nth-child(4) {
+.rights-panel button:nth-child(4),
+.readiness-panel button:first-child {
   background: #0f766e;
 }
 

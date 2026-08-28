@@ -43,8 +43,11 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-28 - Phase 6")) {
-    throw "CHANGELOG.md must keep the newest Phase 6 entry at the top."
+if (-not $changelog.StartsWith("# Changelog`n`n")) {
+    throw "CHANGELOG.md must keep the changelog title at the top."
+}
+if ($changelog -notmatch "## 2026-08-28 - Phase 6: Weekly Lab and data rights") {
+    throw "CHANGELOG.md must keep the Phase 6 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/ReviewMetricContracts.cs" 'weekly_lab_v1'
@@ -133,7 +136,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/006_phase6_weekly_lab_
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/006_phase6_weekly_lab_data_rights.sql" "PRIMARY_TENANT_DATA"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/006_phase6_weekly_lab_data_rights.sql" "EXPORT_ARCHIVES"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-6'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[67]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/weekly-lab/publish'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/weekly-lab/experiments/propose'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/product-analytics/events'
@@ -147,7 +150,7 @@ Assert-Contains "src/TradeProof.Api/wwwroot/quick-plan.js" 'product-analytics/ev
 Assert-Contains "src/TradeProof.Api/wwwroot/quick-plan.js" 'exports/request'
 Assert-Contains "src/TradeProof.Api/wwwroot/quick-plan.js" 'workspace/delete-request'
 Assert-Contains "tests/TradeProof.App.Tests/TestProgram.cs" 'phase6'
-Assert-Contains ".github/workflows/ci.yml" 'test-phase6.ps1'
+Assert-Contains ".github/workflows/ci.yml" 'test-phase[67]\.ps1'
 
 $ui = Get-Content -Raw -LiteralPath "src/TradeProof.Api/wwwroot/index.html"
 $ui += Get-Content -Raw -LiteralPath "src/TradeProof.Api/wwwroot/quick-plan.js"

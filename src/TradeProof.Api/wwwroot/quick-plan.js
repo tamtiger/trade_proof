@@ -46,7 +46,8 @@ let importFlow = {};
 let attachmentFlow = {};
 let weeklyFlow = {};
 let rightsFlow = {};
-let dashboard = { episodes: [], reviews: [], reviewRevisions: [], attachments: [], metricSnapshots: [], dataQuality: { exclusionBanners: [] } };
+let releaseFlow = {};
+let dashboard = { episodes: [], reviews: [], reviewRevisions: [], attachments: [], metricSnapshots: [], aiDisabledProfiles: [], releaseHardeningEvidence: [], releaseReadinessReports: [], dataQuality: { exclusionBanners: [] } };
 
 const form = document.querySelector("#planForm");
 const setupSelect = document.querySelector("#setupSelect");
@@ -75,6 +76,7 @@ const requestExportButton = document.querySelector("#requestExportButton");
 const roundTripExportButton = document.querySelector("#roundTripExportButton");
 const expireExportButton = document.querySelector("#expireExportButton");
 const deleteWorkspaceButton = document.querySelector("#deleteWorkspaceButton");
+const publishReadinessButton = document.querySelector("#publishReadinessButton");
 
 const weeklyWindow = {
   start: "2026-08-23T17:00:00Z",
@@ -265,6 +267,22 @@ function renderDashboard() {
     : "-";
   document.querySelector("#deletionText").textContent = rightsFlow.deletion
     ? `${rightsFlow.deletion.deletion.state} gen ${rightsFlow.deletion.deletion.guardGeneration}`
+    : "-";
+  const aiProfile = releaseFlow.readiness?.aiProfile || dashboard.aiDisabledProfiles?.[dashboard.aiDisabledProfiles.length - 1];
+  const hardening = releaseFlow.readiness?.hardeningEvidence || dashboard.releaseHardeningEvidence?.[dashboard.releaseHardeningEvidence.length - 1];
+  const readiness = releaseFlow.readiness?.report || dashboard.releaseReadinessReports?.[dashboard.releaseReadinessReports.length - 1];
+  document.querySelector("#readinessState").textContent = readiness ? readiness.state : "Chưa publish";
+  document.querySelector("#aiProfileText").textContent = aiProfile
+    ? `${aiProfile.disabledGateId} ${aiProfile.processorState}`
+    : "-";
+  document.querySelector("#hardeningText").textContent = hardening
+    ? `${hardening.securitySmokeState}/${hardening.accessibilitySmokeState}/${hardening.performanceSmokeState}/${hardening.reliabilitySmokeState}`
+    : "-";
+  document.querySelector("#defectText").textContent = readiness
+    ? `P0 ${readiness.p0DefectCount}, P1 ${readiness.p1DefectCount}`
+    : "-";
+  document.querySelector("#dependencyText").textContent = hardening
+    ? hardening.aiDependencyState
     : "-";
 
   completeReviewButton.disabled = !episode || Boolean(review);
@@ -844,6 +862,19 @@ deleteWorkspaceButton.addEventListener("click", async () => {
     renderDashboard();
   } catch (error) {
     errorText.textContent = `Không delete được workspace: ${safeMessage(error)}`;
+  }
+});
+
+publishReadinessButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    releaseFlow.readiness = await api("/api/release-readiness/publish", {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("release-readiness") })
+    });
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không publish được readiness: ${safeMessage(error)}`;
   }
 });
 

@@ -17,13 +17,13 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-6"
+    phase = "phase-7"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-6" },
+    info = new { title = "TradeProof API", version = "phase-7" },
     paths = new[]
     {
         "/api/bootstrap",
@@ -62,7 +62,8 @@ app.MapGet("/openapi.json", () => Results.Ok(new
         "/api/exports/{tradeProofExportId}/round-trip",
         "/api/exports/{tradeProofExportId}/expire",
         "/api/workspace/delete-request",
-        "/api/workspace/deletions/{workspaceDeletionId}/complete"
+        "/api/workspace/deletions/{workspaceDeletionId}/complete",
+        "/api/release-readiness/publish"
     }
 }));
 
@@ -641,6 +642,16 @@ api.MapPost("/workspace/deletions/{workspaceDeletionId}/complete", async (
     return actor.Succeeded
         ? ToHttp(await tradeProof.CompleteWorkspaceDeletionAsync(actor.Value!, new CompleteWorkspaceDeletionRequest(workspaceDeletionId, request.IdempotencyKey), ct))
         : Results.Unauthorized();
+});
+
+api.MapPost("/release-readiness/publish", async (
+    PublishReleaseReadinessRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.PublishReleaseReadinessAsync(actor.Value!, request, ct)) : Results.Unauthorized();
 });
 
 app.Run();
