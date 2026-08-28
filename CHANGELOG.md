@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-08-28 - Phase 8: pilot readiness
+
+- Added pilot readiness operations docs, alert/on-call ownership, runbook exercise, data processor disclosure and release evidence bundle for the local candidate.
+- Added read-only pilot support diagnostics, Phase 8 tests, artifact verifier and local CI wiring while keeping Phase 0/1/2/3/4/5/6/7 checks compatible.
+
 ## 2026-08-28 - Phase 7: core hardening
 
 - Added explicit AI-disabled release profile contracts, deterministic hardening evidence and core release readiness reports for the local harness.

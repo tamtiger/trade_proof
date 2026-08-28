@@ -12,6 +12,6 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: "10.0.x"
-      - name: Test and verify Phase 7
+      - name: Test and verify Phase 8
         shell: pwsh
-        run: ./tools/test-phase7.ps1
+        run: ./tools/test-phase8.ps1

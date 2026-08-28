@@ -41,8 +41,11 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-28 - Phase 7")) {
-    throw "CHANGELOG.md must keep the newest Phase 7 entry at the top."
+if (-not $changelog.StartsWith("# Changelog`n`n")) {
+    throw "CHANGELOG.md must keep the changelog title at the top."
+}
+if ($changelog -notmatch "## 2026-08-28 - Phase 7: core hardening") {
+    throw "CHANGELOG.md must keep the Phase 7 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/ReleaseReadinessContracts.cs" 'ai_disabled_profile_v1'
@@ -86,12 +89,12 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/007_phase7_core_harden
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/007_phase7_core_hardening.sql" "CHECK \(schema_version = 'core_release_readiness_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/007_phase7_core_hardening.sql" "READY_WITH_AI_DISABLED"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-7'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[78]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/release-readiness/publish'
 Assert-Contains "src/TradeProof.Api/wwwroot/index.html" 'Release readiness'
 Assert-Contains "src/TradeProof.Api/wwwroot/quick-plan.js" 'release-readiness/publish'
 Assert-Contains "tests/TradeProof.App.Tests/TestProgram.cs" 'phase7'
-Assert-Contains ".github/workflows/ci.yml" 'test-phase7.ps1'
+Assert-Contains ".github/workflows/ci.yml" 'test-phase[78]\.ps1'
 
 $apiAndUi = Get-Content -Raw -LiteralPath "src/TradeProof.Api/Program.cs"
 $apiAndUi += Get-Content -Raw -LiteralPath "src/TradeProof.Api/wwwroot/index.html"

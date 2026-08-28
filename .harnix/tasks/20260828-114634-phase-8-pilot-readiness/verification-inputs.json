@@ -1,0 +1,641 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 1,
+  "taskId": "20260828-114634-phase-8-pilot-readiness",
+  "snapshots": [
+    {
+      "evidenceId": "phase8-artifact-review-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-114634-phase-8-pilot-readiness",
+      "checkId": "phase8-artifact-review",
+      "taskContractHash": "47e9fbce6807031c36e7fd974e971e707190d8cce31fe8ba88f8dba9a5a3f2b3",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "bdf3b314c7ba834eb42dd4d01405f4d447a97886100fa41ffa0624f1e611b228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/plan.md",
+          "sha256": "498d240ce3d446f9d0c98f31572d946e37c4b6ee1d57176ea2fbac1f242224bb",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/prd.md",
+          "sha256": "3b464c261eb207d6ef4f2fdbbb3ffed6c318cc2cb1e1f7c33e57beaf34220580",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "4d521ab236167622e698e658726a9bb6f94854aabeb679becb6d8bd34e4bade1",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/alert-dashboard.md",
+          "sha256": "3a9243a57f6dcdbb2591141473b33f7d816fe72c2c369d1f3841748be3c1210f",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/data-processor-disclosure.md",
+          "sha256": "2bab8bde171dbfbb7a37161542517d5e6e65c2cc06501a13813b967703f45c83",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/fixture-intake.md",
+          "sha256": "5d287020a75f7ddde438219138f5574a1fed20bb29972d7ef6e9c1ea41fdce10",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/pilot-onboarding-support.md",
+          "sha256": "dc48fe375e2ab8d51d933833a658333d46eb13d5c4522fa20d686d6f762ec688",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/pilot-readiness-review.md",
+          "sha256": "551f8bf393e6dc806783f4d31c1e7d052bf38eddf25d00ea6154b3752208041e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/release-evidence-bundle.md",
+          "sha256": "ae34461fb344dd240bb2522d3e23020b838a6642a663cde621b602a09d044642",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/runbook-exercise.md",
+          "sha256": "86c84481d8f40d9492d623cdc928e6c1e3853e73deb1ae09f2ae81f3124eaaca",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "cf9424b074d2fd95f57f310ce05c3afb43ba5d37e5f124a3227cc4857b69129e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase2Tests.cs",
+          "sha256": "9ea27fa8ebea53232c82559bcfa1ab809b1db5c0c40365dd66ffceae3aa9c7fe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase3Tests.cs",
+          "sha256": "e86096ae43aa59286340c437e58e1cb357289d5f3a8bdc06ce9ca7ebd7c49514",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase4Tests.cs",
+          "sha256": "4b713a36dab523b391a6038eeaa031c5d4dcf3d72159771727ee6fc7c25f1137",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase5Tests.cs",
+          "sha256": "3a55bd3834feeb543f736743cd98bb19b938167992f8042e71b053f407bf4228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase6Tests.cs",
+          "sha256": "dae0def887596a9690f7236eb5cfb037de16482e3736ed628e96cf2561aa4ae3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase7Tests.cs",
+          "sha256": "2a81cfb6f8d8dd1d57a9c9c0c7269e488843f6b91bb34560bad21d945c06a1af",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase8Tests.cs",
+          "sha256": "b380a9696ca9024626a5ea2c9fe0e1446bb92285d09f5c1199c6a43b9d865709",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "a1f216df2b5460520760db884a92c2f2e94ed98b1b453fa00260fdd612e7da59",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/pilot-support-diagnostics.ps1",
+          "sha256": "26f997b14f57118c53d2a7e1cb7ea068291fcb4e1d3d46bad5752ca48b987835",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "92eeeaab4b594774c34e3b29763345536d8e19db568370602e3d927a541c4e3a",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase1.ps1",
+          "sha256": "78354dc8ecea101fa8b3039ead4f65d942909978da65861738338e7d6dd311e5",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase2.ps1",
+          "sha256": "a9c6cb61c928a4c9ce4c30ad5071cc84fd923de6730e773f2a99ed984e07ef2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase3.ps1",
+          "sha256": "56b6eca24838657715fc3448c42f99098b2999591eca3a9a584eea8339060da1",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase4.ps1",
+          "sha256": "565e24ed432c76f026215e630a2b8ade44449e467a891f13f072c4d203368afa",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase5.ps1",
+          "sha256": "8b871b99a96d2dd3edfeb8375a980d82378a40c0ff6c3938e0d7d22db50f3357",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase6.ps1",
+          "sha256": "0751979c59250bb12f5280f438f709e6cae8e9251dde099ffe0ad561defd52a6",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase7.ps1",
+          "sha256": "0795aedd8208f829bdaa926521508a88b133a08071d3e4c6c8b6f59225d294fc",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase8.ps1",
+          "sha256": "07f6ba1b8a70cd42845beb3f3d861374364dfdff4e64d5cea41465220b156493",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "4e7cb3262e7927997409016c2b26ba3b00c6693435ed2b9be37548a86bb79228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "144d7cc6eeec87a9a9b07e98b6ba96f84cc6905c486b99dd1def7fff27ebf407",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase2.ps1",
+          "sha256": "942a25e1569bc0a67115da2f203bd701fc42e87a62ed6941f6171647bf173e73",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase3.ps1",
+          "sha256": "2eaa1689f8dae997ee184fa0c2462234c52731a65b679accc1fe3941de3415ee",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase4.ps1",
+          "sha256": "50e2e37e6d94a50cbe7476136893b85eeb25ffaceb0f12847a51608cbf3ef5b9",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase5.ps1",
+          "sha256": "b213437c1d30b45eec6662d1f8ec9aaf59b5792ce48e01e6f4bf911e7a9234c7",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase6.ps1",
+          "sha256": "350681eab01d235722ceca7dab5d1cd45c8f3d2c8040dbf97ad36c486643a720",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase7.ps1",
+          "sha256": "091007135522b0f63fb3e73e72b99a17883cf48b54bfa2ea79e40d877679cb7b",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase8.ps1",
+          "sha256": "c8372f4a3757287edd761eff21db064c652116423efff2110c1aee36a4915ad0",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "59f35040cdc0ce2786315e9d8291ea34d5c25013e014359285391fb2db9be61f"
+    },
+    {
+      "evidenceId": "phase8-artifact-tests-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-114634-phase-8-pilot-readiness",
+      "checkId": "phase8-artifact-tests",
+      "taskContractHash": "47e9fbce6807031c36e7fd974e971e707190d8cce31fe8ba88f8dba9a5a3f2b3",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/plan.md",
+          "sha256": "498d240ce3d446f9d0c98f31572d946e37c4b6ee1d57176ea2fbac1f242224bb",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/prd.md",
+          "sha256": "3b464c261eb207d6ef4f2fdbbb3ffed6c318cc2cb1e1f7c33e57beaf34220580",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/alert-dashboard.md",
+          "sha256": "3a9243a57f6dcdbb2591141473b33f7d816fe72c2c369d1f3841748be3c1210f",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/data-processor-disclosure.md",
+          "sha256": "2bab8bde171dbfbb7a37161542517d5e6e65c2cc06501a13813b967703f45c83",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/fixture-intake.md",
+          "sha256": "5d287020a75f7ddde438219138f5574a1fed20bb29972d7ef6e9c1ea41fdce10",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/pilot-onboarding-support.md",
+          "sha256": "dc48fe375e2ab8d51d933833a658333d46eb13d5c4522fa20d686d6f762ec688",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/pilot-readiness-review.md",
+          "sha256": "551f8bf393e6dc806783f4d31c1e7d052bf38eddf25d00ea6154b3752208041e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/release-evidence-bundle.md",
+          "sha256": "ae34461fb344dd240bb2522d3e23020b838a6642a663cde621b602a09d044642",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/runbook-exercise.md",
+          "sha256": "86c84481d8f40d9492d623cdc928e6c1e3853e73deb1ae09f2ae81f3124eaaca",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "cf9424b074d2fd95f57f310ce05c3afb43ba5d37e5f124a3227cc4857b69129e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase2Tests.cs",
+          "sha256": "9ea27fa8ebea53232c82559bcfa1ab809b1db5c0c40365dd66ffceae3aa9c7fe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase3Tests.cs",
+          "sha256": "e86096ae43aa59286340c437e58e1cb357289d5f3a8bdc06ce9ca7ebd7c49514",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase4Tests.cs",
+          "sha256": "4b713a36dab523b391a6038eeaa031c5d4dcf3d72159771727ee6fc7c25f1137",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase5Tests.cs",
+          "sha256": "3a55bd3834feeb543f736743cd98bb19b938167992f8042e71b053f407bf4228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase6Tests.cs",
+          "sha256": "dae0def887596a9690f7236eb5cfb037de16482e3736ed628e96cf2561aa4ae3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase7Tests.cs",
+          "sha256": "2a81cfb6f8d8dd1d57a9c9c0c7269e488843f6b91bb34560bad21d945c06a1af",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase8Tests.cs",
+          "sha256": "b380a9696ca9024626a5ea2c9fe0e1446bb92285d09f5c1199c6a43b9d865709",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "a1f216df2b5460520760db884a92c2f2e94ed98b1b453fa00260fdd612e7da59",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/pilot-support-diagnostics.ps1",
+          "sha256": "26f997b14f57118c53d2a7e1cb7ea068291fcb4e1d3d46bad5752ca48b987835",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "d7113c7aebe740f7ebe9a93c554882b39f52847ee9d95a78247c7d31a0f523a5"
+    },
+    {
+      "evidenceId": "phase8-local-ci-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-114634-phase-8-pilot-readiness",
+      "checkId": "phase8-local-ci",
+      "taskContractHash": "47e9fbce6807031c36e7fd974e971e707190d8cce31fe8ba88f8dba9a5a3f2b3",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "bdf3b314c7ba834eb42dd4d01405f4d447a97886100fa41ffa0624f1e611b228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/plan.md",
+          "sha256": "498d240ce3d446f9d0c98f31572d946e37c4b6ee1d57176ea2fbac1f242224bb",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/prd.md",
+          "sha256": "3b464c261eb207d6ef4f2fdbbb3ffed6c318cc2cb1e1f7c33e57beaf34220580",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "4d521ab236167622e698e658726a9bb6f94854aabeb679becb6d8bd34e4bade1",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/alert-dashboard.md",
+          "sha256": "3a9243a57f6dcdbb2591141473b33f7d816fe72c2c369d1f3841748be3c1210f",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/data-processor-disclosure.md",
+          "sha256": "2bab8bde171dbfbb7a37161542517d5e6e65c2cc06501a13813b967703f45c83",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/fixture-intake.md",
+          "sha256": "5d287020a75f7ddde438219138f5574a1fed20bb29972d7ef6e9c1ea41fdce10",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/pilot-onboarding-support.md",
+          "sha256": "dc48fe375e2ab8d51d933833a658333d46eb13d5c4522fa20d686d6f762ec688",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/pilot-readiness-review.md",
+          "sha256": "551f8bf393e6dc806783f4d31c1e7d052bf38eddf25d00ea6154b3752208041e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/release-evidence-bundle.md",
+          "sha256": "ae34461fb344dd240bb2522d3e23020b838a6642a663cde621b602a09d044642",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/operations/runbook-exercise.md",
+          "sha256": "86c84481d8f40d9492d623cdc928e6c1e3853e73deb1ae09f2ae81f3124eaaca",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "cf9424b074d2fd95f57f310ce05c3afb43ba5d37e5f124a3227cc4857b69129e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase2Tests.cs",
+          "sha256": "9ea27fa8ebea53232c82559bcfa1ab809b1db5c0c40365dd66ffceae3aa9c7fe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase3Tests.cs",
+          "sha256": "e86096ae43aa59286340c437e58e1cb357289d5f3a8bdc06ce9ca7ebd7c49514",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase4Tests.cs",
+          "sha256": "4b713a36dab523b391a6038eeaa031c5d4dcf3d72159771727ee6fc7c25f1137",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase5Tests.cs",
+          "sha256": "3a55bd3834feeb543f736743cd98bb19b938167992f8042e71b053f407bf4228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase6Tests.cs",
+          "sha256": "dae0def887596a9690f7236eb5cfb037de16482e3736ed628e96cf2561aa4ae3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase7Tests.cs",
+          "sha256": "2a81cfb6f8d8dd1d57a9c9c0c7269e488843f6b91bb34560bad21d945c06a1af",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase8Tests.cs",
+          "sha256": "b380a9696ca9024626a5ea2c9fe0e1446bb92285d09f5c1199c6a43b9d865709",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "a1f216df2b5460520760db884a92c2f2e94ed98b1b453fa00260fdd612e7da59",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/pilot-support-diagnostics.ps1",
+          "sha256": "26f997b14f57118c53d2a7e1cb7ea068291fcb4e1d3d46bad5752ca48b987835",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "92eeeaab4b594774c34e3b29763345536d8e19db568370602e3d927a541c4e3a",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase1.ps1",
+          "sha256": "78354dc8ecea101fa8b3039ead4f65d942909978da65861738338e7d6dd311e5",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase2.ps1",
+          "sha256": "a9c6cb61c928a4c9ce4c30ad5071cc84fd923de6730e773f2a99ed984e07ef2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase3.ps1",
+          "sha256": "56b6eca24838657715fc3448c42f99098b2999591eca3a9a584eea8339060da1",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase4.ps1",
+          "sha256": "565e24ed432c76f026215e630a2b8ade44449e467a891f13f072c4d203368afa",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase5.ps1",
+          "sha256": "8b871b99a96d2dd3edfeb8375a980d82378a40c0ff6c3938e0d7d22db50f3357",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase6.ps1",
+          "sha256": "0751979c59250bb12f5280f438f709e6cae8e9251dde099ffe0ad561defd52a6",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase7.ps1",
+          "sha256": "0795aedd8208f829bdaa926521508a88b133a08071d3e4c6c8b6f59225d294fc",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase8.ps1",
+          "sha256": "07f6ba1b8a70cd42845beb3f3d861374364dfdff4e64d5cea41465220b156493",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "4e7cb3262e7927997409016c2b26ba3b00c6693435ed2b9be37548a86bb79228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "144d7cc6eeec87a9a9b07e98b6ba96f84cc6905c486b99dd1def7fff27ebf407",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase2.ps1",
+          "sha256": "942a25e1569bc0a67115da2f203bd701fc42e87a62ed6941f6171647bf173e73",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase3.ps1",
+          "sha256": "2eaa1689f8dae997ee184fa0c2462234c52731a65b679accc1fe3941de3415ee",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase4.ps1",
+          "sha256": "50e2e37e6d94a50cbe7476136893b85eeb25ffaceb0f12847a51608cbf3ef5b9",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase5.ps1",
+          "sha256": "b213437c1d30b45eec6662d1f8ec9aaf59b5792ce48e01e6f4bf911e7a9234c7",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase6.ps1",
+          "sha256": "350681eab01d235722ceca7dab5d1cd45c8f3d2c8040dbf97ad36c486643a720",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase7.ps1",
+          "sha256": "091007135522b0f63fb3e73e72b99a17883cf48b54bfa2ea79e40d877679cb7b",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase8.ps1",
+          "sha256": "c8372f4a3757287edd761eff21db064c652116423efff2110c1aee36a4915ad0",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "79a2ccf595dc743256abf9618bad0ee9f5726f687042d23eea3afde3a28415c3"
+    },
+    {
+      "evidenceId": "phase8-scope-review-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-114634-phase-8-pilot-readiness",
+      "checkId": "phase8-scope-review",
+      "taskContractHash": "47e9fbce6807031c36e7fd974e971e707190d8cce31fe8ba88f8dba9a5a3f2b3",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/plan.md",
+          "sha256": "498d240ce3d446f9d0c98f31572d946e37c4b6ee1d57176ea2fbac1f242224bb",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-114634-phase-8-pilot-readiness/prd.md",
+          "sha256": "3b464c261eb207d6ef4f2fdbbb3ffed6c318cc2cb1e1f7c33e57beaf34220580",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "Product_Brief.md",
+          "sha256": "8f8cddb5c8dda7316a76bdf3a5be52462d677a66b11f5e0ef2be3d9730637a9b",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/ACCEPTANCE_TESTS.md",
+          "sha256": "afba565f0637ea53433fb7aa64251b6d08bb244a3c41f3e08fa5ad90c19b3785",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/IMPLEMENTATION_PLAN.md",
+          "sha256": "2e3e94dd4d879745b110d5c2db0f34e22a8a72a88a3d1ee393838c137fd0c943",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/SECURITY_PRIVACY_AI.md",
+          "sha256": "5f67aec632d1d9d852f9eb92e60882d721247fbdfe9ff98d409ac13f581ace0e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+          "sha256": "06b7fc36ceda1fbca42b1af1a504cf425c4abc07a2f29d0a771f5cb0f8852fb3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/adr/0009-observability-and-redaction.md",
+          "sha256": "17458c336cb7753ce7e32ba28905a1b3409f4570121a1237fbf8263dfc04071f",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "7f07e425b278f426fd1ecb43b79717b7e5f75dce8ecdee62edd4d8845495b64c"
+    }
+  ]
+}

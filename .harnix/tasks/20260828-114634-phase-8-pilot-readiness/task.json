@@ -1,0 +1,256 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260828-114634-phase-8-pilot-readiness",
+  "title": "Phase 8: pilot readiness",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 8 pilot-readiness package trong repo: production readiness review, alert/on-call ownership, runbook exercise, pilot onboarding/support, release evidence bundle, diagnostics script và Phase 8 regression gates mà không deploy hoặc bật paid pilot/AI.",
+  "nonGoals": [
+    "Không deploy production, không publish endpoint ngoài, không push, không tạo PR và không mở paid pilot thật.",
+    "Không bật paid_pilot_enabled, voice_transcription_enabled, ai_taxonomy_enabled hoặc ai_weekly_summary_enabled.",
+    "Không thay thế legal review, lịch on-call thật, backup restore pilot-equivalent hoặc processor contract ký ngoài repo."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Operations package có readiness review, alert dashboard/on-call ownership, incident/backup/deletion/processor runbook exercise, pilot onboarding/support flow, known limitations và data processor disclosure; docs nói rõ local candidate không tự deploy và không cần workspace user-data access.",
+      "status": "met",
+      "evidenceIds": [
+        "phase8-scope-review-pass-20260828",
+        "phase8-artifact-tests-pass-20260828",
+        "phase8-artifact-review-pass-20260828",
+        "phase8-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Release evidence bundle liệt kê build/commit capture policy, migration version tới Phase 7, requirements-to-tests matrix, test reports, security/secret scan, performance/usability/accessibility evidence, disabled flags, known limitations, no P0/P1 defect và version list cho các contract chính.",
+      "status": "met",
+      "evidenceIds": [
+        "phase8-scope-review-pass-20260828",
+        "phase8-artifact-tests-pass-20260828",
+        "phase8-artifact-review-pass-20260828",
+        "phase8-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Support diagnostics script chỉ đọc repo metadata, docs, git status/log và Harnix public status; script không yêu cầu WorkspaceId, token, secret, DB credential, object store credential hoặc workspace export.",
+      "status": "met",
+      "evidenceIds": [
+        "phase8-scope-review-pass-20260828",
+        "phase8-artifact-tests-pass-20260828",
+        "phase8-artifact-review-pass-20260828",
+        "phase8-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "API/CI/test wiring được cập nhật cho Phase 8: health/openapi lên phase-8, Phase8Tests và verify-phase8 pass, test-phase8 chạy Phase 0-8 runners/verifiers, các verifier Phase 2-7 vẫn tương thích.",
+      "status": "met",
+      "evidenceIds": [
+        "phase8-scope-review-pass-20260828",
+        "phase8-artifact-tests-pass-20260828",
+        "phase8-artifact-review-pass-20260828",
+        "phase8-local-ci-pass-20260828"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "Product_Brief.md",
+    "TradeProof.sln",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/operations",
+    "src/TradeProof.Api/Program.cs",
+    "tests/TradeProof.App.Tests",
+    "tools"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+    "docs/adr/0009-observability-and-redaction.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase8-scope-review",
+      "description": "Đọc lại Week 8, release evidence bundle, release profile và operations/security constraints trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPLEMENTATION_PLAN.md; Get-Content -Raw docs/ACCEPTANCE_TESTS.md; Get-Content -Raw docs/SECURITY_PRIVACY_AI.md; Get-Content -Raw docs/adr/0008-deployment-region-backup-and-disclosure.md; Get-Content -Raw docs/adr/0009-observability-and-redaction.md; Get-Content -Raw Product_Brief.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Product_Brief.md",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+        "docs/adr/0009-observability-and-redaction.md"
+      ]
+    },
+    {
+      "id": "phase8-artifact-tests",
+      "description": "Chạy C# harness Phase 8 chứng minh health/openapi phase-8, docs và diagnostics script contract tồn tại đúng boundary.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase8",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "docs/operations",
+        "src/TradeProof.Api/Program.cs",
+        "tests/TradeProof.App.Tests",
+        "tools/pilot-support-diagnostics.ps1"
+      ]
+    },
+    {
+      "id": "phase8-artifact-review",
+      "description": "Kiểm artifact Phase 8: operations docs, evidence bundle, diagnostics script read-only boundary, API phase marker, tests, CI, CHANGELOG và compatibility verifier wiring.",
+      "command": "pwsh -NoProfile -File tools/verify-phase8.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "docs/operations",
+        "src/TradeProof.Api/Program.cs",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase8-local-ci",
+      "description": "Chạy local CI Phase 8 gồm restore/build, Phase 0/1/2/3/4/5/6/7/8 runners, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase8.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "docs/operations",
+        "src/TradeProof.Api/Program.cs",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase8-red-missing-readiness-docs-20260828",
+      "checkId": "phase8-artifact-tests",
+      "recordedAt": "2026-08-28T04:50:05.5265484Z",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "RED: Phase 8 runner failed because docs/operations/pilot-readiness-review.md and the remaining Phase 8 artifacts did not exist yet.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase8Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs"
+      ]
+    },
+    {
+      "id": "phase8-scope-review-pass-20260828",
+      "checkId": "phase8-scope-review",
+      "recordedAt": "2026-08-28T04:55:42.5642016Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Đã đọc lại Week 8, release evidence bundle, release profile, security/privacy và operations ADR; scope Phase 8 giữ local candidate, không deploy và không bật paid pilot/AI.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/adr/0008-deployment-region-backup-and-disclosure.md",
+        "docs/adr/0009-observability-and-redaction.md",
+        "Product_Brief.md"
+      ],
+      "inputDigest": "7f07e425b278f426fd1ecb43b79717b7e5f75dce8ecdee62edd4d8845495b64c"
+    },
+    {
+      "id": "phase8-artifact-tests-pass-20260828",
+      "checkId": "phase8-artifact-tests",
+      "recordedAt": "2026-08-28T04:55:42.5702005Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "GREEN: Phase 8 runner pass, bao phủ operations docs, release evidence bundle, diagnostics read-only boundary, API phase marker và CI/changelog wiring.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase8Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs",
+        "docs/operations",
+        "tools/pilot-support-diagnostics.ps1",
+        "src/TradeProof.Api/Program.cs"
+      ],
+      "inputDigest": "d7113c7aebe740f7ebe9a93c554882b39f52847ee9d95a78247c7d31a0f523a5"
+    },
+    {
+      "id": "phase8-artifact-review-pass-20260828",
+      "checkId": "phase8-artifact-review",
+      "recordedAt": "2026-08-28T04:55:42.5703009Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/verify-phase8.ps1` pass: operations docs, support diagnostics, phase marker, changelog, CI and previous verifier compatibility are valid.",
+      "artifactPaths": [
+        "tools/verify-phase8.ps1",
+        "tools/test-phase8.ps1",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md",
+        "docs/operations"
+      ],
+      "inputDigest": "59f35040cdc0ce2786315e9d8291ea34d5c25013e014359285391fb2db9be61f"
+    },
+    {
+      "id": "phase8-local-ci-pass-20260828",
+      "checkId": "phase8-local-ci",
+      "recordedAt": "2026-08-28T04:55:42.5703388Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/test-phase8.ps1` pass: restore/build, Phase 0/1/2/3/4/5/6/7/8 runners, verifiers, secret scan và bin/obj guard đều xanh.",
+      "artifactPaths": [
+        "tools/test-phase8.ps1",
+        "tools/verify-phase8.ps1",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "79a2ccf595dc743256abf9618bad0ee9f5726f687042d23eea3afde3a28415c3"
+    }
+  ],
+  "createdAt": "2026-08-28T04:46:35Z",
+  "updatedAt": "2026-08-28T04:56:21.320Z",
+  "completedAt": "2026-08-28T04:56:21.320Z"
+}

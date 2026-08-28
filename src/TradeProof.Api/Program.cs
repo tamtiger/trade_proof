@@ -17,13 +17,13 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-7"
+    phase = "phase-8"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-7" },
+    info = new { title = "TradeProof API", version = "phase-8" },
     paths = new[]
     {
         "/api/bootstrap",
