@@ -25,7 +25,15 @@ public static partial class ContractVersions
         Import,
         Context,
         AttachmentDelete,
-        Metrics
+        Metrics,
+        CohortLock,
+        Report,
+        ProductMetric,
+        AnalyticsDelivery,
+        AnalyticsPurge,
+        Export,
+        ExportExpiry,
+        WorkspaceDeletionWork
     };
 
     public static string Sha256Hex(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();

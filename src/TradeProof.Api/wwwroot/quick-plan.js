@@ -30,6 +30,12 @@ const errorMessages = {
   REVIEW_REQUIRED_CHECKLIST_MISSING: "Review thiếu kết quả checklist bắt buộc.",
   STALE_REVIEW_REVISION: "Review đã có revision mới hơn.",
   METRIC_INTERVAL_INVALID: "Khoảng metric không hợp lệ.",
+  WEEKLY_LAB_INTERVAL_INVALID: "Khoảng Weekly Lab phải bắt đầu từ thứ Hai local.",
+  WEEKLY_LAB_METRICS_REQUIRED: "Cần publish metrics trước Weekly Lab.",
+  BEHAVIORAL_EXPERIMENT_TARGET_CONFLICT: "Cohort kế tiếp đã có experiment được confirm.",
+  PRODUCT_ANALYTICS_EVENT_INVALID: "Analytics event không thuộc allowlist.",
+  PRODUCT_METRIC_INTERVAL_INVALID: "Khoảng product metric không hợp lệ.",
+  TRADEPROOF_EXPORT_NOT_FOUND: "Không tìm thấy export.",
   WRITE_CAPABILITY_ALREADY_CONSUMED: "Write capability đã được dùng.",
   IDEMPOTENCY_CONFLICT: "Idempotency key đã dùng cho payload khác."
 };
@@ -38,6 +44,8 @@ let bootstrap;
 let practiceIndex = 0;
 let importFlow = {};
 let attachmentFlow = {};
+let weeklyFlow = {};
+let rightsFlow = {};
 let dashboard = { episodes: [], reviews: [], reviewRevisions: [], attachments: [], metricSnapshots: [], dataQuality: { exclusionBanners: [] } };
 
 const form = document.querySelector("#planForm");
@@ -57,6 +65,21 @@ const reviseReviewButton = document.querySelector("#reviseReviewButton");
 const deleteAttachmentButton = document.querySelector("#deleteAttachmentButton");
 const publishMetricsButton = document.querySelector("#publishMetricsButton");
 const refreshDashboardButton = document.querySelector("#refreshDashboardButton");
+const publishLabButton = document.querySelector("#publishLabButton");
+const proposeExperimentButton = document.querySelector("#proposeExperimentButton");
+const confirmExperimentButton = document.querySelector("#confirmExperimentButton");
+const completeWeeklyReviewButton = document.querySelector("#completeWeeklyReviewButton");
+const recordAnalyticsButton = document.querySelector("#recordAnalyticsButton");
+const publishProductMetricsButton = document.querySelector("#publishProductMetricsButton");
+const requestExportButton = document.querySelector("#requestExportButton");
+const roundTripExportButton = document.querySelector("#roundTripExportButton");
+const expireExportButton = document.querySelector("#expireExportButton");
+const deleteWorkspaceButton = document.querySelector("#deleteWorkspaceButton");
+
+const weeklyWindow = {
+  start: "2026-08-23T17:00:00Z",
+  end: "2026-08-30T17:00:00Z"
+};
 
 async function api(path, options = {}) {
   const response = await fetch(path, {
@@ -214,16 +237,62 @@ function renderDashboard() {
   document.querySelector("#metricState").textContent = dashboard.metricSnapshots.length
     ? `${dashboard.metricSnapshots.length} snapshot`
     : "Chưa publish";
+  const latestReport = weeklyFlow.publication?.reportRevision || dashboard.weeklyReports?.[dashboard.weeklyReports.length - 1];
+  const latestCohort = weeklyFlow.publication?.cohort || dashboard.weeklyCohorts?.[dashboard.weeklyCohorts.length - 1];
+  const latestExperiment = weeklyFlow.experiment || dashboard.behavioralExperiments?.[dashboard.behavioralExperiments.length - 1];
+  const latestCompletion = weeklyFlow.completion || dashboard.weeklyReviewCompletions?.[dashboard.weeklyReviewCompletions.length - 1];
+  document.querySelector("#labState").textContent = latestReport ? "Đã publish" : "Chưa publish";
+  document.querySelector("#labCohortText").textContent = latestCohort
+    ? `${latestCohort.cohortType} ${latestCohort.cohortStartLocal}`
+    : "-";
+  document.querySelector("#labReportText").textContent = latestReport
+    ? `${latestReport.status} ${latestReport.rendererVersion}`
+    : "-";
+  document.querySelector("#experimentText").textContent = latestExperiment
+    ? `${latestExperiment.state} ${latestExperiment.experimentTypeId}`
+    : "-";
+  document.querySelector("#weeklyCompletionText").textContent = latestCompletion
+    ? latestCompletion.schemaVersion
+    : "-";
+  document.querySelector("#analyticsText").textContent = rightsFlow.analytics
+    ? `${rightsFlow.analytics.schemaVersion} ${rightsFlow.analytics.eventType}`
+    : "-";
+  document.querySelector("#productMetricsText").textContent = rightsFlow.productMetrics?.length
+    ? rightsFlow.productMetrics.map((metric) => `${metric.metricId}=${metric.valueInteger ?? metric.nullReason}`).join(", ")
+    : "-";
+  document.querySelector("#exportText").textContent = rightsFlow.export
+    ? `${rightsFlow.export.state} ${rightsFlow.export.serviceClass}`
+    : "-";
+  document.querySelector("#deletionText").textContent = rightsFlow.deletion
+    ? `${rightsFlow.deletion.deletion.state} gen ${rightsFlow.deletion.deletion.guardGeneration}`
+    : "-";
 
   completeReviewButton.disabled = !episode || Boolean(review);
   reviseReviewButton.disabled = !review || !revision;
   publishMetricsButton.disabled = dashboard.episodes.length === 0;
   deleteAttachmentButton.disabled = !attachment || attachment.state === "DELETED";
+  publishLabButton.disabled = dashboard.metricSnapshots.length === 0;
+  proposeExperimentButton.disabled = !latestReport || Boolean(latestExperiment);
+  confirmExperimentButton.disabled = !latestExperiment || latestExperiment.state !== "PROPOSED";
+  completeWeeklyReviewButton.disabled = !latestExperiment || latestExperiment.state !== "CONFIRMED" || Boolean(latestCompletion);
+  recordAnalyticsButton.disabled = !latestReport;
+  publishProductMetricsButton.disabled = !rightsFlow.analytics;
+  requestExportButton.disabled = !latestReport;
+  roundTripExportButton.disabled = !rightsFlow.export || rightsFlow.export.state !== "READY";
+  expireExportButton.disabled = !rightsFlow.export || rightsFlow.export.state !== "READY";
 }
 
 async function loadDashboard() {
   dashboard = await api("/api/dashboard");
   renderDashboard();
+}
+
+function currentWeeklyReport() {
+  return weeklyFlow.publication?.reportRevision || dashboard.weeklyReports?.[dashboard.weeklyReports.length - 1];
+}
+
+function currentWeeklyCohort() {
+  return weeklyFlow.publication?.cohort || dashboard.weeklyCohorts?.[dashboard.weeklyCohorts.length - 1];
 }
 
 function resetImportFlow() {
@@ -573,14 +642,208 @@ publishMetricsButton.addEventListener("click", async () => {
     await api("/api/metrics/publish", {
       method: "POST",
       body: JSON.stringify({
-        reportingStartAtUtc: "2026-08-27T00:00:00Z",
-        reportingEndAtUtc: "2026-09-03T00:00:00Z",
+        reportingStartAtUtc: weeklyWindow.start,
+        reportingEndAtUtc: weeklyWindow.end,
         idempotencyKey: idempotencyKey("metrics-publish")
       })
     });
     await loadDashboard();
   } catch (error) {
     errorText.textContent = `Không publish được metrics: ${safeMessage(error)}`;
+  }
+});
+
+publishLabButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    weeklyFlow.publication = await api("/api/weekly-lab/publish", {
+      method: "POST",
+      body: JSON.stringify({
+        reportingStartAtUtc: weeklyWindow.start,
+        reportingEndAtUtc: weeklyWindow.end,
+        idempotencyKey: idempotencyKey("weekly-lab")
+      })
+    });
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không publish được Weekly Lab: ${safeMessage(error)}`;
+  }
+});
+
+proposeExperimentButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const report = currentWeeklyReport();
+  try {
+    weeklyFlow.experiment = await api("/api/weekly-lab/experiments/propose", {
+      method: "POST",
+      body: JSON.stringify({
+        weeklyReportRevisionId: report.weeklyReportRevisionId,
+        experimentTypeId: "WAIT_FOR_CLOSE",
+        proposalText: "Wait for candle close before entry.",
+        idempotencyKey: idempotencyKey("experiment-propose")
+      })
+    });
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không propose được experiment: ${safeMessage(error)}`;
+  }
+});
+
+confirmExperimentButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    weeklyFlow.experiment = await api(`/api/weekly-lab/experiments/${weeklyFlow.experiment.behavioralExperimentId}/confirm`, {
+      method: "POST",
+      body: JSON.stringify({
+        expectedRevisionNo: weeklyFlow.experiment.revisionNo,
+        idempotencyKey: idempotencyKey("experiment-confirm")
+      })
+    });
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không confirm được experiment: ${safeMessage(error)}`;
+  }
+});
+
+completeWeeklyReviewButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const cohort = currentWeeklyCohort();
+  const report = currentWeeklyReport();
+  try {
+    weeklyFlow.completion = await api("/api/weekly-lab/complete", {
+      method: "POST",
+      body: JSON.stringify({
+        weeklyCohortId: cohort.weeklyCohortId,
+        weeklyReportRevisionId: report.weeklyReportRevisionId,
+        behavioralExperimentRevisionId: weeklyFlow.experiment.behavioralExperimentRevisionId,
+        idempotencyKey: idempotencyKey("weekly-complete")
+      })
+    });
+    await loadDashboard();
+  } catch (error) {
+    errorText.textContent = `Không complete được Weekly Lab: ${safeMessage(error)}`;
+  }
+});
+
+recordAnalyticsButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const report = currentWeeklyReport();
+  try {
+    rightsFlow.analytics = await api("/api/product-analytics/events", {
+      method: "POST",
+      body: JSON.stringify({
+        eventType: "weekly_lab_opened",
+        sourceRecordType: "WeeklyReportRevision",
+        sourceRecordId: report.weeklyReportRevisionId,
+        occurredAt: new Date().toISOString(),
+        idempotencyKey: idempotencyKey("analytics-event")
+      })
+    });
+    rightsFlow.externalProjection = await api("/api/product-analytics/external/project", {
+      method: "POST",
+      body: JSON.stringify({
+        productAnalyticsEventId: rightsFlow.analytics.productAnalyticsEventId,
+        idempotencyKey: idempotencyKey("analytics-project")
+      })
+    });
+    rightsFlow.externalPurge = await api(`/api/product-analytics/external/${rightsFlow.externalProjection.externalAnalyticsProjectionId}/purge`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("analytics-purge") })
+    });
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không ghi được analytics: ${safeMessage(error)}`;
+  }
+});
+
+publishProductMetricsButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    rightsFlow.productMetrics = await api("/api/product-metrics/workspace/publish", {
+      method: "POST",
+      body: JSON.stringify({
+        reportingStartAtUtc: weeklyWindow.start,
+        reportingEndAtUtc: weeklyWindow.end,
+        idempotencyKey: idempotencyKey("product-metrics")
+      })
+    });
+    await api("/api/product-metrics/internal/publish", {
+      method: "POST",
+      body: JSON.stringify({
+        workspaceIds: [bootstrap.workspaceId],
+        metricId: "weekly_lab_opened_count",
+        reportingStartAtUtc: weeklyWindow.start,
+        reportingEndAtUtc: weeklyWindow.end,
+        idempotencyKey: idempotencyKey("internal-product-metrics")
+      })
+    });
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không publish được product metrics: ${safeMessage(error)}`;
+  }
+});
+
+requestExportButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const report = currentWeeklyReport();
+  try {
+    rightsFlow.export = await api("/api/exports/request", {
+      method: "POST",
+      body: JSON.stringify({
+        weeklyReportRevisionId: report.weeklyReportRevisionId,
+        exportAsOfAt: weeklyWindow.end,
+        idempotencyKey: idempotencyKey("export")
+      })
+    });
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không tạo được export: ${safeMessage(error)}`;
+  }
+});
+
+roundTripExportButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    rightsFlow.roundTrip = await api(`/api/exports/${rightsFlow.export.tradeProofExportId}/round-trip`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("export-round-trip") })
+    });
+    document.querySelector("#rightsState").textContent = rightsFlow.roundTrip.passed ? "Round trip OK" : "Round trip lỗi";
+  } catch (error) {
+    errorText.textContent = `Không round trip được export: ${safeMessage(error)}`;
+  }
+});
+
+expireExportButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    rightsFlow.expiry = await api(`/api/exports/${rightsFlow.export.tradeProofExportId}/expire`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("export-expire") })
+    });
+    rightsFlow.export = { ...rightsFlow.export, state: "EXPIRED" };
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không expire được export: ${safeMessage(error)}`;
+  }
+});
+
+deleteWorkspaceButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    rightsFlow.deletion = await api("/api/workspace/delete-request", {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("workspace-delete") })
+    });
+    rightsFlow.deletion = await api(`/api/workspace/deletions/${rightsFlow.deletion.deletion.workspaceDeletionId}/complete`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("workspace-delete-complete") })
+    });
+    document.querySelector("#workspaceStatus").textContent = "Workspace đã tombstone";
+    document.querySelector("#rightsState").textContent = "Deletion complete";
+    renderDashboard();
+  } catch (error) {
+    errorText.textContent = `Không delete được workspace: ${safeMessage(error)}`;
   }
 });
 

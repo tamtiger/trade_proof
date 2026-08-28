@@ -1,0 +1,348 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260828-110621-phase-6-weekly-lab-data-rights",
+  "title": "Phase 6: Weekly Lab and data rights",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 6 theo `TP-PLAN` trên local harness: deterministic Weekly Lab/report, behavioral experiment/completion, product analytics snapshot, export/archive round-trip và workspace deletion/data-rights controls.",
+  "nonGoals": [
+    "Không bật AI, transcription, taxonomy suggestion hoặc weekly summary model; các nhánh AI vẫn empty/disabled cho core profile.",
+    "Không triển khai object store, email/webhook, processor hoặc network thật; export/archive/deletion dùng local deterministic payload và absence evidence mô phỏng.",
+    "Không triển khai đầy đủ performance profile production 24h/32GiB; Phase 6 local harness chỉ chứng minh contract boundary, idempotency và verifier trong repo."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Weekly Lab tạo `WeeklyCohort`, input revision và report revision deterministic theo workspace timezone, Monday-local half-open interval, locked as-of, homogeneous dependency tuple, chọn MetricSnapshot/Review/Context refs immutable và renderer output không tính metric phía client.",
+      "status": "met",
+      "evidenceIds": [
+        "phase6-scope-review-pass-20260828",
+        "phase6-app-tests-pass-cancel-state-20260828",
+        "phase6-artifact-review-pass-cancel-state-20260828",
+        "phase6-local-ci-pass-cancel-state-20260828"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Behavioral experiment và weekly completion có taxonomy `behavioral_experiment_v1`, propose/confirm/cancel append-only, target next regular cohort, uniqueness/idempotency/stale guard và completion precondition gắn đúng report/experiment/cohort.",
+      "status": "met",
+      "evidenceIds": [
+        "phase6-scope-review-pass-20260828",
+        "phase6-app-tests-pass-cancel-state-20260828",
+        "phase6-artifact-review-pass-cancel-state-20260828",
+        "phase6-local-ci-pass-cancel-state-20260828"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Product analytics local harness có first-party `product_analytics_event_v1`, workspace product metric snapshots, internal aggregate privacy threshold, external projection/purge records tối thiểu, không chứa raw business content và không vào workspace export ngoài owner-owned first-party source.",
+      "status": "met",
+      "evidenceIds": [
+        "phase6-scope-review-pass-20260828",
+        "phase6-app-tests-pass-cancel-state-20260828",
+        "phase6-artifact-review-pass-cancel-state-20260828",
+        "phase6-local-ci-pass-cancel-state-20260828"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "Export/data-rights có `tradeproof_export_v1` request/job/revision/manifest deterministic, cutoff/reference closure, spreadsheet-safe CSV convenience entries, STANDARD/OVERSIZE service-class boundary, round-trip validator và `EXPORT_EXPIRY` revocation/delete evidence.",
+      "status": "met",
+      "evidenceIds": [
+        "phase6-scope-review-pass-20260828",
+        "phase6-app-tests-pass-cancel-state-20260828",
+        "phase6-artifact-review-pass-cancel-state-20260828",
+        "phase6-local-ci-pass-cancel-state-20260828"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "Workspace deletion local harness có `workspace_deletion_v1` request/FENCE, generation increment, target DAG/drain evidence, cancellation of queued work, export/url revocation, primary local purge/tombstone and re-registration suppression within deterministic records.",
+      "status": "met",
+      "evidenceIds": [
+        "phase6-scope-review-pass-20260828",
+        "phase6-app-tests-pass-cancel-state-20260828",
+        "phase6-artifact-review-pass-cancel-state-20260828",
+        "phase6-local-ci-pass-cancel-state-20260828"
+      ]
+    },
+    {
+      "id": "AC-006",
+      "text": "Phase 6 API/UI/migration/tests/verifier/local CI/CHANGELOG/CI workflow được cập nhật; Phase 0-5 checks vẫn xanh, secret/bin-obj guard pass và UI không thêm AI/exchange sync/trading-signal language.",
+      "status": "met",
+      "evidenceIds": [
+        "phase6-scope-review-pass-20260828",
+        "phase6-app-tests-pass-cancel-state-20260828",
+        "phase6-artifact-review-pass-cancel-state-20260828",
+        "phase6-local-ci-pass-cancel-state-20260828"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "Product_Brief.md",
+    "TradeProof.sln",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/EXPORT_CONTRACT.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/MARKET_CONTEXT_ENGINE.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/WEEKLY_LAB.md",
+    "src/TradeProof.Api",
+    "src/TradeProof.Api/wwwroot",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/EXPORT_CONTRACT.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/MARKET_CONTEXT_ENGINE.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/WEEKLY_LAB.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase6-scope-review",
+      "description": "Đọc lại TP-PLAN Week 6, TP-LAB, TP-EXP, TP-SEC data-rights/deletion và TP-AT core gates trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPLEMENTATION_PLAN.md; Get-Content -Raw docs/WEEKLY_LAB.md; Get-Content -Raw docs/EXPORT_CONTRACT.md; Get-Content -Raw docs/SECURITY_PRIVACY_AI.md; Get-Content -Raw docs/ACCEPTANCE_TESTS.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        "@task-contract",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/EXPORT_CONTRACT.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/MARKET_CONTEXT_ENGINE.md",
+        "docs/PRODUCT_REQUIREMENTS.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/WEEKLY_LAB.md"
+      ]
+    },
+    {
+      "id": "phase6-app-tests",
+      "description": "Chạy C# harness Phase 6 chứng minh Weekly Lab/report, experiment/completion, product analytics, export/round-trip/expiry và workspace deletion invariants.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase6",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "tests/TradeProof.App.Tests"
+      ]
+    },
+    {
+      "id": "phase6-artifact-review",
+      "description": "Kiểm artifact Phase 6: migration/schema literals, API/UI surface, verifier, CHANGELOG, CI wiring, export/deletion labels và prohibited language.",
+      "command": "pwsh -NoProfile -File tools/verify-phase6.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase6-local-ci",
+      "description": "Chạy local CI Phase 6 gồm restore/build, Phase 0/1/2/3/4/5/6 runners, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase6.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase6-red-build-missing-contracts-20260828",
+      "checkId": "phase6-app-tests",
+      "recordedAt": "2026-08-28T04:09:52.1475949Z",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "RED: Phase 6 build failed because Weekly Lab, experiment, analytics, export and deletion contracts/APIs did not exist yet.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase6Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs"
+      ]
+    },
+    {
+      "id": "phase6-scope-review-pass-20260828",
+      "checkId": "phase6-scope-review",
+      "recordedAt": "2026-08-28T04:25:22.0333332Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Đã đọc lại tài liệu Phase 6/Weekly Lab/Export/Security/Acceptance và xác nhận scope Week 6 local harness không đổi trước khi verify.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/WEEKLY_LAB.md",
+        "docs/EXPORT_CONTRACT.md",
+        "docs/SECURITY_PRIVACY_AI.md",
+        "docs/ACCEPTANCE_TESTS.md"
+      ],
+      "inputDigest": "8bf1b81d8ccf1b38f84cea2c860b756680ce335ef6de30e988e367314ea9e8ac"
+    },
+    {
+      "id": "phase6-app-tests-pass-20260828",
+      "checkId": "phase6-app-tests",
+      "recordedAt": "2026-08-28T04:25:40.8190416Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "GREEN: `dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase6` pass, bao phủ Weekly Lab/report, experiment/completion, analytics, export/expiry và deletion invariants.",
+      "artifactPaths": [
+        "src/TradeProof.Application/Foundation/WeeklyLabDataRightsApp.cs",
+        "src/TradeProof.Domain/Foundation/WeeklyLabDataRightsContracts.cs",
+        "tests/TradeProof.App.Tests/Phase6Tests.cs"
+      ],
+      "inputDigest": "d4e47a62e211732533c7630432a34e37df6ee06eb6b9db6e07141bef837a1f70"
+    },
+    {
+      "id": "phase6-artifact-review-pass-20260828",
+      "checkId": "phase6-artifact-review",
+      "recordedAt": "2026-08-28T04:25:59.9515813Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/verify-phase6.ps1` pass: contract literals, API/UI surface, migration, verifier, CHANGELOG, CI wiring, export/deletion labels và prohibited-language guard đều hợp lệ.",
+      "artifactPaths": [
+        "tools/verify-phase6.ps1",
+        "src/TradeProof.Infrastructure/Migrations/006_phase6_weekly_lab_data_rights.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "cf0802cebb53c69ba47958f01ddae3da575e6e92d82db1524a698f0f69a80229"
+    },
+    {
+      "id": "phase6-local-ci-pass-20260828",
+      "checkId": "phase6-local-ci",
+      "recordedAt": "2026-08-28T04:26:49.3716941Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/test-phase6.ps1` pass: restore/build, Phase 0/1/2/3/4/5/6 runners, verifiers, secret scan và bin/obj guard đều xanh.",
+      "artifactPaths": [
+        "tools/test-phase6.ps1",
+        "tools/verify-phase6.ps1",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "be566e730b05fdfffe8ba50fd5d791853214ab17cb8637b4a1d2b3e4af056bac"
+    },
+    {
+      "id": "phase6-app-tests-pass-cancel-state-20260828",
+      "checkId": "phase6-app-tests",
+      "recordedAt": "2026-08-28T04:28:49.1964714Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "GREEN: Phase 6 runner pass sau khi chuẩn hóa cancel state thành CANCELLED và giữ cancel reason trong proposal text.",
+      "artifactPaths": [
+        "src/TradeProof.Application/Foundation/WeeklyLabDataRightsApp.cs",
+        "src/TradeProof.Domain/Foundation/WeeklyLabDataRightsContracts.cs",
+        "tests/TradeProof.App.Tests/Phase6Tests.cs"
+      ],
+      "inputDigest": "7e92aa0e1b395ff834eccf4ef2fb3c3c85ac39fa576337d3fa905c53ccd604c4"
+    },
+    {
+      "id": "phase6-artifact-review-pass-cancel-state-20260828",
+      "checkId": "phase6-artifact-review",
+      "recordedAt": "2026-08-28T04:29:10.0395576Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/verify-phase6.ps1` pass sau cancel-state cleanup: contract literals, API/UI, migration, verifier, CHANGELOG, CI wiring và prohibited-language guard hợp lệ.",
+      "artifactPaths": [
+        "tools/verify-phase6.ps1",
+        "src/TradeProof.Infrastructure/Migrations/006_phase6_weekly_lab_data_rights.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot/index.html",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "9cd8dcbbd3241f8ab71c0e54cbe9c0293548d5072dea895a9dc925d4251ba2ac"
+    },
+    {
+      "id": "phase6-local-ci-pass-cancel-state-20260828",
+      "checkId": "phase6-local-ci",
+      "recordedAt": "2026-08-28T04:29:40.3566965Z",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "`tools/test-phase6.ps1` pass sau cancel-state cleanup: restore/build, Phase 0/1/2/3/4/5/6 runners, verifiers, secret scan và bin/obj guard đều xanh.",
+      "artifactPaths": [
+        "tools/test-phase6.ps1",
+        "tools/verify-phase6.ps1",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "dbc2db1b231e8098281f973e986294e16d99e11bca540e777a8305122922a345"
+    }
+  ],
+  "createdAt": "2026-08-28T04:06:53.1372298Z",
+  "updatedAt": "2026-08-28T04:30:26.285Z",
+  "completedAt": "2026-08-28T04:30:26.285Z"
+}

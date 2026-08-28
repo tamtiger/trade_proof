@@ -70,6 +70,16 @@ public sealed record DashboardResponse(
     IReadOnlyList<ReviewRevisionRecord> ReviewRevisions,
     IReadOnlyList<AttachmentRecord> Attachments,
     IReadOnlyList<MetricSnapshotRecord> MetricSnapshots,
+    IReadOnlyList<WeeklyCohortRecord> WeeklyCohorts,
+    IReadOnlyList<WeeklyReportRevisionRecord> WeeklyReports,
+    IReadOnlyList<BehavioralExperimentRevisionRecord> BehavioralExperiments,
+    IReadOnlyList<WeeklyReviewCompletionRecord> WeeklyReviewCompletions,
+    IReadOnlyList<WorkspaceProductMetricSnapshotRecord> ProductMetrics,
+    IReadOnlyList<InternalAggregateProductMetricSnapshotRecord> InternalProductMetrics,
+    IReadOnlyList<ExternalAnalyticsProjectionRecord> ExternalAnalyticsProjections,
+    IReadOnlyList<TradeProofExportRecord> TradeProofExports,
+    IReadOnlyList<WorkspaceDeletionRecord> WorkspaceDeletions,
+    IReadOnlyList<WorkspaceDeletionTombstoneRecord> WorkspaceDeletionTombstones,
     DashboardDataQualityRecord DataQuality,
     IReadOnlyList<AuditEventRecord> AuditEvents);
 
@@ -167,6 +177,16 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
                 ReviewRevisions.Where(r => r.WorkspaceId == actor.WorkspaceId).ToList(),
                 Attachments.Where(a => a.WorkspaceId == actor.WorkspaceId).ToList(),
                 MetricSnapshots.Where(m => m.WorkspaceId == actor.WorkspaceId).ToList(),
+                WeeklyCohorts.Where(c => c.WorkspaceId == actor.WorkspaceId).ToList(),
+                WeeklyReports.Where(r => r.WorkspaceId == actor.WorkspaceId).ToList(),
+                BehavioralExperiments.Where(e => e.WorkspaceId == actor.WorkspaceId).ToList(),
+                WeeklyReviewCompletions.Where(c => c.WorkspaceId == actor.WorkspaceId).ToList(),
+                ProductMetrics.Where(m => m.WorkspaceId == actor.WorkspaceId).ToList(),
+                InternalProductMetrics.ToList(),
+                ExternalAnalyticsProjections.Where(p => p.WorkspaceId == actor.WorkspaceId).ToList(),
+                TradeProofExports.Where(e => e.WorkspaceId == actor.WorkspaceId).ToList(),
+                WorkspaceDeletions.Where(d => d.WorkspaceId == actor.WorkspaceId).ToList(),
+                WorkspaceDeletionTombstones.Where(t => t.WorkspaceId == actor.WorkspaceId).ToList(),
                 BuildDashboardDataQuality(actor.WorkspaceId),
                 _auditEvents.Where(a => a.WorkspaceId == actor.WorkspaceId).OrderBy(a => a.RecordedAt).ToList()));
         }
@@ -574,6 +594,14 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
             ContractVersions.Context => new ProviderDispatchPlan(false, "internal:context"),
             ContractVersions.AttachmentDelete => new ProviderDispatchPlan(true, "local:attachment-delete"),
             ContractVersions.Metrics => new ProviderDispatchPlan(false, "internal:metrics"),
+            ContractVersions.CohortLock => new ProviderDispatchPlan(false, "internal:weekly-cohort-lock"),
+            ContractVersions.Report => new ProviderDispatchPlan(false, "internal:weekly-report"),
+            ContractVersions.ProductMetric => new ProviderDispatchPlan(false, "internal:product-metric"),
+            ContractVersions.AnalyticsDelivery => new ProviderDispatchPlan(true, "local:analytics-delivery"),
+            ContractVersions.AnalyticsPurge => new ProviderDispatchPlan(true, "local:analytics-purge"),
+            ContractVersions.Export => new ProviderDispatchPlan(true, "local:tradeproof-export"),
+            ContractVersions.ExportExpiry => new ProviderDispatchPlan(true, "local:export-expiry"),
+            ContractVersions.WorkspaceDeletionWork => new ProviderDispatchPlan(false, "internal:workspace-deletion"),
             _ => throw new TradeProofException("UNREGISTERED_WORK_TYPE")
         };
 
@@ -1091,6 +1119,7 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
         _analyticsEvents.Add(new ProductAnalyticsEventRecord(
             NextId("ana"),
             workspaceId,
+            ContractVersions.ProductAnalyticsEvent,
             eventType,
             JsonSerializer.Serialize(sourceRecordKey, ContractVersions.JsonOptions),
             JsonSerializer.Serialize(payload, ContractVersions.JsonOptions),

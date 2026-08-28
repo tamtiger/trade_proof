@@ -8,20 +8,22 @@ function Invoke-Checked {
     }
 }
 
-Invoke-Checked { dotnet restore "TradeProof.sln" --disable-build-servers --verbosity minimal -maxcpucount:1 }
-Invoke-Checked { dotnet build "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj" --configuration Release --no-restore --disable-build-servers -maxcpucount:1 }
+Invoke-Checked { dotnet restore "TradeProof.sln" --disable-build-servers --verbosity minimal -maxcpucount:1 -p:UseSharedCompilation=false }
+Invoke-Checked { dotnet build "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj" --configuration Release --no-restore --disable-build-servers -maxcpucount:1 -p:UseSharedCompilation=false }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase0 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase1 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase2 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase3 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase4 }
 Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase5 }
+Invoke-Checked { dotnet "tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll" phase6 }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase0.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase1.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase2.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase3.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase4.ps1" }
 Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase5.ps1" }
+Invoke-Checked { pwsh -NoProfile -File "tools/verify-phase6.ps1" }
 
 $secretPattern = "(api[_-]?secret|secret[_-]?key|private[_-]?key|BEGIN (RSA|OPENSSH|EC) PRIVATE KEY|password=)"
 $matches = git grep --untracked -n -E $secretPattern -- . ':!.harnix/**' ':!docs/**' ':!README.md' ':!tools/test-phase0.ps1' ':!tools/test-phase1.ps1' ':!tools/test-phase2.ps1' ':!tools/test-phase3.ps1' ':!tools/test-phase4.ps1' ':!tools/test-phase5.ps1' ':!tools/test-phase6.ps1' ':!tools/verify-phase2.ps1' ':!tools/verify-phase3.ps1' ':!tools/verify-phase4.ps1' ':!tools/verify-phase5.ps1' ':!tools/verify-phase6.ps1' ':!**/bin/**' ':!**/obj/**'
@@ -34,4 +36,4 @@ if ($LASTEXITCODE -ne 1) {
     throw "git grep failed."
 }
 
-Write-Host "Phase 5 local CI verification passed."
+Write-Host "Phase 6 local CI verification passed."

@@ -41,8 +41,11 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-28 - Phase 5")) {
-    throw "CHANGELOG.md must keep the newest Phase 5 entry at the top."
+if (-not $changelog.StartsWith("# Changelog`n`n")) {
+    throw "CHANGELOG.md must keep the changelog title at the top."
+}
+if ($changelog -notmatch "## 2026-08-28 - Phase 5: review, metrics and dashboard") {
+    throw "CHANGELOG.md must keep the Phase 5 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/ReviewMetricContracts.cs" 'attachment_v1'
@@ -112,7 +115,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metr
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metrics_dashboard.sql" "CHECK \(metric_decimal_version = 'metrics_decimal_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/005_phase5_review_metrics_dashboard.sql" "INSUFFICIENT'.*'EXPLORATORY'.*'ESTIMATED"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-5'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[56]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/attachments/reserve'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/attachments/\{uploadId\}/validate'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/attachments/\{attachmentId\}/delete'

@@ -231,6 +231,7 @@ public sealed record ProductMeasurementRunEventRecord(
 public sealed record ProductAnalyticsEventRecord(
     string ProductAnalyticsEventId,
     string WorkspaceId,
+    string SchemaVersion,
     string EventType,
     string SourceRecordKeyJson,
     string PayloadJson,

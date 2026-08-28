@@ -17,13 +17,13 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-5"
+    phase = "phase-6"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-5" },
+    info = new { title = "TradeProof API", version = "phase-6" },
     paths = new[]
     {
         "/api/bootstrap",
@@ -47,7 +47,22 @@ app.MapGet("/openapi.json", () => Results.Ok(new
         "/api/context/manual-recompute",
         "/api/reviews/complete",
         "/api/reviews/{reviewId}/revise",
-        "/api/metrics/publish"
+        "/api/metrics/publish",
+        "/api/weekly-lab/publish",
+        "/api/weekly-lab/experiments/propose",
+        "/api/weekly-lab/experiments/{behavioralExperimentId}/confirm",
+        "/api/weekly-lab/experiments/{behavioralExperimentId}/cancel",
+        "/api/weekly-lab/complete",
+        "/api/product-analytics/events",
+        "/api/product-metrics/workspace/publish",
+        "/api/product-metrics/internal/publish",
+        "/api/product-analytics/external/project",
+        "/api/product-analytics/external/{externalAnalyticsProjectionId}/purge",
+        "/api/exports/request",
+        "/api/exports/{tradeProofExportId}/round-trip",
+        "/api/exports/{tradeProofExportId}/expire",
+        "/api/workspace/delete-request",
+        "/api/workspace/deletions/{workspaceDeletionId}/complete"
     }
 }));
 
@@ -453,6 +468,181 @@ api.MapPost("/metrics/publish", async (
     return actor.Succeeded ? ToHttp(await tradeProof.PublishMetricSnapshotsAsync(actor.Value!, request, ct)) : Results.Unauthorized();
 });
 
+api.MapPost("/weekly-lab/publish", async (
+    PublishWeeklyLabRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.PublishWeeklyLabAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/weekly-lab/experiments/propose", async (
+    ProposeBehavioralExperimentRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.ProposeBehavioralExperimentAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/weekly-lab/experiments/{behavioralExperimentId}/confirm", async (
+    string behavioralExperimentId,
+    ConfirmBehavioralExperimentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ConfirmBehavioralExperimentAsync(actor.Value!, new ConfirmBehavioralExperimentRequest(
+            behavioralExperimentId,
+            request.ExpectedRevisionNo,
+            request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/weekly-lab/experiments/{behavioralExperimentId}/cancel", async (
+    string behavioralExperimentId,
+    CancelBehavioralExperimentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.CancelBehavioralExperimentAsync(actor.Value!, new CancelBehavioralExperimentRequest(
+            behavioralExperimentId,
+            request.ExpectedRevisionNo,
+            request.Reason,
+            request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/weekly-lab/complete", async (
+    CompleteWeeklyReviewRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.CompleteWeeklyReviewAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/product-analytics/events", async (
+    RecordProductAnalyticsEventRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.RecordProductAnalyticsEventAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/product-metrics/workspace/publish", async (
+    PublishWorkspaceProductMetricsRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.PublishWorkspaceProductMetricsAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/product-metrics/internal/publish", async (
+    PublishInternalAggregateProductMetricRequest request,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    return ToHttp(await tradeProof.PublishInternalAggregateProductMetricAsync(request, ct));
+});
+
+api.MapPost("/product-analytics/external/project", async (
+    ProjectExternalAnalyticsRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.ProjectExternalAnalyticsAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/product-analytics/external/{externalAnalyticsProjectionId}/purge", async (
+    string externalAnalyticsProjectionId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.PurgeExternalAnalyticsAsync(actor.Value!, new PurgeExternalAnalyticsRequest(externalAnalyticsProjectionId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/exports/request", async (
+    RequestTradeProofExportRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.RequestTradeProofExportAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/exports/{tradeProofExportId}/round-trip", async (
+    string tradeProofExportId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ValidateExportRoundTripAsync(actor.Value!, new ValidateExportRoundTripRequest(tradeProofExportId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/exports/{tradeProofExportId}/expire", async (
+    string tradeProofExportId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ExpireExportAsync(actor.Value!, new ExpireExportRequest(tradeProofExportId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/workspace/delete-request", async (
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.RequestWorkspaceDeletionAsync(actor.Value!, new RequestWorkspaceDeletionRequest(request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/workspace/deletions/{workspaceDeletionId}/complete", async (
+    string workspaceDeletionId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.CompleteWorkspaceDeletionAsync(actor.Value!, new CompleteWorkspaceDeletionRequest(workspaceDeletionId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
 app.Run();
 
 static ManagedIdentity? ReadManagedIdentity(HttpContext http)
@@ -501,6 +691,8 @@ public sealed record RevisePlanApiRequest(
     int? ExpiryDurationSeconds,
     string IdempotencyKey);
 public sealed record AbandonMeasurementApiRequest(string Reason, string IdempotencyKey);
+public sealed record ConfirmBehavioralExperimentApiRequest(int ExpectedRevisionNo, string IdempotencyKey);
+public sealed record CancelBehavioralExperimentApiRequest(int ExpectedRevisionNo, string Reason, string IdempotencyKey);
 public sealed record ReviseEpisodeReviewApiRequest(
     int ExpectedEpisodeProjectionVersion,
     int ExpectedRevisionNo,

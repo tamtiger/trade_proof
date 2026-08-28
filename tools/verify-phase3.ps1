@@ -89,7 +89,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql" "CHECK \(algorithm_version = 'wac_episode_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql" "UNIQUE \(trading_account_id, dedup_key\)"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[345]'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[3456]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/imports/\{importBatchId\}/process'
 Assert-Contains "src/TradeProof.Api/wwwroot/index.html" 'Process'
 Assert-Contains "src/TradeProof.Api/wwwroot/index.html" 'Episode'

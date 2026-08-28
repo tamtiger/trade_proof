@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-28 - Phase 6: Weekly Lab and data rights
+
+- Added deterministic Weekly Lab cohorts, input revisions, report revisions and behavioral experiment/completion lifecycle for the local harness.
+- Added first-party product analytics, workspace/internal product metrics, external projection/purge records and reference-closed export/round-trip/expiry controls.
+- Added workspace deletion fence/tombstone records, Phase 6 API/UI/migration/tests/verifier/local CI wiring while keeping Phase 0/1/2/3/4/5 checks green.
+
 ## 2026-08-28 - Phase 5: review, metrics and dashboard
 
 - Added immutable episode review revisions, pinned review taxonomy versions and sanitized screenshot attachment lifecycle with deletion tombstones.

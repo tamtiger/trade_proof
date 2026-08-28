@@ -189,6 +189,50 @@
         </dl>
       </section>
 
+      <section class="panel lab-panel" aria-label="Weekly Lab">
+        <header class="panel-header">
+          <h2>Weekly Lab</h2>
+          <span id="labState">Chưa publish</span>
+        </header>
+
+        <div class="actions">
+          <button type="button" id="publishLabButton" disabled>Publish lab</button>
+          <button type="button" id="proposeExperimentButton" disabled>Propose experiment</button>
+          <button type="button" id="confirmExperimentButton" disabled>Confirm experiment</button>
+          <button type="button" id="completeWeeklyReviewButton" disabled>Complete weekly review</button>
+        </div>
+
+        <dl class="preview-grid">
+          <div><dt>Cohort</dt><dd id="labCohortText">-</dd></div>
+          <div><dt>Report</dt><dd id="labReportText">-</dd></div>
+          <div><dt>Experiment</dt><dd id="experimentText">-</dd></div>
+          <div><dt>Completion</dt><dd id="weeklyCompletionText">-</dd></div>
+        </dl>
+      </section>
+
+      <section class="panel rights-panel" aria-label="Data rights">
+        <header class="panel-header">
+          <h2>Data rights</h2>
+          <span id="rightsState">Sẵn sàng</span>
+        </header>
+
+        <div class="actions">
+          <button type="button" id="recordAnalyticsButton" disabled>Record analytics</button>
+          <button type="button" id="publishProductMetricsButton" disabled>Product metrics</button>
+          <button type="button" id="requestExportButton" disabled>Request export</button>
+          <button type="button" id="roundTripExportButton" disabled>Round trip</button>
+          <button type="button" id="expireExportButton" disabled>Expire export</button>
+          <button type="button" id="deleteWorkspaceButton">Delete workspace</button>
+        </div>
+
+        <dl class="preview-grid">
+          <div><dt>Analytics</dt><dd id="analyticsText">-</dd></div>
+          <div><dt>Product metrics</dt><dd id="productMetricsText">-</dd></div>
+          <div><dt>Export</dt><dd id="exportText">-</dd></div>
+          <div><dt>Deletion</dt><dd id="deletionText">-</dd></div>
+        </dl>
+      </section>
+
       <section class="panel state-panel" aria-label="Trạng thái">
         <h2>Trạng thái</h2>
         <dl>
