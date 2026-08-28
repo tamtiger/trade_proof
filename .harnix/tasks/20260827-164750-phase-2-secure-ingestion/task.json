@@ -1,0 +1,330 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260827-164750-phase-2-secure-ingestion",
+  "title": "Phase 2: secure ingestion",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 2 theo `TP-PLAN`: secure ingestion với reserve-before-write RAW_UPLOAD, upload validation/purge controls, CSV import preview, ConfirmImport-to-IMPORT chain, staging/progress shell và UI import local.",
+  "nonGoals": [
+    "Không triển khai accounting consumer, ImportRow durable admission, NormalizedFill, episode, ledger, context hoặc metric business writes của Week 3+.",
+    "Không kết nối object storage production, malware scanner production hoặc external queue; Phase 2 dùng in-memory provider/gateway nhưng giữ contract/deadline/tenant-work boundary.",
+    "Không thêm exchange API key, private API sync, live sync hoặc generic CSV mapper."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "ObjectIngestReservation RAW_UPLOAD được tạo trước provider write, có write capability single-use, write_expires_at 15 phút, absence_due_at 1 giờ, purpose/generation immutable và atomically enqueue OBJECT_INGEST_FINALIZE TenantControlJob/fence tại RESERVE.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Upload gateway ghi đúng một immutable provider version bằng conditional create, RECORD_BYTES chỉ một lần, TRANSFER atomically tạo Upload/RECEIVE/UploadObjectLease, đặt forced_purge_at RECEIVE+20h, purge_due_at RECEIVE+24h, và enqueue UPLOAD_VALIDATE plus UPLOAD_PURGE chains.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "CSV UPLOAD_VALIDATE tạo import_preview_v1 sanitized khi UTF-8/RFC4180/header và boundary pass, không tạo ImportBatch/ImportRow/StagedFill/NormalizedFill/episode/ledger/metric; malformed, header mismatch, >20 MiB hoặc >100000 data rows reject trước business writes.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "ConfirmImport yêu cầu preview READY, exact previewSummarySha256 và trusted time trước expires_at; retry exact trả cùng ImportBatch/IMPORT chain, changed retry conflict, key khác trên preview đã confirm trả existing batch và command transaction tạo zero row/fill/business effect.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "Import staging foundation có source-row fingerprint ổn định, immutable staged_fill_v1 candidate/disposition và batch summary/progress/error safe fields cho bốn disposition mà không persist raw CSV/cell/filename/path.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-006",
+      "text": "Import progress/error UI là một workflow dùng API thật trong local mode, hiển thị trạng thái reserve/write/validate/preview/confirm/purge và safe validation errors bằng tiếng Việt, không có exchange API key/private sync/generic CSV mapper screen.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    },
+    {
+      "id": "AC-007",
+      "text": "CHANGELOG.md có entry Phase 2 mới nhất ở đầu file; local CI Phase 2 chạy không cần production secret, không track bin/obj và giữ Phase 0/1 checks xanh.",
+      "status": "met",
+      "evidenceIds": [
+        "phase2-scope-review-pass-20260827",
+        "phase2-app-tests-pass-20260827",
+        "phase2-artifact-review-pass-20260827",
+        "phase2-local-ci-pass-20260827"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "TradeProof.sln",
+    ".github/workflows/ci.yml",
+    "src/TradeProof.Api",
+    "src/TradeProof.Api/wwwroot",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools/test-phase2.ps1",
+    "tools/verify-phase2.ps1",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/ACCEPTANCE_TESTS.md"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "docs/SECURITY_PRIVACY_AI.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/ACCEPTANCE_TESTS.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase2-scope-review",
+      "description": "Đọc lại spec Week 2 để khóa phạm vi secure ingestion, upload controls, CSV preview, ConfirmImport, staging/progress và UI trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPLEMENTATION_PLAN.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        "@task-contract",
+        "CHANGELOG.md",
+        "Product_Brief.md",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/PRODUCT_REQUIREMENTS.md",
+        "docs/SECURITY_PRIVACY_AI.md"
+      ]
+    },
+    {
+      "id": "phase2-app-tests",
+      "description": "Chạy C# harness Phase 2 để chứng minh reservation, transfer, CSV preview, ConfirmImport idempotency, staging/progress và Phase 0/1 không regress.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase2",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "tests/TradeProof.App.Tests"
+      ]
+    },
+    {
+      "id": "phase2-artifact-review",
+      "description": "Kiểm artifact Phase 2: schema SQL, API/UI surface, CHANGELOG, verifier và không có exchange API key/private sync/generic mapper screen.",
+      "command": "pwsh -NoProfile -File tools/verify-phase2.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase2-local-ci",
+      "description": "Chạy local CI Phase 2 gồm restore/build, Phase 0/1/2 tests, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase2.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006",
+        "AC-007"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "task-contract-revision-01",
+      "recordedAt": "2026-08-27T17:08:07.5924827+07:00",
+      "result": "skipped",
+      "summary": "Task contract revised at persisted replan: Sau khi user hỏi lại stack, task được replan để giữ .NET 10 theo ADR hiện có và bổ sung các validation obligations Phase 2 cụ thể thay cho scope-review-only trước khi tiếp tục implementation.",
+      "artifactPaths": [
+        ".harnix/tasks/20260827-164750-phase-2-secure-ingestion/task.json"
+      ]
+    },
+    {
+      "id": "phase2-red-build-missing-contracts-20260827",
+      "checkId": "phase2-app-tests",
+      "recordedAt": "2026-08-27T17:11:36.8832237+07:00",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "RED: Phase 2 test/build fails because ObjectIngestFinalize, UploadValidate, UploadPurge, Import and RegisteredWorkTypes are not implemented in ContractVersions yet.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase2Tests.cs",
+        "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+        "src/TradeProof.Domain/Foundation/TradeProofContracts.cs"
+      ]
+    },
+    {
+      "id": "phase2-scope-review-pass-20260827",
+      "checkId": "phase2-scope-review",
+      "recordedAt": "2026-08-27T17:23:04.4987038+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "Doc scope Week 2 pass sau replan stack .NET và validation obligations Phase 2.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md"
+      ],
+      "inputDigest": "3fb621ea093df259b73685b1494ab7840d09ff005b72fca0b7b29ac228176dcd"
+    },
+    {
+      "id": "phase2-app-tests-pass-20260827",
+      "checkId": "phase2-app-tests",
+      "recordedAt": "2026-08-27T17:23:04.4987038+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "C# Phase 2 harness pass cho reserve/write-once/transfer, CSV preview/reject, ConfirmImport idempotency và staging/progress shell.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase2Tests.cs",
+        "src/TradeProof.Application/Foundation/IngestionApp.cs",
+        "src/TradeProof.Domain/Foundation/IngestionContracts.cs"
+      ],
+      "inputDigest": "81b7f9f04681653ab4ef6a7225868003e54cf9f3736fe87c477bdbcc1845f48b"
+    },
+    {
+      "id": "phase2-artifact-review-pass-20260827",
+      "checkId": "phase2-artifact-review",
+      "recordedAt": "2026-08-27T17:23:04.4987038+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/verify-phase2.ps1 pass cho migration, API/UI, contracts, changelog, no disallowed import surfaces và no tracked bin/obj.",
+      "artifactPaths": [
+        "tools/verify-phase2.ps1",
+        "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql",
+        "src/TradeProof.Api",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "0e97d6f00090e7110ed343f97077253b8acce8f4b6df2c067d8712e7a205d2f4"
+    },
+    {
+      "id": "phase2-local-ci-pass-20260827",
+      "checkId": "phase2-local-ci",
+      "recordedAt": "2026-08-27T17:23:04.4987038+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/test-phase2.ps1 pass cho restore/build, Phase 0/1/2 runners, verifiers và secret/bin-obj guard.",
+      "artifactPaths": [
+        "tools/test-phase2.ps1",
+        "tests/TradeProof.App.Tests",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        ".github/workflows/ci.yml",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "19d86ef8563bca725e47455e1ea5a1d7a0b33b982d13c9e19d40d9b53e722597"
+    },
+    {
+      "id": "phase2-verification-review-pass-20260827",
+      "recordedAt": "2026-08-27T17:23:50.3660470+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "harnix audit completion pass; git status/diff, import UI forbidden-surface scan and placeholder scan reviewed with no blocking finding.",
+      "artifactPaths": [
+        ".harnix/tasks/20260827-164750-phase-2-secure-ingestion/task.json",
+        "src/TradeProof.Application/Foundation/IngestionApp.cs",
+        "src/TradeProof.Domain/Foundation/IngestionContracts.cs",
+        "src/TradeProof.Api/wwwroot/quick-plan.js",
+        "tools/test-phase2.ps1"
+      ]
+    }
+  ],
+  "createdAt": "2026-08-27T16:47:50.9050398+07:00",
+  "updatedAt": "2026-08-27T10:24:07.312Z",
+  "completedAt": "2026-08-27T10:24:07.312Z"
+}

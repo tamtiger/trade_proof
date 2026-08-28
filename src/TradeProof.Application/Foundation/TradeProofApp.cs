@@ -67,7 +67,7 @@ public sealed record DashboardResponse(
     IReadOnlyList<ProductMeasurementRunRecord> MeasurementRuns,
     IReadOnlyList<AuditEventRecord> AuditEvents);
 
-public sealed class TradeProofApp(ITradeProofClock clock)
+public sealed partial class TradeProofApp(ITradeProofClock clock)
 {
     private readonly object _gate = new();
     private readonly Dictionary<string, UserIdentityRecord> _identitiesByKey = [];
@@ -90,6 +90,8 @@ public sealed class TradeProofApp(ITradeProofClock clock)
     private readonly List<ProductAnalyticsEventRecord> _analyticsEvents = [];
     private readonly List<AuditEventRecord> _auditEvents = [];
     private long _id;
+
+    private DateTimeOffset Now => clock.UtcNow;
 
     public Task<CommandResult<BootstrapResponse>> BootstrapAsync(ManagedIdentity? identity, CancellationToken cancellationToken = default)
     {
@@ -550,9 +552,15 @@ public sealed class TradeProofApp(ITradeProofClock clock)
     }
 
     public ProviderDispatchPlan ResolveProvider(TenantControlJobRecord job) =>
-        job.WorkType == ContractVersions.ProductMeasurementTimeout
-            ? new ProviderDispatchPlan(false, "internal:product-measurement-timeout")
-            : throw new TradeProofException("UNREGISTERED_WORK_TYPE");
+        job.WorkType switch
+        {
+            ContractVersions.ProductMeasurementTimeout => new ProviderDispatchPlan(false, "internal:product-measurement-timeout"),
+            ContractVersions.ObjectIngestFinalize => new ProviderDispatchPlan(true, "local:object-ingest-finalize"),
+            ContractVersions.UploadValidate => new ProviderDispatchPlan(false, "internal:upload-validate"),
+            ContractVersions.UploadPurge => new ProviderDispatchPlan(true, "local:upload-purge"),
+            ContractVersions.Import => new ProviderDispatchPlan(false, "internal:import-not-active-phase-2"),
+            _ => throw new TradeProofException("UNREGISTERED_WORK_TYPE")
+        };
 
     public IReadOnlyList<AuditEventRecord> AuditEvents
     {
@@ -656,7 +664,7 @@ public sealed class TradeProofApp(ITradeProofClock clock)
 
     private TenantControlJobRecord EnqueueTenantWorkCore(string workspaceId, string workType, string subjectType, string subjectKeyJson, string payloadJson, string operationKey)
     {
-        if (workType != ContractVersions.ProductMeasurementTimeout)
+        if (!ContractVersions.RegisteredWorkTypes.Contains(workType, StringComparer.Ordinal))
         {
             throw new TradeProofException("UNREGISTERED_WORK_TYPE");
         }

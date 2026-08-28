@@ -38,8 +38,8 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-27 - Phase 1")) {
-    throw "CHANGELOG.md must keep the newest Phase 1 entry at the top."
+if ($changelog -notmatch "## 2026-08-27 - Phase 1: tenant foundation and Quick Plan") {
+    throw "CHANGELOG.md must keep the Phase 1 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/TradeProofContracts.cs" 'tenant_control_job_payload_v1'

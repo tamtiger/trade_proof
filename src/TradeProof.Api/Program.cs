@@ -1,3 +1,4 @@
+using System.Text;
 using TradeProof.Application.Foundation;
 using TradeProof.Domain.Foundation;
 
@@ -16,14 +17,27 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-1"
+    phase = "phase-2"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-1" },
-    paths = new[] { "/api/bootstrap", "/api/setup-presets", "/api/plans/arm", "/api/product-measurements/start" }
+    info = new { title = "TradeProof API", version = "phase-2" },
+    paths = new[]
+    {
+        "/api/bootstrap",
+        "/api/setup-presets",
+        "/api/plans/arm",
+        "/api/product-measurements/start",
+        "/api/imports/reserve",
+        "/api/imports/{objectIngestReservationId}/record-bytes",
+        "/api/imports/{objectIngestReservationId}/transfer",
+        "/api/uploads/{uploadId}/validate",
+        "/api/uploads/{uploadId}/purge",
+        "/api/imports/confirm",
+        "/api/imports/{importBatchId}/progress"
+    }
 }));
 
 var api = app.MapGroup("/api").WithTags("TradeProof");
@@ -195,6 +209,102 @@ api.MapPost("/product-measurements/timeout", async (HttpContext http, TradeProof
         : Results.Unauthorized();
 });
 
+api.MapPost("/imports/reserve", async (
+    ReserveRawUploadRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.ReserveRawUploadAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/imports/{objectIngestReservationId}/record-bytes", async (
+    string objectIngestReservationId,
+    RecordUploadBytesApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.RecordReservedBytesAsync(actor.Value!, new RecordReservedBytesRequest(
+            objectIngestReservationId,
+            request.WriteCapabilityId,
+            Encoding.UTF8.GetBytes(request.CsvText),
+            request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/imports/{objectIngestReservationId}/transfer", async (
+    string objectIngestReservationId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.TransferRawUploadAsync(actor.Value!, new TransferRawUploadRequest(objectIngestReservationId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/uploads/{uploadId}/validate", async (
+    string uploadId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ValidateUploadAsync(actor.Value!, new ValidateUploadRequest(uploadId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/uploads/{uploadId}/purge", async (
+    string uploadId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.PurgeUploadAsync(actor.Value!, new PurgeUploadRequest(uploadId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/object-ingest/finalize", async (HttpContext http, TradeProofApp tradeProof, CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? Results.Ok(new { finalized = await tradeProof.FinalizeObjectIngestReservationsAsync(actor.Value!, ct) })
+        : Results.Unauthorized();
+});
+
+api.MapPost("/imports/confirm", async (
+    ConfirmImportRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded ? ToHttp(await tradeProof.ConfirmImportAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapGet("/imports/{importBatchId}/progress", async (
+    string importBatchId,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.GetImportProgressAsync(actor.Value!, importBatchId, ct))
+        : Results.Unauthorized();
+});
+
 app.Run();
 
 static ManagedIdentity? ReadManagedIdentity(HttpContext http)
@@ -220,6 +330,7 @@ static IResult ToHttp<T>(CommandResult<T> result) =>
         : Results.BadRequest(new { code = result.ErrorCode });
 
 public sealed record IdempotentApiRequest(string IdempotencyKey);
+public sealed record RecordUploadBytesApiRequest(string WriteCapabilityId, string CsvText, string IdempotencyKey);
 public sealed record ReviseSetupPresetApiRequest(string Label, IReadOnlyList<ChecklistItemInput> Checklist, string IdempotencyKey);
 public sealed record RevisePlanApiRequest(
     string SetupPresetRevisionId,

@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-27 - Phase 2: secure ingestion
+
+- Added reserve-before-write RAW_UPLOAD ingestion, single-use write capability, conditional provider write, upload transfer, validation and purge chains in the local harness.
+- Added Binance Spot CSV preview validation with UTF-8/header/size/row hard limits, sanitized `import_preview_v1` summaries and ConfirmImport-to-IMPORT idempotency.
+- Added staging/progress shell, import UI workflow, Phase 2 migration contract, tests, artifact verifier and CI script while keeping Phase 0/1 checks green.
+
 ## 2026-08-27 - Phase 1: tenant foundation and Quick Plan
 
 - Added managed-development identity bootstrap with tenant-scoped User, Workspace, TradingAccount, system OTHER setup preset, idempotency receipts and PRE_AUTH/POST_AUTH audit boundaries.

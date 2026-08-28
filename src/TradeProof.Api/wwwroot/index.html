@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>TradeProof Quick Plan</title>
+  <title>TradeProof</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
@@ -11,13 +11,18 @@
     <section class="workspace-bar" aria-label="Workspace">
       <div>
         <p class="eyebrow">TradeProof</p>
-        <h1>Quick Plan</h1>
+        <h1>Quick Plan & Import</h1>
       </div>
       <div class="status-pill" id="workspaceStatus">Đang kết nối</div>
     </section>
 
     <section class="layout">
-      <form class="plan-panel" id="planForm">
+      <form class="panel plan-panel" id="planForm">
+        <header class="panel-header">
+          <h2>Quick Plan</h2>
+          <span id="planState">Chưa arm</span>
+        </header>
+
         <div class="field-row">
           <label>
             <span>Symbol</span>
@@ -64,18 +69,53 @@
           <button type="submit">Arm plan</button>
           <button type="button" id="practiceButton">Practice run</button>
         </div>
-        <p class="error" id="errorText" role="status"></p>
       </form>
 
-      <section class="state-panel" aria-label="Plan state">
+      <section class="panel import-panel" aria-label="Import CSV">
+        <header class="panel-header">
+          <h2>Import CSV</h2>
+          <span id="importState">Chưa reserve</span>
+        </header>
+
+        <label>
+          <span>CSV</span>
+          <textarea id="csvText" rows="8" spellcheck="false"></textarea>
+        </label>
+
+        <div class="actions import-actions">
+          <button type="button" id="reserveImportButton">Reserve</button>
+          <button type="button" id="validateImportButton" disabled>Validate</button>
+          <button type="button" id="confirmImportButton" disabled>Confirm</button>
+          <button type="button" id="purgeUploadButton" disabled>Purge</button>
+        </div>
+
+        <ol class="timeline" id="importTimeline">
+          <li data-step="reserve">Reserve</li>
+          <li data-step="write">Write</li>
+          <li data-step="validate">Validate</li>
+          <li data-step="confirm">Confirm</li>
+          <li data-step="purge">Purge</li>
+        </ol>
+
+        <dl class="preview-grid">
+          <div><dt>Upload</dt><dd id="uploadId">-</dd></div>
+          <div><dt>Preview</dt><dd id="previewId">-</dd></div>
+          <div><dt>Rows</dt><dd id="previewRows">-</dd></div>
+          <div><dt>Symbols</dt><dd id="previewSymbols">-</dd></div>
+          <div><dt>Batch</dt><dd id="batchId">-</dd></div>
+          <div><dt>Progress</dt><dd id="progressText">-</dd></div>
+        </dl>
+      </section>
+
+      <section class="panel state-panel" aria-label="Trạng thái">
         <h2>Trạng thái</h2>
         <dl>
           <div><dt>Workspace</dt><dd id="workspaceId">-</dd></div>
           <div><dt>Trading account</dt><dd id="accountId">-</dd></div>
-          <div><dt>Plan</dt><dd id="planState">Chưa arm</dd></div>
           <div><dt>Submitted</dt><dd id="submittedAt">-</dd></div>
           <div><dt>Expiry</dt><dd id="expiresAt">-</dd></div>
         </dl>
+        <p class="error" id="errorText" role="status"></p>
       </section>
     </section>
   </main>

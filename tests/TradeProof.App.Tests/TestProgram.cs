@@ -16,7 +16,12 @@ public static class TestProgram
             await Phase1Tests.Run();
         }
 
-        if (phase is not ("all" or "phase0" or "phase1"))
+        if (phase is "all" or "phase2")
+        {
+            await Phase2Tests.Run();
+        }
+
+        if (phase is not ("all" or "phase0" or "phase1" or "phase2"))
         {
             throw new ArgumentException($"Unknown test phase '{phase}'.");
         }
