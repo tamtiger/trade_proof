@@ -616,7 +616,8 @@ public sealed partial class TradeProofApp
                     batch.AccountingPendingRows,
                     batch.QuarantinedRows,
                     preview.SafeErrors,
-                    ImportRowDispositions)));
+                    ImportRowDispositions,
+                    BuildImportEpisodeSummaries(batch.ImportBatchId))));
             }
             catch (TradeProofException ex)
             {
@@ -815,7 +816,10 @@ public sealed partial class TradeProofApp
     {
         get
         {
-            return 0;
+            lock (_gate)
+            {
+                return _importRows.Count;
+            }
         }
     }
 

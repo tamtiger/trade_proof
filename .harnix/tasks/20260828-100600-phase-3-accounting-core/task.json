@@ -1,0 +1,289 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260828-100600-phase-3-accounting-core",
+  "title": "Phase 3: episode and accounting core",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 3 theo `TP-PLAN`: bật IMPORT consumer trong local harness để tạo ImportRow, NormalizedFill, TradeEpisodeProjection, FeeConversion quote/base, accounting ledger WAC, plan-proof cơ bản, reconciliation progress/UI và validation Phase 3.",
+  "nonGoals": [
+    "Không triển khai Binance market-data adapter, third-asset market-bar conversion đầy đủ, ContextSnapshot hoặc no-lookahead suite của Phase 4.",
+    "Không triển khai Episode Review, screenshot attachment pipeline, metric engine, dashboard drill-down, Weekly Lab, export/deletion hoặc AI của Phase 5+.",
+    "Không thay contract v1 đã đóng băng cho header CSV, plan decimal grammar, work-control foundation hoặc import preview semantics."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Domain/application contracts có exact version literals Phase 3 (`normalized_fill_v1`, `episode_projection_v1`, `plan_proof_v1`, `fee_conversion_v1`, `wac_episode_v1`) và DTO/records cho ImportRow, NormalizedFill, FeeConversion, TradeEpisodeProjection, EpisodeFillAllocation, AccountingLedgerEntry, plan proof và accounting progress mà vẫn giữ Phase 2 preview/confirm zero-row boundary.",
+      "status": "met",
+      "evidenceIds": [
+        "phase3-scope-review-pass-20260828",
+        "phase3-app-tests-pass-20260828",
+        "phase3-artifact-review-pass-20260828",
+        "phase3-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "`IMPORT` consumer local xử lý confirmed ImportBatch idempotent: parse upload bytes, tạo đúng một ImportRow cho mỗi non-blank data row, admit/dedup NormalizedFill bằng canonical signature/dedup key, quarantine row lỗi hoặc long-only violation với safe reason, terminalize IMPORT fence và cập nhật counters sao cho bốn disposition cân bằng `data_rows`.",
+      "status": "met",
+      "evidenceIds": [
+        "phase3-scope-review-pass-20260828",
+        "phase3-app-tests-pass-20260828",
+        "phase3-artifact-review-pass-20260828",
+        "phase3-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Episode state machine và WAC ledger xử lý BUY, BUY thêm, partial SELL và SELL-to-zero; quote/base fee conversion tạo FeeConversion exact, third-asset fee thiếu path làm row `ACCOUNTING_PENDING` và episode `FEE_CONVERSION_MISSING`, không tạo position âm hoặc hai OPEN episode active cho cùng account/symbol.",
+      "status": "met",
+      "evidenceIds": [
+        "phase3-scope-review-pass-20260828",
+        "phase3-app-tests-pass-20260828",
+        "phase3-artifact-review-pass-20260828",
+        "phase3-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "Plan-to-first-fill auto proof tạo `VERIFIED`, `AMBIGUOUS` hoặc `UNMATCHED` theo source interval/server timestamp, consume plan idempotent khi auto-associated, freeze revision chỉ cho VERIFIED, và không bao giờ nâng ambiguous/late/unmatched thành verified trong Phase 3 surface.",
+      "status": "met",
+      "evidenceIds": [
+        "phase3-scope-review-pass-20260828",
+        "phase3-app-tests-pass-20260828",
+        "phase3-artifact-review-pass-20260828",
+        "phase3-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "API/UI import progress sau confirm có thể chạy worker, hiển thị counters, batch status, safe row errors và episode/accounting summary bằng tiếng Việt, không thêm exchange API key/private sync/live sync/generic mapper hoặc copy khuyến nghị giao dịch.",
+      "status": "met",
+      "evidenceIds": [
+        "phase3-scope-review-pass-20260828",
+        "phase3-app-tests-pass-20260828",
+        "phase3-artifact-review-pass-20260828",
+        "phase3-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-006",
+      "text": "Phase 3 migration contract, tests, verifier, local CI và CHANGELOG được cập nhật; Phase 0/1/2 checks vẫn xanh, secret/bin-obj guard không báo lỗi và repo sẵn sàng commit `feat: complete phase 3 accounting core`.",
+      "status": "met",
+      "evidenceIds": [
+        "phase3-scope-review-pass-20260828",
+        "phase3-app-tests-pass-20260828",
+        "phase3-artifact-review-pass-20260828",
+        "phase3-local-ci-pass-20260828"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "TradeProof.sln",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "src/TradeProof.Api",
+    "src/TradeProof.Api/wwwroot",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/PRODUCT_REQUIREMENTS.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase3-scope-review",
+      "description": "Đọc lại TP-PLAN Week 3 và TP-ACC sections về NormalizedFill, episode state, fee conversion, WAC, plan proof và row disposition trước khi edit.",
+      "command": "Get-Content -Raw docs/IMPORT_AND_ACCOUNTING.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        "@task-contract",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/PRODUCT_REQUIREMENTS.md"
+      ]
+    },
+    {
+      "id": "phase3-app-tests",
+      "description": "Chạy C# harness Phase 3 để chứng minh IMPORT consumer, row disposition balance, NormalizedFill/episode/ledger/WAC/fee conversion/plan proof và regression Phase 0/1/2.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase3",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "tests/TradeProof.App.Tests"
+      ]
+    },
+    {
+      "id": "phase3-artifact-review",
+      "description": "Kiểm artifact Phase 3: migration/schema literals, API/UI surface, verifier, CHANGELOG và không có prohibited import/trading-signal surface.",
+      "command": "pwsh -NoProfile -File tools/verify-phase3.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase3-local-ci",
+      "description": "Chạy local CI Phase 3 gồm restore/build, Phase 0/1/2/3 runners, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase3.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "result": "fail",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase3Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs"
+      ],
+      "summary": "RED: Phase 3 build failed because ProcessImportRequest, ProcessImportAsync and accounting projection/ledger read models did not exist yet.",
+      "id": "phase3-red-build-missing-contracts-20260828",
+      "recordedAt": "2026-08-28T10:19:56.8808787+07:00",
+      "exitCode": 1,
+      "checkId": "phase3-app-tests"
+    },
+    {
+      "recordedAt": "2026-08-28T10:21:33.6858860+07:00",
+      "summary": "TP-PLAN/TP-ACC scope review pass: Phase 3 bounded to IMPORT consumer, NormalizedFill, episode state, WAC ledger, plan proof and progress/UI; Phase 4+ context/review/export/AI remain out of scope.",
+      "id": "phase3-scope-review-pass-20260828",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/PRODUCT_REQUIREMENTS.md",
+        "docs/ACCEPTANCE_TESTS.md"
+      ],
+      "inputDigest": "397b12c8639a569c64281311ef1aebfb383d6fcb389cb462511e0b3243fd337c",
+      "exitCode": 0,
+      "result": "pass",
+      "checkId": "phase3-scope-review"
+    },
+    {
+      "recordedAt": "2026-08-28T10:21:33.6859711+07:00",
+      "summary": "C# Phase 3 harness pass: ProcessImportAsync admits rows, balances disposition counters, builds NormalizedFill/FeeConversion/episode/WAC ledger records, handles long-only quarantine, third-fee pending and plan-proof verified/ambiguous cases.",
+      "id": "phase3-app-tests-pass-20260828",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase3Tests.cs",
+        "src/TradeProof.Application/Foundation/AccountingApp.cs",
+        "src/TradeProof.Domain/Foundation/AccountingContracts.cs"
+      ],
+      "inputDigest": "af5409d690be856ae59e4725c0b8be9be761c200be5963903358990b7a6db070",
+      "exitCode": 0,
+      "result": "pass",
+      "checkId": "phase3-app-tests"
+    },
+    {
+      "recordedAt": "2026-08-28T10:21:33.6860021+07:00",
+      "summary": "tools/verify-phase3.ps1 pass for Phase 3 migration/schema literals, API/UI process surface, tests, CI wiring, changelog and prohibited import/trading-signal surface scan.",
+      "id": "phase3-artifact-review-pass-20260828",
+      "artifactPaths": [
+        "tools/verify-phase3.ps1",
+        "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "a3ddc2b251065e1f9d62baed1188ebe8595d96666ab16e0efd10b5ba0a525425",
+      "exitCode": 0,
+      "result": "pass",
+      "checkId": "phase3-artifact-review"
+    },
+    {
+      "recordedAt": "2026-08-28T10:21:33.6860375+07:00",
+      "summary": "tools/test-phase3.ps1 pass: restore/build, Phase 0/1/2/3 runners, Phase 0/1/2/3 verifiers and secret/bin-obj guard all passed.",
+      "id": "phase3-local-ci-pass-20260828",
+      "artifactPaths": [
+        "tools/test-phase3.ps1",
+        ".github/workflows/ci.yml",
+        "tests/TradeProof.App.Tests",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "0346b2443f59798aa08fc54750f0c283e8c1ad145c5077bb6bc9e22b2d44febb",
+      "exitCode": 0,
+      "result": "pass",
+      "checkId": "phase3-local-ci"
+    }
+  ],
+  "createdAt": "2026-08-28T10:06:00+07:00",
+  "updatedAt": "2026-08-28T03:24:11.051Z",
+  "completedAt": "2026-08-28T03:24:11.051Z"
+}

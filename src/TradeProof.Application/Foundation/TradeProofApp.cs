@@ -558,7 +558,7 @@ public sealed partial class TradeProofApp(ITradeProofClock clock)
             ContractVersions.ObjectIngestFinalize => new ProviderDispatchPlan(true, "local:object-ingest-finalize"),
             ContractVersions.UploadValidate => new ProviderDispatchPlan(false, "internal:upload-validate"),
             ContractVersions.UploadPurge => new ProviderDispatchPlan(true, "local:upload-purge"),
-            ContractVersions.Import => new ProviderDispatchPlan(false, "internal:import-not-active-phase-2"),
+            ContractVersions.Import => new ProviderDispatchPlan(false, "internal:import"),
             _ => throw new TradeProofException("UNREGISTERED_WORK_TYPE")
         };
 

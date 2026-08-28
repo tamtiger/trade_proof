@@ -43,8 +43,11 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-27 - Phase 2")) {
-    throw "CHANGELOG.md must keep the newest Phase 2 entry at the top."
+if (-not $changelog.StartsWith("# Changelog`n`n")) {
+    throw "CHANGELOG.md must keep the changelog title at the top."
+}
+if ($changelog -notmatch "## 2026-08-27 - Phase 2: secure ingestion") {
+    throw "CHANGELOG.md must keep the Phase 2 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/IngestionContracts.cs" 'object_ingest_reservation_v1'
@@ -95,7 +98,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_inge
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql" "CHECK \(adapter_contract_version = 'binance_spot_trade_history_csv_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql" "FOREIGN KEY \(workspace_id, trading_account_id\)"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-2'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[23]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/imports/reserve'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/imports/\{objectIngestReservationId\}/record-bytes'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/uploads/\{uploadId\}/validate'

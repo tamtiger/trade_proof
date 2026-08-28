@@ -1,0 +1,561 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 1,
+  "taskId": "20260828-100600-phase-3-accounting-core",
+  "snapshots": [
+    {
+      "evidenceId": "phase3-app-tests-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-100600-phase-3-accounting-core",
+      "checkId": "phase3-app-tests",
+      "taskContractHash": "0b30bc288c03ebd77821e44a275a33a32bb60bb3356801b85cbd6faa0e57cb1a",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/plan.md",
+          "sha256": "e6803210085c4375b2b48ad5ea102abde0b6473ede4289e133250a31a74545a5",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/prd.md",
+          "sha256": "21f98a0bab0103b213487815bbdd2731613a37749a5e75213a41fa9345ae7264",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/AccountingApp.cs",
+          "sha256": "dcc55e846f83ecb823a96b00c83b10647b32ed22b0212ca8482953298973c6b3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/IngestionApp.cs",
+          "sha256": "411ddf3a0180a94ae609efbbddd56dbeb1694ef4aedf5936d5e78e9f7fd1f86b",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "13a4ef003ffb7d364074aa40def52d2a64185c478a43c31cf4be9f1302d0c388",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/TradeProof.Application.csproj",
+          "sha256": "cbce11b7ef6c20f6727723d2c8e914df4188954998e36e86cafb84a7cfd62e54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/AccountingContracts.cs",
+          "sha256": "0ab6cb99c81f625d6955cd00d71db9c5d3e115d1a54de0b91afba333dd37b3ff",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/IngestionContracts.cs",
+          "sha256": "e28c9135ea5d05331ec4e16ac9d5620708ae97a75cff19a28a57b90b7371d491",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/TradeProof.Domain.csproj",
+          "sha256": "4cde5171342fce73db3652a2b74c391758b4be1dc6feea1b23655fc8a9917f2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase2Tests.cs",
+          "sha256": "9ea27fa8ebea53232c82559bcfa1ab809b1db5c0c40365dd66ffceae3aa9c7fe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase3Tests.cs",
+          "sha256": "e86096ae43aa59286340c437e58e1cb357289d5f3a8bdc06ce9ca7ebd7c49514",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "44789d75761476a30acf778699c1ccd6ae6524d083862acb4ce52c1bc0e12c6d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "af5409d690be856ae59e4725c0b8be9be761c200be5963903358990b7a6db070"
+    },
+    {
+      "evidenceId": "phase3-artifact-review-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-100600-phase-3-accounting-core",
+      "checkId": "phase3-artifact-review",
+      "taskContractHash": "0b30bc288c03ebd77821e44a275a33a32bb60bb3356801b85cbd6faa0e57cb1a",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "dc668bf447d84d98e50c32dd3194aac8b395df1d0b207b4722cda3dc330d04cd",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/plan.md",
+          "sha256": "e6803210085c4375b2b48ad5ea102abde0b6473ede4289e133250a31a74545a5",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/prd.md",
+          "sha256": "21f98a0bab0103b213487815bbdd2731613a37749a5e75213a41fa9345ae7264",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "162a6069bfac499b8009594c2a3f0eb911b0c90d30e3f39e639184cf06f9c256",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "80dc37f79016f7ba31189aa1ef95b07c4e5df2ef3890ab983f81238aa4b0b0aa",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Properties/launchSettings.json",
+          "sha256": "246e9fac3367aa3174a3ac0694f258f8f60f58343cc520296bf42d5acee17388",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "54700fd70a09481dbe60f6e3b2b1bc8866835fe7574b98f542f9e124a44bd878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/appsettings.Development.json",
+          "sha256": "73f95f9e0ceb205fc1c4dc50c07697fcfa29d7087868c2aef1d504cb38c771ec",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/appsettings.json",
+          "sha256": "200332b434757a0054a3d356c91cde01f2c48712be8aa2bcb0f3e973619f06e3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/index.html",
+          "sha256": "1e32fffee07c383c71ede1e07d40300735c317c484f6ac7c1272949b1c90aefe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/quick-plan.js",
+          "sha256": "7fd44fb43ea1a27cc35e979a144375a994f6a48d31c5b8fd4510799e6c4c0357",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/styles.css",
+          "sha256": "473849aed6b38ed2c65613e9fd4f1e87f5b8dde64a0888d80c5e9b788356ded8",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/AccountingApp.cs",
+          "sha256": "dcc55e846f83ecb823a96b00c83b10647b32ed22b0212ca8482953298973c6b3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/IngestionApp.cs",
+          "sha256": "411ddf3a0180a94ae609efbbddd56dbeb1694ef4aedf5936d5e78e9f7fd1f86b",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "13a4ef003ffb7d364074aa40def52d2a64185c478a43c31cf4be9f1302d0c388",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/TradeProof.Application.csproj",
+          "sha256": "cbce11b7ef6c20f6727723d2c8e914df4188954998e36e86cafb84a7cfd62e54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/AccountingContracts.cs",
+          "sha256": "0ab6cb99c81f625d6955cd00d71db9c5d3e115d1a54de0b91afba333dd37b3ff",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/IngestionContracts.cs",
+          "sha256": "e28c9135ea5d05331ec4e16ac9d5620708ae97a75cff19a28a57b90b7371d491",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/TradeProof.Domain.csproj",
+          "sha256": "4cde5171342fce73db3652a2b74c391758b4be1dc6feea1b23655fc8a9917f2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+          "sha256": "949a7f7266362bcf3552eb10ffe183032dd5b941a526753a35eb9b9dc6fec8c3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql",
+          "sha256": "a9fe22833f3cc8cdc640222f146bc5869c7669c4e86f1c0bd439fc7110a93a68",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql",
+          "sha256": "d9d2d41630b4ea6e471ac8154ace277b2edd61ac3f1186407be29d967e364d9e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/TradeProof.Infrastructure.csproj",
+          "sha256": "85ebd493d20918c236cc06c28d2b4b79976b882118d4533c2d116dc138275d2a",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase2Tests.cs",
+          "sha256": "9ea27fa8ebea53232c82559bcfa1ab809b1db5c0c40365dd66ffceae3aa9c7fe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase3Tests.cs",
+          "sha256": "e86096ae43aa59286340c437e58e1cb357289d5f3a8bdc06ce9ca7ebd7c49514",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "44789d75761476a30acf778699c1ccd6ae6524d083862acb4ce52c1bc0e12c6d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "92eeeaab4b594774c34e3b29763345536d8e19db568370602e3d927a541c4e3a",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase1.ps1",
+          "sha256": "78354dc8ecea101fa8b3039ead4f65d942909978da65861738338e7d6dd311e5",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase2.ps1",
+          "sha256": "a9c6cb61c928a4c9ce4c30ad5071cc84fd923de6730e773f2a99ed984e07ef2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase3.ps1",
+          "sha256": "56b6eca24838657715fc3448c42f99098b2999591eca3a9a584eea8339060da1",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "4e7cb3262e7927997409016c2b26ba3b00c6693435ed2b9be37548a86bb79228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "144d7cc6eeec87a9a9b07e98b6ba96f84cc6905c486b99dd1def7fff27ebf407",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase2.ps1",
+          "sha256": "db6925e8ecb97b91b4deda8f91289e831dd0c566f7e86f6556fa3afdedc48d91",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase3.ps1",
+          "sha256": "66508592128c987c847ac089d7577b280251261da3bf4b6225875d7c72554923",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "a3ddc2b251065e1f9d62baed1188ebe8595d96666ab16e0efd10b5ba0a525425"
+    },
+    {
+      "evidenceId": "phase3-local-ci-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-100600-phase-3-accounting-core",
+      "checkId": "phase3-local-ci",
+      "taskContractHash": "0b30bc288c03ebd77821e44a275a33a32bb60bb3356801b85cbd6faa0e57cb1a",
+      "entries": [
+        {
+          "path": ".github/workflows/ci.yml",
+          "sha256": "dc668bf447d84d98e50c32dd3194aac8b395df1d0b207b4722cda3dc330d04cd",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/plan.md",
+          "sha256": "e6803210085c4375b2b48ad5ea102abde0b6473ede4289e133250a31a74545a5",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/prd.md",
+          "sha256": "21f98a0bab0103b213487815bbdd2731613a37749a5e75213a41fa9345ae7264",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "CHANGELOG.md",
+          "sha256": "162a6069bfac499b8009594c2a3f0eb911b0c90d30e3f39e639184cf06f9c256",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "Directory.Build.props",
+          "sha256": "e38b9057317c4038fc87da48e51acb4163de3ca0799b3f87f9e484f77063aa54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "TradeProof.sln",
+          "sha256": "d2bf2b9ff6bdd8b9751f0c98c06c66aff622728c3143dd292238e84c4a763da3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Program.cs",
+          "sha256": "80dc37f79016f7ba31189aa1ef95b07c4e5df2ef3890ab983f81238aa4b0b0aa",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/Properties/launchSettings.json",
+          "sha256": "246e9fac3367aa3174a3ac0694f258f8f60f58343cc520296bf42d5acee17388",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/TradeProof.Api.csproj",
+          "sha256": "54700fd70a09481dbe60f6e3b2b1bc8866835fe7574b98f542f9e124a44bd878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/appsettings.Development.json",
+          "sha256": "73f95f9e0ceb205fc1c4dc50c07697fcfa29d7087868c2aef1d504cb38c771ec",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/appsettings.json",
+          "sha256": "200332b434757a0054a3d356c91cde01f2c48712be8aa2bcb0f3e973619f06e3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/index.html",
+          "sha256": "1e32fffee07c383c71ede1e07d40300735c317c484f6ac7c1272949b1c90aefe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/quick-plan.js",
+          "sha256": "7fd44fb43ea1a27cc35e979a144375a994f6a48d31c5b8fd4510799e6c4c0357",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Api/wwwroot/styles.css",
+          "sha256": "473849aed6b38ed2c65613e9fd4f1e87f5b8dde64a0888d80c5e9b788356ded8",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/AccountingApp.cs",
+          "sha256": "dcc55e846f83ecb823a96b00c83b10647b32ed22b0212ca8482953298973c6b3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/IngestionApp.cs",
+          "sha256": "411ddf3a0180a94ae609efbbddd56dbeb1694ef4aedf5936d5e78e9f7fd1f86b",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/Foundation/TradeProofApp.cs",
+          "sha256": "13a4ef003ffb7d364074aa40def52d2a64185c478a43c31cf4be9f1302d0c388",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Application/TradeProof.Application.csproj",
+          "sha256": "cbce11b7ef6c20f6727723d2c8e914df4188954998e36e86cafb84a7cfd62e54",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/AccountingContracts.cs",
+          "sha256": "0ab6cb99c81f625d6955cd00d71db9c5d3e115d1a54de0b91afba333dd37b3ff",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/IngestionContracts.cs",
+          "sha256": "e28c9135ea5d05331ec4e16ac9d5620708ae97a75cff19a28a57b90b7371d491",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/Foundation/TradeProofContracts.cs",
+          "sha256": "5118428c1b362286c4dfdd149d9154e47ade2c42cbd0fd7a9e18b57ad4d3bf83",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Domain/TradeProof.Domain.csproj",
+          "sha256": "4cde5171342fce73db3652a2b74c391758b4be1dc6feea1b23655fc8a9917f2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/001_phase1_foundation.sql",
+          "sha256": "949a7f7266362bcf3552eb10ffe183032dd5b941a526753a35eb9b9dc6fec8c3",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/002_phase2_secure_ingestion.sql",
+          "sha256": "a9fe22833f3cc8cdc640222f146bc5869c7669c4e86f1c0bd439fc7110a93a68",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql",
+          "sha256": "d9d2d41630b4ea6e471ac8154ace277b2edd61ac3f1186407be29d967e364d9e",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "src/TradeProof.Infrastructure/TradeProof.Infrastructure.csproj",
+          "sha256": "85ebd493d20918c236cc06c28d2b4b79976b882118d4533c2d116dc138275d2a",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase0Tests.cs",
+          "sha256": "4d8e6e84f313e36d4f8ac6aae3de12b33d47180acc31e02e2c84fb93a772a903",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase1Tests.cs",
+          "sha256": "695f8c95244f1466f8f8ed9ba6ca1cb5ac0a0d1541594f41fa6fbe3c42d0359c",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase2Tests.cs",
+          "sha256": "9ea27fa8ebea53232c82559bcfa1ab809b1db5c0c40365dd66ffceae3aa9c7fe",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/Phase3Tests.cs",
+          "sha256": "e86096ae43aa59286340c437e58e1cb357289d5f3a8bdc06ce9ca7ebd7c49514",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TestProgram.cs",
+          "sha256": "44789d75761476a30acf778699c1ccd6ae6524d083862acb4ce52c1bc0e12c6d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tests/TradeProof.App.Tests/TradeProof.App.Tests.csproj",
+          "sha256": "8a2bbb8fcde4804473d041cb0b3f6585cf6e402139ff04570a651ba91abf2878",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase0.ps1",
+          "sha256": "92eeeaab4b594774c34e3b29763345536d8e19db568370602e3d927a541c4e3a",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase1.ps1",
+          "sha256": "78354dc8ecea101fa8b3039ead4f65d942909978da65861738338e7d6dd311e5",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase2.ps1",
+          "sha256": "a9c6cb61c928a4c9ce4c30ad5071cc84fd923de6730e773f2a99ed984e07ef2d",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/test-phase3.ps1",
+          "sha256": "56b6eca24838657715fc3448c42f99098b2999591eca3a9a584eea8339060da1",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase0.ps1",
+          "sha256": "4e7cb3262e7927997409016c2b26ba3b00c6693435ed2b9be37548a86bb79228",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase1.ps1",
+          "sha256": "144d7cc6eeec87a9a9b07e98b6ba96f84cc6905c486b99dd1def7fff27ebf407",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase2.ps1",
+          "sha256": "db6925e8ecb97b91b4deda8f91289e831dd0c566f7e86f6556fa3afdedc48d91",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "tools/verify-phase3.ps1",
+          "sha256": "66508592128c987c847ac089d7577b280251261da3bf4b6225875d7c72554923",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "0346b2443f59798aa08fc54750f0c283e8c1ad145c5077bb6bc9e22b2d44febb"
+    },
+    {
+      "evidenceId": "phase3-scope-review-pass-20260828",
+      "generator": "harnix",
+      "schemaVersion": 2,
+      "taskId": "20260828-100600-phase-3-accounting-core",
+      "checkId": "phase3-scope-review",
+      "taskContractHash": "0b30bc288c03ebd77821e44a275a33a32bb60bb3356801b85cbd6faa0e57cb1a",
+      "entries": [
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/plan.md",
+          "sha256": "e6803210085c4375b2b48ad5ea102abde0b6473ede4289e133250a31a74545a5",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": ".harnix/tasks/20260828-100600-phase-3-accounting-core/prd.md",
+          "sha256": "21f98a0bab0103b213487815bbdd2731613a37749a5e75213a41fa9345ae7264",
+          "normalizer": "planning-contract-v1"
+        },
+        {
+          "path": "docs/ACCEPTANCE_TESTS.md",
+          "sha256": "afba565f0637ea53433fb7aa64251b6d08bb244a3c41f3e08fa5ad90c19b3785",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/IMPLEMENTATION_PLAN.md",
+          "sha256": "2e3e94dd4d879745b110d5c2db0f34e22a8a72a88a3d1ee393838c137fd0c943",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/IMPORT_AND_ACCOUNTING.md",
+          "sha256": "8112619e834471c29069df75e3a01129f36e682bb4af7b4ecdc84aa64d881f92",
+          "normalizer": "raw-v1"
+        },
+        {
+          "path": "docs/PRODUCT_REQUIREMENTS.md",
+          "sha256": "782b7ee223c1a7baf46da42aa8631bcdf1305d032b30beea2f58c9043318c918",
+          "normalizer": "raw-v1"
+        }
+      ],
+      "inputDigest": "397b12c8639a569c64281311ef1aebfb383d6fcb389cb462511e0b3243fd337c"
+    }
+  ]
+}

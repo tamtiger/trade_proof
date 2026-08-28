@@ -8,8 +8,9 @@ const headers = {
 const adapterContractVersion = "binance_spot_trade_history_csv_v1";
 const sampleCsv = [
   "Date(UTC),Pair,Side,Price,Executed,Amount,Fee",
-  "2026-08-27 09:01:00,BTCUSDT,BUY,100.50,0.10,10.05,0.0001 BNB",
-  "2026-08-27 09:02:00,ETHUSDT,SELL,2500.00,0.20,500.00,0.0002 ETH"
+  "2026-08-27 09:01:00,BTCUSDT,BUY,101,1,101,1 USDT",
+  "2026-08-27 09:02:00,BTCUSDT,SELL,111,0.4,44.4,0.004 BTC",
+  "2026-08-27 09:03:00,BTCUSDT,SELL,121,0.6,72.6,0.5 USDT"
 ].join("\n");
 
 const errorMessages = {
@@ -20,6 +21,9 @@ const errorMessages = {
   CSV_PARSE_ERROR: "CSV không parse được theo RFC4180.",
   IMPORT_PREVIEW_EXPIRED: "Preview đã hết hạn.",
   IMPORT_PREVIEW_HASH_MISMATCH: "Preview hash không khớp.",
+  SELL_WITHOUT_OPEN_POSITION: "SELL không có vị thế LONG đang mở.",
+  SELL_EXCEEDS_POSITION: "SELL vượt quá quantity đang mở.",
+  FEE_CONVERSION_MISSING: "Fee third-asset chưa có conversion Phase 4.",
   WRITE_CAPABILITY_ALREADY_CONSUMED: "Write capability đã được dùng.",
   IDEMPOTENCY_CONFLICT: "Idempotency key đã dùng cho payload khác."
 };
@@ -35,6 +39,7 @@ const csvText = document.querySelector("#csvText");
 const reserveImportButton = document.querySelector("#reserveImportButton");
 const validateImportButton = document.querySelector("#validateImportButton");
 const confirmImportButton = document.querySelector("#confirmImportButton");
+const processImportButton = document.querySelector("#processImportButton");
 const purgeUploadButton = document.querySelector("#purgeUploadButton");
 
 async function api(path, options = {}) {
@@ -83,18 +88,22 @@ function renderImportFlow() {
   document.querySelector("#previewSymbols").textContent = importFlow.preview?.symbols?.join(", ") || "-";
   document.querySelector("#batchId").textContent = importFlow.batch?.importBatchId || "-";
   document.querySelector("#progressText").textContent = importFlow.progress
-    ? `${importFlow.progress.status}: ${importFlow.progress.reconciledRows}/${importFlow.progress.dataRows} reconciled`
+    ? `${importFlow.progress.status}: ${importFlow.progress.reconciledRows}/${importFlow.progress.dataRows} reconciled, ${importFlow.progress.accountingPendingRows} pending, ${importFlow.progress.quarantinedRows} quarantined`
+    : "-";
+  document.querySelector("#episodeText").textContent = importFlow.progress?.episodes?.length
+    ? importFlow.progress.episodes.map((episode) => `${episode.state} ${episode.planProofStatus}/${episode.accountingQuality}`).join(", ")
     : "-";
 
   validateImportButton.disabled = !importFlow.reservation || Boolean(importFlow.preview) || importFlow.upload?.state === "REJECTED";
   confirmImportButton.disabled = !importFlow.preview || Boolean(importFlow.batch);
+  processImportButton.disabled = !importFlow.batch || ["COMPLETE", "PARTIAL", "NEEDS_ATTENTION", "REJECTED"].includes(importFlow.progress?.status);
   purgeUploadButton.disabled = !(importFlow.upload || importFlow.transfer?.upload);
 }
 
 function resetImportFlow() {
   importFlow = {};
   document.querySelector("#importState").textContent = "Chưa reserve";
-  for (const step of ["reserve", "write", "validate", "confirm", "purge"]) {
+  for (const step of ["reserve", "write", "validate", "confirm", "process", "purge"]) {
     markStep(step, "pending");
   }
   renderImportFlow();
@@ -243,6 +252,23 @@ confirmImportButton.addEventListener("click", async () => {
     renderImportFlow();
   } catch (error) {
     errorText.textContent = `Không confirm được import: ${safeMessage(error)}`;
+  }
+});
+
+processImportButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  try {
+    importFlow.batch = await api(`/api/imports/${importFlow.batch.importBatchId}/process`, {
+      method: "POST",
+      body: JSON.stringify({ idempotencyKey: idempotencyKey("process") })
+    });
+    importFlow.progress = await api(`/api/imports/${importFlow.batch.importBatchId}/progress`);
+    document.querySelector("#importState").textContent = "Đã reconcile";
+    markStep("process", "done");
+    renderImportFlow();
+  } catch (error) {
+    errorText.textContent = `Không process được import: ${safeMessage(error)}`;
+    markStep("process", "error");
   }
 });
 

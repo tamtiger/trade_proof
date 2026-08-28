@@ -17,13 +17,13 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-2"
+    phase = "phase-3"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-2" },
+    info = new { title = "TradeProof API", version = "phase-3" },
     paths = new[]
     {
         "/api/bootstrap",
@@ -36,6 +36,7 @@ app.MapGet("/openapi.json", () => Results.Ok(new
         "/api/uploads/{uploadId}/validate",
         "/api/uploads/{uploadId}/purge",
         "/api/imports/confirm",
+        "/api/imports/{importBatchId}/process",
         "/api/imports/{importBatchId}/progress"
     }
 }));
@@ -291,6 +292,19 @@ api.MapPost("/imports/confirm", async (
 {
     CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
     return actor.Succeeded ? ToHttp(await tradeProof.ConfirmImportAsync(actor.Value!, request, ct)) : Results.Unauthorized();
+});
+
+api.MapPost("/imports/{importBatchId}/process", async (
+    string importBatchId,
+    IdempotentApiRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ProcessImportAsync(actor.Value!, new ProcessImportRequest(importBatchId, request.IdempotencyKey), ct))
+        : Results.Unauthorized();
 });
 
 api.MapGet("/imports/{importBatchId}/progress", async (

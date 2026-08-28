@@ -208,7 +208,8 @@ public sealed record ImportProgressResponse(
     int AccountingPendingRows,
     int QuarantinedRows,
     IReadOnlyList<SafeRowErrorRecord> SafeErrors,
-    IReadOnlyList<string> AllowedDispositions);
+    IReadOnlyList<string> AllowedDispositions,
+    IReadOnlyList<ImportEpisodeSummaryRecord> Episodes);
 
 public sealed record StagedFillRecord(
     string StagedFillId,

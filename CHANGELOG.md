@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-28 - Phase 3: episode and accounting core
+
+- Added Phase 3 accounting contracts, local IMPORT consumer, ImportRow/NormalizedFill admission, quote/base fee conversion, long-only quarantine and WAC episode ledger projections.
+- Added plan-proof resolution for opening fills, Phase 3 import processing API/UI progress, migration contract, tests, verifier and CI script.
+- Kept Phase 2 preview/confirm zero-business-row boundary intact while allowing confirmed IMPORT jobs to reconcile rows after an explicit process step.
+
 ## 2026-08-27 - Phase 2: secure ingestion
 
 - Added reserve-before-write RAW_UPLOAD ingestion, single-use write capability, conditional provider write, upload transfer, validation and purge chains in the local harness.
