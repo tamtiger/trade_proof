@@ -170,14 +170,14 @@ button:disabled {
   background: #0f766e;
 }
 
-.import-actions button:nth-child(5) {
+.import-actions button:nth-child(6) {
   background: #6b3546;
 }
 
 .timeline {
   display: grid;
   gap: 8px;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   list-style: none;
   margin: 16px 0;
   padding: 0;

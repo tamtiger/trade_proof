@@ -288,13 +288,17 @@ public sealed partial class TradeProofApp
         string? method;
         string? rate;
         string? value;
-        DateTimeOffset? asOfAt = fill.SourceTimeStart;
+        DateTimeOffset? asOfAt;
+        string? marketBarIdsJson = null;
+        string? marketBarSourceObservationIdsJson = null;
+        string? marketConversionCatalogVersion = null;
+        string? conversionPathJson = null;
 
         if (feeQty == 0)
         {
             status = "EXACT";
-            method = "EXACT";
-            rate = "0";
+            method = null;
+            rate = null;
             value = "0";
             asOfAt = null;
         }
@@ -304,6 +308,7 @@ public sealed partial class TradeProofApp
             method = "NATIVE_QUOTE";
             rate = "1";
             value = CanonicalDecimal(feeQty);
+            asOfAt = null;
         }
         else if (fill.FeeAsset == fill.BaseAsset)
         {
@@ -312,14 +317,31 @@ public sealed partial class TradeProofApp
             decimal fillRate = RoundScale18(ParseStoredDecimal(fill.GrossAmountQuote) / ParseStoredDecimal(fill.ExecutedQtyBase));
             rate = CanonicalDecimal(fillRate);
             value = CanonicalDecimal(RoundScale18(feeQty * fillRate));
+            asOfAt = null;
         }
         else
         {
-            status = "UNAVAILABLE";
-            method = null;
-            rate = null;
-            value = null;
-            asOfAt = null;
+            MarketFeeConversionResolution? marketResolution = ResolveMarketFeeConversion(fill, feeQty);
+            if (marketResolution is null)
+            {
+                status = "UNAVAILABLE";
+                method = null;
+                rate = null;
+                value = null;
+                asOfAt = null;
+            }
+            else
+            {
+                status = "DERIVED";
+                method = marketResolution.Method;
+                rate = marketResolution.Rate;
+                value = marketResolution.Value;
+                asOfAt = marketResolution.AsOfAt;
+                marketBarIdsJson = marketResolution.MarketBarIdsJson;
+                marketBarSourceObservationIdsJson = marketResolution.MarketBarSourceObservationIdsJson;
+                marketConversionCatalogVersion = marketResolution.MarketConversionCatalogVersion;
+                conversionPathJson = marketResolution.ConversionPathJson;
+            }
         }
 
         return new FeeConversionRecord(
@@ -335,6 +357,10 @@ public sealed partial class TradeProofApp
             rate,
             value,
             asOfAt,
+            marketBarIdsJson,
+            marketBarSourceObservationIdsJson,
+            marketConversionCatalogVersion,
+            conversionPathJson,
             ContractVersions.FeeConversion,
             Now,
             null);
@@ -393,6 +419,7 @@ public sealed partial class TradeProofApp
         _episodeProjections[episodeId].Add(build.Projection);
         _episodeAllocations.AddRange(build.Allocations);
         _accountingLedgerEntries.AddRange(build.LedgerEntries);
+        EnqueueContextForProjection(actor, build.Projection);
     }
 
     private ProjectionBuildResult BuildProjection(

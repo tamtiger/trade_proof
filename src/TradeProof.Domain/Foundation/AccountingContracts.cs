@@ -69,6 +69,10 @@ public sealed record FeeConversionRecord(
     string? RateQuotePerFeeAsset,
     string? FeeValueQuote,
     DateTimeOffset? AsOfAt,
+    string? MarketBarIdsJson,
+    string? MarketBarSourceObservationIdsJson,
+    string? MarketConversionCatalogVersion,
+    string? ConversionPathJson,
     string AlgorithmVersion,
     DateTimeOffset CreatedAt,
     DateTimeOffset? SupersededAt);

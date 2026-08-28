@@ -17,13 +17,13 @@ app.MapGet("/healthz", () => Results.Ok(new
 {
     status = "ok",
     service = "TradeProof.Api",
-    phase = "phase-3"
+    phase = "phase-4"
 }));
 
 app.MapGet("/openapi.json", () => Results.Ok(new
 {
     openapi = "3.1.0",
-    info = new { title = "TradeProof API", version = "phase-3" },
+    info = new { title = "TradeProof API", version = "phase-4" },
     paths = new[]
     {
         "/api/bootstrap",
@@ -37,7 +37,11 @@ app.MapGet("/openapi.json", () => Results.Ok(new
         "/api/uploads/{uploadId}/purge",
         "/api/imports/confirm",
         "/api/imports/{importBatchId}/process",
-        "/api/imports/{importBatchId}/progress"
+        "/api/imports/{importBatchId}/progress",
+        "/api/market/conversion-catalog",
+        "/api/market/bars",
+        "/api/context/compute",
+        "/api/context/manual-recompute"
     }
 }));
 
@@ -59,6 +63,22 @@ api.MapGet("/dashboard", async (HttpContext http, TradeProofApp tradeProof, Canc
     }
 
     return Results.Ok(await tradeProof.GetDashboardAsync(actor.Value!, ct));
+});
+
+api.MapPost("/market/conversion-catalog", async (
+    PublishMarketConversionCatalogRequest request,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    return ToHttp(await tradeProof.PublishMarketConversionCatalogAsync(request, ct));
+});
+
+api.MapPost("/market/bars", async (
+    RecordMarketBarsRequest request,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    return ToHttp(await tradeProof.RecordMarketBarsAsync(request, ct));
 });
 
 api.MapPost("/setup-presets", async (
@@ -316,6 +336,30 @@ api.MapGet("/imports/{importBatchId}/progress", async (
     CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
     return actor.Succeeded
         ? ToHttp(await tradeProof.GetImportProgressAsync(actor.Value!, importBatchId, ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/context/compute", async (
+    ComputeContextSnapshotsRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.ComputeContextSnapshotsAsync(actor.Value!, request, ct))
+        : Results.Unauthorized();
+});
+
+api.MapPost("/context/manual-recompute", async (
+    RequestManualContextRecomputeRequest request,
+    HttpContext http,
+    TradeProofApp tradeProof,
+    CancellationToken ct) =>
+{
+    CommandResult<ActorContext> actor = await ResolveActorAsync(http, tradeProof, ct);
+    return actor.Succeeded
+        ? ToHttp(await tradeProof.RequestManualContextRecomputeAsync(actor.Value!, request, ct))
         : Results.Unauthorized();
 });
 

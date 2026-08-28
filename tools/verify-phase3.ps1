@@ -41,8 +41,11 @@ foreach ($file in $requiredFiles) {
 }
 
 $changelog = Get-Content -Raw -LiteralPath "CHANGELOG.md"
-if (-not $changelog.StartsWith("# Changelog`n`n## 2026-08-28 - Phase 3")) {
-    throw "CHANGELOG.md must keep the newest Phase 3 entry at the top."
+if (-not $changelog.StartsWith("# Changelog`n`n")) {
+    throw "CHANGELOG.md must keep the changelog title at the top."
+}
+if ($changelog -notmatch "## 2026-08-28 - Phase 3: episode and accounting core") {
+    throw "CHANGELOG.md must keep the Phase 3 entry."
 }
 
 Assert-Contains "src/TradeProof.Domain/Foundation/AccountingContracts.cs" 'normalized_fill_v1'
@@ -86,7 +89,7 @@ Assert-Contains "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql" "CHECK \(algorithm_version = 'wac_episode_v1'\)"
 Assert-Contains "src/TradeProof.Infrastructure/Migrations/003_phase3_accounting_core.sql" "UNIQUE \(trading_account_id, dedup_key\)"
 
-Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-3'
+Assert-Contains "src/TradeProof.Api/Program.cs" 'phase-[34]'
 Assert-Contains "src/TradeProof.Api/Program.cs" '/api/imports/\{importBatchId\}/process'
 Assert-Contains "src/TradeProof.Api/wwwroot/index.html" 'Process'
 Assert-Contains "src/TradeProof.Api/wwwroot/index.html" 'Episode'

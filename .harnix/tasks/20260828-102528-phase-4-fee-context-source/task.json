@@ -1,0 +1,295 @@
+{
+  "generator": "harnix",
+  "schemaVersion": 2,
+  "id": "20260828-102528-phase-4-fee-context-source",
+  "title": "Phase 4: fee conversion and context source",
+  "mode": "full",
+  "status": "completed",
+  "checkpoint": "finishing",
+  "goal": "Hoàn tất Week 4 theo `TP-PLAN`: thêm nguồn public market bar deterministic cho local harness, third-asset fee conversion có provenance, ContextSnapshot ENTRY/EXIT point-in-time và no-lookahead validation.",
+  "nonGoals": [
+    "Không gọi Binance network thật trong test hoặc yêu cầu credential; Phase 4 local harness dùng deterministic public market-bar ingest để freeze adapter/provenance contract.",
+    "Không triển khai authenticated exchange API, account sync, signed/user-data/trading endpoints, raw market-data redistribution hoặc generic market browser.",
+    "Không triển khai Episode Review, metric engine đầy đủ, dashboard drill-down, Weekly Lab, export/deletion hoặc AI của Phase 5+."
+  ],
+  "acceptanceCriteria": [
+    {
+      "id": "AC-001",
+      "text": "Domain/application contracts có exact literals `mce-binance-spot-v1.0.0`, `mce-default-v1`, `market_bar_as_of_v1` và records cho MarketConversionCatalogVersion, MarketDataIngestionBatch, MarketDataSourceRequest, MarketBarRevision, MarketBarSourceObservation, ContextAlgorithmRelease, ContextEpisodeTrigger, ManualContextRecomputeRequest, ContextSnapshot; `FeeConversionRecord` mở rộng market-bar provenance mà vẫn giữ Phase 3 exact/null cases.",
+      "status": "met",
+      "evidenceIds": [
+        "phase4-scope-review-pass-20260828",
+        "phase4-app-tests-pass-20260828",
+        "phase4-artifact-review-pass-20260828",
+        "phase4-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-002",
+      "text": "Third-asset fee conversion dùng public 1m bar point-in-time: direct `fee_asset+USDT` ưu tiên inverse `USDT+fee_asset`, chỉ dùng bar có `barEndExclusive <= fill.source_time_start` và cách fill không quá 5 phút, persist DERIVED method/rate/value/asOf/bar+observation arrays/path; missing/stale/unresolved giữ `UNAVAILABLE` và không dùng future/current substitution.",
+      "status": "met",
+      "evidenceIds": [
+        "phase4-scope-review-pass-20260828",
+        "phase4-app-tests-pass-20260828",
+        "phase4-artifact-review-pass-20260828",
+        "phase4-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-003",
+      "text": "Local market-data source lưu public tenant-free provenance immutable cho batch/request/observation/bar revision, canonical source base URL/hash, pagination/cache dedup và revision conflict surface tối thiểu; global public rows không chứa workspace/user/episode ID và không tạo TenantExternalOperationLease.",
+      "status": "met",
+      "evidenceIds": [
+        "phase4-scope-review-pass-20260828",
+        "phase4-app-tests-pass-20260828",
+        "phase4-artifact-review-pass-20260828",
+        "phase4-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-004",
+      "text": "Context control có registered `CONTEXT` work type, immutable ContextAlgorithmRelease allowlist, ContextEpisodeTrigger cho ENTRY sequence 1 và EXIT sequence N, ManualContextRecomputeRequest idempotent/conflict-safe, và validation reject wrong release/trigger/request hash, wrong phase/timeframe/sequence hoặc cross-workspace projection trước enqueue.",
+      "status": "met",
+      "evidenceIds": [
+        "phase4-scope-review-pass-20260828",
+        "phase4-app-tests-pass-20260828",
+        "phase4-artifact-review-pass-20260828",
+        "phase4-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-005",
+      "text": "ContextSnapshot publisher tạo immutable ENTRY/EXIT snapshots cho 1m/5m từ active episode projection, dùng only selected bars có `barEndExclusive <= asOfAt`, input/provenance hash ổn định, quality/aggregation eligibility rõ ràng, và published snapshot không đổi khi thêm future bars sau `asOfAt`.",
+      "status": "met",
+      "evidenceIds": [
+        "phase4-scope-review-pass-20260828",
+        "phase4-app-tests-pass-20260828",
+        "phase4-artifact-review-pass-20260828",
+        "phase4-local-ci-pass-20260828"
+      ]
+    },
+    {
+      "id": "AC-006",
+      "text": "Phase 4 API/UI/migration/tests/verifier/local CI/CHANGELOG được cập nhật; Phase 0/1/2/3 checks vẫn xanh, secret/bin-obj guard không báo lỗi, và UI/API không thêm exchange API key/private sync/live sync/generic browser hoặc ngôn ngữ signal bị cấm.",
+      "status": "met",
+      "evidenceIds": [
+        "phase4-scope-review-pass-20260828",
+        "phase4-app-tests-pass-20260828",
+        "phase4-artifact-review-pass-20260828",
+        "phase4-local-ci-pass-20260828"
+      ]
+    }
+  ],
+  "relevantPaths": [
+    ".github/workflows/ci.yml",
+    "CHANGELOG.md",
+    "Directory.Build.props",
+    "Product_Brief.md",
+    "TradeProof.sln",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/MARKET_CONTEXT_ENGINE.md",
+    "docs/PRODUCT_REQUIREMENTS.md",
+    "src/TradeProof.Api",
+    "src/TradeProof.Api/wwwroot",
+    "src/TradeProof.Application",
+    "src/TradeProof.Domain",
+    "src/TradeProof.Infrastructure",
+    "tests/TradeProof.App.Tests",
+    "tools"
+  ],
+  "relevantSpecs": [
+    "Product_Brief.md",
+    "docs/ACCEPTANCE_TESTS.md",
+    "docs/IMPLEMENTATION_PLAN.md",
+    "docs/IMPORT_AND_ACCOUNTING.md",
+    "docs/MARKET_CONTEXT_ENGINE.md",
+    "docs/PRODUCT_REQUIREMENTS.md"
+  ],
+  "validationPlan": [
+    {
+      "id": "phase4-scope-review",
+      "description": "Đọc lại TP-PLAN Week 4, TP-MCE output/source/control/no-lookahead và TP-ACC fee-conversion provenance trước khi edit.",
+      "command": "Get-Content -Raw docs/MARKET_CONTEXT_ENGINE.md; Get-Content -Raw docs/IMPORT_AND_ACCOUNTING.md",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        "@task-contract",
+        "docs/ACCEPTANCE_TESTS.md",
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/MARKET_CONTEXT_ENGINE.md",
+        "docs/PRODUCT_REQUIREMENTS.md"
+      ]
+    },
+    {
+      "id": "phase4-app-tests",
+      "description": "Chạy C# harness Phase 4 để chứng minh third-asset direct/inverse conversion, public market provenance, context control, ContextSnapshot và no-lookahead behavior.",
+      "command": "dotnet tests/TradeProof.App.Tests/bin/Release/net10.0/TradeProof.App.Tests.dll phase4",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        "@task-contract",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "tests/TradeProof.App.Tests"
+      ]
+    },
+    {
+      "id": "phase4-artifact-review",
+      "description": "Kiểm artifact Phase 4: migration/schema literals, API/UI surface, verifier, CHANGELOG, CI wiring và prohibited market/signal surface.",
+      "command": "pwsh -NoProfile -File tools/verify-phase4.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    },
+    {
+      "id": "phase4-local-ci",
+      "description": "Chạy local CI Phase 4 gồm restore/build, Phase 0/1/2/3/4 runners, verifiers và secret/bin-obj scan.",
+      "command": "pwsh -NoProfile -File tools/test-phase4.ps1",
+      "scope": "focused",
+      "required": true,
+      "criterionIds": [
+        "AC-001",
+        "AC-002",
+        "AC-003",
+        "AC-004",
+        "AC-005",
+        "AC-006"
+      ],
+      "inputs": [
+        ".github/workflows/ci.yml",
+        "@task-contract",
+        "CHANGELOG.md",
+        "Directory.Build.props",
+        "TradeProof.sln",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "tests/TradeProof.App.Tests",
+        "tools"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "phase4-red-build-missing-contracts-20260828",
+      "checkId": "phase4-app-tests",
+      "recordedAt": "2026-08-28T10:30:00+07:00",
+      "result": "fail",
+      "exitCode": 1,
+      "summary": "RED: Phase 4 build failed because MarketBarInput and related market/context contracts did not exist yet.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase4Tests.cs",
+        "tests/TradeProof.App.Tests/TestProgram.cs"
+      ]
+    },
+    {
+      "id": "phase4-scope-review-pass-20260828",
+      "checkId": "phase4-scope-review",
+      "recordedAt": "2026-08-28T10:39:06.4726425+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "TP-PLAN/TP-MCE/TP-ACC scope review pass: Phase 4 bounded to deterministic public market source, third-asset fee conversion provenance, context control, immutable ContextSnapshot and no-lookahead checks; network/live sync and Phase 5+ remain out of scope.",
+      "artifactPaths": [
+        "docs/IMPLEMENTATION_PLAN.md",
+        "docs/MARKET_CONTEXT_ENGINE.md",
+        "docs/IMPORT_AND_ACCOUNTING.md",
+        "docs/PRODUCT_REQUIREMENTS.md",
+        "docs/ACCEPTANCE_TESTS.md"
+      ],
+      "inputDigest": "4f6f1950fdbd1dda04a0ef8ed12b609eaf11c727e13eab4f5f07ffe8188f1db4"
+    },
+    {
+      "id": "phase4-app-tests-pass-20260828",
+      "checkId": "phase4-app-tests",
+      "recordedAt": "2026-08-28T10:39:06.4760809+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "C# Phase 4 harness pass: third-asset direct/inverse conversion uses point-in-time bars, public market provenance is tenant-free, context triggers use ENTRY 1 and EXIT N, manual retry is idempotent/conflict-safe, and snapshots ignore future bars.",
+      "artifactPaths": [
+        "tests/TradeProof.App.Tests/Phase4Tests.cs",
+        "src/TradeProof.Application/Foundation/MarketContextApp.cs",
+        "src/TradeProof.Application/Foundation/AccountingApp.cs",
+        "src/TradeProof.Domain/Foundation/MarketContextContracts.cs"
+      ],
+      "inputDigest": "152a6abc30d1bdfb13eb40a967fee23c001548ce1f4f99882d8c62b83ec3f2ef"
+    },
+    {
+      "id": "phase4-artifact-review-pass-20260828",
+      "checkId": "phase4-artifact-review",
+      "recordedAt": "2026-08-28T10:39:06.4761447+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/verify-phase4.ps1 pass for Phase 4 schema literals, migration, app surface, API/UI context controls, tests, CI wiring, changelog and prohibited market/signal surface scan.",
+      "artifactPaths": [
+        "tools/verify-phase4.ps1",
+        "src/TradeProof.Infrastructure/Migrations/004_phase4_fee_context_source.sql",
+        "src/TradeProof.Api/Program.cs",
+        "src/TradeProof.Api/wwwroot",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "5b318194e945af9d165d784630bf42642741b9f403d316d8321eb13ce78ba0b3"
+    },
+    {
+      "id": "phase4-local-ci-pass-20260828",
+      "checkId": "phase4-local-ci",
+      "recordedAt": "2026-08-28T10:39:06.4761638+07:00",
+      "result": "pass",
+      "exitCode": 0,
+      "summary": "tools/test-phase4.ps1 pass: restore/build, Phase 0/1/2/3/4 runners, Phase 0/1/2/3/4 verifiers and secret/bin-obj guard all passed.",
+      "artifactPaths": [
+        "tools/test-phase4.ps1",
+        ".github/workflows/ci.yml",
+        "tests/TradeProof.App.Tests",
+        "src/TradeProof.Api",
+        "src/TradeProof.Application",
+        "src/TradeProof.Domain",
+        "src/TradeProof.Infrastructure",
+        "CHANGELOG.md"
+      ],
+      "inputDigest": "c3fbc447559df8febd38f75e05356e84f02f641b4c8a9fa9add9cb55a58f7bfe"
+    }
+  ],
+  "createdAt": "2026-08-28T10:25:28+07:00",
+  "updatedAt": "2026-08-28T03:42:20.499Z",
+  "completedAt": "2026-08-28T03:42:20.499Z"
+}

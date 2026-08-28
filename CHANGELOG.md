@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-08-28 - Phase 4: fee conversion and context source
+
+- Added deterministic public market-bar source contracts, conversion catalog provenance, context algorithm release, context triggers/manual retry and immutable ContextSnapshot records.
+- Added third-asset fee conversion via direct/inverse point-in-time 1m bars with pinned market-bar/observation/path metadata and no future/current substitution.
+- Added Phase 4 context API/UI controls, migration contract, tests, verifier and CI script while keeping Phase 0/1/2/3 checks green.
+
 ## 2026-08-28 - Phase 3: episode and accounting core
 
 - Added Phase 3 accounting contracts, local IMPORT consumer, ImportRow/NormalizedFill admission, quote/base fee conversion, long-only quarantine and WAC episode ledger projections.

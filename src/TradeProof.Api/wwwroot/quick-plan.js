@@ -40,6 +40,7 @@ const reserveImportButton = document.querySelector("#reserveImportButton");
 const validateImportButton = document.querySelector("#validateImportButton");
 const confirmImportButton = document.querySelector("#confirmImportButton");
 const processImportButton = document.querySelector("#processImportButton");
+const computeContextButton = document.querySelector("#computeContextButton");
 const purgeUploadButton = document.querySelector("#purgeUploadButton");
 
 async function api(path, options = {}) {
@@ -93,26 +94,68 @@ function renderImportFlow() {
   document.querySelector("#episodeText").textContent = importFlow.progress?.episodes?.length
     ? importFlow.progress.episodes.map((episode) => `${episode.state} ${episode.planProofStatus}/${episode.accountingQuality}`).join(", ")
     : "-";
+  document.querySelector("#contextText").textContent = importFlow.contextSnapshots?.length
+    ? importFlow.contextSnapshots.map((snapshot) => `${snapshot.phase} ${snapshot.timeframe} ${snapshot.quality}`).join(", ")
+    : "-";
 
   validateImportButton.disabled = !importFlow.reservation || Boolean(importFlow.preview) || importFlow.upload?.state === "REJECTED";
   confirmImportButton.disabled = !importFlow.preview || Boolean(importFlow.batch);
   processImportButton.disabled = !importFlow.batch || ["COMPLETE", "PARTIAL", "NEEDS_ATTENTION", "REJECTED"].includes(importFlow.progress?.status);
+  computeContextButton.disabled = !importFlow.progress?.episodes?.length || Boolean(importFlow.contextSnapshots);
   purgeUploadButton.disabled = !(importFlow.upload || importFlow.transfer?.upload);
 }
 
 function resetImportFlow() {
   importFlow = {};
   document.querySelector("#importState").textContent = "Chưa reserve";
-  for (const step of ["reserve", "write", "validate", "confirm", "process", "purge"]) {
+  for (const step of ["reserve", "write", "validate", "confirm", "process", "context", "purge"]) {
     markStep(step, "pending");
   }
   renderImportFlow();
+}
+
+async function seedMarketData() {
+  await api("/api/market/conversion-catalog", {
+    method: "POST",
+    body: JSON.stringify({
+      pairs: [
+        { venueSymbol: "BNBUSDT", baseAsset: "BNB", quoteAsset: "USDT", conversionSupported: true },
+        { venueSymbol: "BTCUSDT", baseAsset: "BTC", quoteAsset: "USDT", conversionSupported: true }
+      ],
+      idempotencyKey: "phase4-ui-catalog"
+    })
+  });
+  await api("/api/market/bars", {
+    method: "POST",
+    body: JSON.stringify({
+      symbol: "BTCUSDT",
+      timeframe: "1m",
+      bars: [
+        { openAt: "2026-08-27T09:00:00Z", close: "101", volume: "100" },
+        { openAt: "2026-08-27T09:01:00Z", close: "111", volume: "120" },
+        { openAt: "2026-08-27T09:02:00Z", close: "121", volume: "140" }
+      ],
+      idempotencyKey: "phase4-ui-btc-1m"
+    })
+  });
+  await api("/api/market/bars", {
+    method: "POST",
+    body: JSON.stringify({
+      symbol: "BTCUSDT",
+      timeframe: "5m",
+      bars: [
+        { openAt: "2026-08-27T08:55:00Z", close: "100", volume: "90" }
+      ],
+      idempotencyKey: "phase4-ui-btc-5m"
+    })
+  });
 }
 
 async function load() {
   csvText.value = sampleCsv;
   resetImportFlow();
   try {
+    await seedMarketData();
     renderBootstrap(await api("/api/bootstrap"));
   } catch (error) {
     errorText.textContent = `Không thể bootstrap: ${safeMessage(error)}`;
@@ -263,12 +306,34 @@ processImportButton.addEventListener("click", async () => {
       body: JSON.stringify({ idempotencyKey: idempotencyKey("process") })
     });
     importFlow.progress = await api(`/api/imports/${importFlow.batch.importBatchId}/progress`);
+    importFlow.contextSnapshots = null;
     document.querySelector("#importState").textContent = "Đã reconcile";
     markStep("process", "done");
     renderImportFlow();
   } catch (error) {
     errorText.textContent = `Không process được import: ${safeMessage(error)}`;
     markStep("process", "error");
+  }
+});
+
+computeContextButton.addEventListener("click", async () => {
+  errorText.textContent = "";
+  const episode = importFlow.progress?.episodes?.[0];
+  try {
+    importFlow.contextSnapshots = await api("/api/context/compute", {
+      method: "POST",
+      body: JSON.stringify({
+        episodeId: episode.episodeId,
+        projectionVersion: episode.projectionVersion,
+        idempotencyKey: idempotencyKey("context")
+      })
+    });
+    document.querySelector("#importState").textContent = "Đã snapshot context";
+    markStep("context", "done");
+    renderImportFlow();
+  } catch (error) {
+    errorText.textContent = `Không tạo được context: ${safeMessage(error)}`;
+    markStep("context", "error");
   }
 });
 

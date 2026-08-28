@@ -22,7 +22,8 @@ public static partial class ContractVersions
         ObjectIngestFinalize,
         UploadValidate,
         UploadPurge,
-        Import
+        Import,
+        Context
     };
 
     public static string Sha256Hex(byte[] bytes) => Convert.ToHexString(SHA256.HashData(bytes)).ToLowerInvariant();
